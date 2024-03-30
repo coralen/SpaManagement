@@ -33,6 +33,10 @@ int addTreatment(TreatmentManager* pTreatmentManager)
 	return 1;
 }
 
+void deleteTreatment(Treatment* pTreatment)
+{
+	L_delete(pTreatment, freeTreatment);
+}
 
 int initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager)
 {
@@ -60,12 +64,10 @@ int checkUniqeCode(char* code, TreatmentManager* pTreatmentManager)
 	return NULL;
 }
 
-
-void deleteTreatment(TreatmentManager* pManager, Treatment* pTreatment)
-{}
-
 void getTreatmentsWithCode(TreatmentManager* pManager, char* code)
-{}
+{
+
+}
 
 int calculateTreatmentsRevenue(TreatmentManager* pTreatmentManager)
 {

@@ -6,10 +6,10 @@
 #include <ctype.h>
 
 #include "Treatment.h"
+#include "List.h"
 
 int initTreatmentNoCode(Treatment* pTreatment)
 {
-    //duration? 
     getCorrectDate(&pTreatment->date);
     getCorrentHour(&pTreatment->date);
     getPrice(pTreatment);
@@ -62,5 +62,5 @@ void describeTreatment(Treatment* pTreatment)
 
 void freeTreatment(Treatment* pTreatment)
 {
-    //
+    free(pTreatment->pTreatmentRoom);
 }
