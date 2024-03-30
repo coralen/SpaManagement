@@ -3,20 +3,23 @@
 
 #include "Helper.h"
 #include "Date.h"
+#include "Room.h"
 
 typedef struct {
-    char code[CODE]; // must
-    int duration;
-    Date date; // must
+    char code[CODE];
+    int duration; // depends on the treatment!
+    Date date;
     int hour;
     int price;
+    Room* pTreatmentRoom;
     // union here all treatments (This is the inheritance part)
 } Treatment;
 
-void startTreatment(Treatment pTreatment, Date date, int hour);
-void endTreatment(Treatment* pTreatment, Date date, int hour);
+int initTreatmentNoCode(Treatment* pTreatment);
+void getTreatmentCode(char* code);
+int isCodeValid(const char* code);
+void getPrice(Treatment* pTreatment);
 void describeTreatment(Treatment* pTreatment); // different implementation using union
-void calculatePrice(Treatment pTreatment); // maybe in manager?
 
 
 #endif
