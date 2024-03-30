@@ -2,6 +2,7 @@
 #define _ROOM_H
 
 #include "Date.h"
+#include "Def.h"
 
 #define ROOM_TYPE_COUNT 3
 
@@ -10,11 +11,12 @@ static const char* typeString[ROOM_TYPE_COUNT] = { "Massage", "Hot Stones" ,"Men
 typedef enum { MASSAGE, HOT_STONES, MENI_PEDI } RoomType;
 
 typedef struct {
+    char code[CODE];
     RoomType type;
     Date date;
     int hour;
     int size;
-    bool status;
+    BOOL status;
 } Room;
 
 /*

@@ -3,8 +3,8 @@
 /* This file contains GENERAL definitions used in several data structures */
 /**************************************************************************/
 
-#ifndef _DEF_
-#define _DEF_
+#ifndef _DEF_H
+#define _DEF_H
 
 // a value not supposed in stack and queue
 #define		EMPTY	0x7FFFFFFF

@@ -15,7 +15,7 @@ void getCorrectDate(Date* pDate)
 
 	while (!validInputFlag)
 	{
-		printf("Enter Flight Date dd##mm##yyyy  minimum year %d\n", MIN_YEAR);
+		printf("Enter treatment Date dd##mm##yyyy  minimum year %d\n", MIN_YEAR);
 		scanf("%s", date);
 		count = sscanf(date, "%2d##%2d##%4d", &day, &month, &year);
 
@@ -29,6 +29,20 @@ void getCorrectDate(Date* pDate)
 	pDate->day = day;
 	pDate->month = month;
 	pDate->year = year;
+}
+
+void getCorrentHour(Date* pDate)
+{
+	int hour, validInputFlag = 0;
+
+	while (!validInputFlag)
+	{
+		printf("Enter treatment hour in %s:\n", CLOCK_FORMAT);
+		scanf("%d", &hour);
+		if (hour < 0 && hour > 23) printf("Error, please try again\n");
+		else validInputFlag = 1;
+	}
+	pDate->hour = hour;
 }
 
 void printDate(const Date* pdate)
