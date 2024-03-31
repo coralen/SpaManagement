@@ -18,33 +18,14 @@ int initTreatmentNoCode(Treatment* pTreatment)
 
 void getTreatmentCode(char* code)
 {
-    char inCode[MAX_STRING];
+    char inputCode[MAX_STRING];
     do {
-        printf("Enter airport code  - %d UPPER CASE letters\n", CODE);
-        scanf(" %[^\n]", &inCode);
-    } while (!isCodeValid(inCode));
+        printf("Enter treatment code  - Format is T-XXX with %d UPPER CASE letters\n", CODE);
+        scanf(" %[^\n]", &inputCode);
+    } while (!isCodeValid(inputCode));
 
     printf("\n");
-    strcpy(code, inCode);
-}
-
-int isCodeValid(const char* code)
-{
-    if (strlen(code) != CODE)
-    {
-        printf("code should be %d letters\n", CODE);
-        return 0;
-    }
-
-    for (int i = 0; i < CODE; i++)
-    {
-        if (!isupper(code[i]))
-        {
-            printf("Need to be upper case letter\n");
-            return 0;
-        }
-    }
-    return 1;
+    strcpy(code, inputCode);
 }
 
 void getPrice(Treatment* pTreatment)

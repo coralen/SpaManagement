@@ -7,10 +7,10 @@
 
 typedef struct {
     char code[CODE];
-    int duration; // delete?
+    int duration; // according to type
     Date date;
     int price;
-    Room* pTreatmentRoom;
+    Room* pTreatmentRoom; // need to add
     // union here all treatments (This is the inheritance part)
 } Treatment;
 

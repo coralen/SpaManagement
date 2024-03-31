@@ -1,6 +1,9 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include "TreatmentManager.h"
+#include <stdio.h>
 #include <cstddef>
+
+#include "TreatmentManager.h"
+
 
 int initTreatmentManager(TreatmentManager* pTreatmentManager)
 {
@@ -10,15 +13,11 @@ int initTreatmentManager(TreatmentManager* pTreatmentManager)
 
 int addTreatment(TreatmentManager* pTreatmentManager)
 {
+	// check first if there are enought rooms and employees
 	Treatment* pTreatment = (Treatment*)calloc(1, sizeof(Treatment));
 	if (!pTreatment) return 0;
 
-	if (!initTreatment(pTreatment, pTreatmentManager))
-	{
-		freeTreatment(pTreatment);
-		free(pTreatment);
-		return 0;
-	}
+	initTreatment(pTreatment, pTreatmentManager);
 
 	if (!&pTreatmentManager->treatments.head)
 	{
@@ -38,24 +37,25 @@ void deleteTreatment(Treatment* pTreatment)
 	L_delete(pTreatment, freeTreatment);
 }
 
-int initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager)
+void initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager)
 {
 	while (1)
 	{
 		getTreatmentCode(pTreatment->code);
-		if (checkUniqeCode(pTreatment->code, pTreatmentManager))
+		if (checkUniqeTreatmentCode(pTreatment->code, pTreatmentManager))
 			break;
 
 		printf("This code already in use - enter a different code\n");
 	}
 
-	return initTreatmentNoCode(pTreatment);
+	initTreatmentNoCode(pTreatment);
 }
 
-int checkUniqeCode(char* code, TreatmentManager* pTreatmentManager)
+int checkUniqeTreatmentCode(char* code, TreatmentManager* pTreatmentManager)
 {
 	NODE* ptr = &pTreatmentManager->treatments.head;
-	while (ptr != NULL) {
+	while (ptr != NULL) 
+	{
 		if (((Treatment*)ptr->key)->code == code)
 			return ptr->key;
 
