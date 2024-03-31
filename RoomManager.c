@@ -76,9 +76,10 @@ Room* getAvailableRoom(RoomManager* pRoomManager, RoomType type)
 {
 	for (int i = 0; i < pRoomManager->roomCount; i++)
 	{
-		if (pRoomManager->roomArr[i].type == type && pRoomManager->roomArr[i].status == 0)
+		if (pRoomManager->roomArr[i].type == type && !pRoomManager->roomArr[i].isBooked)
 			return &pRoomManager->roomArr[i];
 	}
+	return NULL;
 }
 
 
