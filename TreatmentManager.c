@@ -69,6 +69,7 @@ void getTreatmentsWithCode(TreatmentManager* pManager, char* code)
 
 }
 
+
 int calculateTreatmentsRevenue(TreatmentManager* pTreatmentManager)
 {
 	return 1;
