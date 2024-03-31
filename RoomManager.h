@@ -9,10 +9,10 @@ typedef struct {
 
 int initRoomManager(RoomManager* pRoomManager);
 int addRoom(RoomManager* pRoomManager);
+int findRoomIndexInArray(const Room* pRoom, const RoomManager* pRoomManager);
 void initRoom(Room* pRoom, RoomManager* pRoomManager);
-void deleteRoom(Room* pRoom);
+int deleteRoom(Room* pRoom, RoomManager* pRoomManager);
 Room* getAvailableRoom(RoomManager* pRoomManager, RoomType type);
-//void findRoomByType(); // no need?
 
 
 #endif

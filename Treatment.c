@@ -20,9 +20,9 @@ void getTreatmentCode(char* code)
 {
     char inputCode[MAX_STRING];
     do {
-        printf("Enter treatment code  - Format is T-XXX with %d UPPER CASE letters\n", CODE);
+        printf("Enter treatment code, Format is T- following %d UPPER CASE letters\n", CODE);
         scanf(" %[^\n]", &inputCode);
-    } while (!isCodeValid(inputCode));
+    } while (!isCodeValid(inputCode, TREATMENT_START_CHAR));
 
     printf("\n");
     strcpy(code, inputCode);

@@ -5,6 +5,8 @@
 #include "Date.h"
 #include "Room.h"
 
+#define TREATMENT_START_CHAR "T-"
+
 typedef struct {
     char code[CODE];
     int duration; // according to type
@@ -16,7 +18,6 @@ typedef struct {
 
 int initTreatmentNoCode(Treatment* pTreatment);
 void getTreatmentCode(char* code);
-int isCodeValid(const char* code);
 void getPrice(Treatment* pTreatment);
 void describeTreatment(Treatment* pTreatment); // different implementation using union
 void freeTreatment(Treatment* pTreatment);
