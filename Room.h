@@ -14,26 +14,10 @@ typedef struct {
     char code[CODE];
     RoomType type;
     Date date;
-    int hour;
     int size;
     BOOL status;
 } Room;
 
-/*
-
-Atrributes:
-- status: boolean
-- date: Date
-- hour: int
-- type: RoomType
-- size: int
-
-Functions:
-None
-
-Additional:
-None
-
-*/
+void initRoomNoCode(Room* pRoom);
 
 #endif

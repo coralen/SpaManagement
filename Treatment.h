@@ -7,11 +7,10 @@
 
 typedef struct {
     char code[CODE];
-    int duration; // depends on the treatment!
+    int duration; // according to type
     Date date;
-    int hour;
     int price;
-    Room* pTreatmentRoom;
+    Room* pTreatmentRoom; // need to add
     // union here all treatments (This is the inheritance part)
 } Treatment;
 
@@ -20,6 +19,7 @@ void getTreatmentCode(char* code);
 int isCodeValid(const char* code);
 void getPrice(Treatment* pTreatment);
 void describeTreatment(Treatment* pTreatment); // different implementation using union
+void freeTreatment(Treatment* pTreatment);
 
 
 #endif

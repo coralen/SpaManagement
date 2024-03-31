@@ -9,11 +9,11 @@ typedef struct {
 } TreatmentManager;
 
 int initTreatmentManager(TreatmentManager* pTreatmentManager);
-int initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager);
-int checkUniqeCode(char* code, TreatmentManager* pTreatmentManager);
+void initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager);
+int checkUniqeTreatmentCode(char* code, TreatmentManager* pTreatmentManager);
 int addTreatment(TreatmentManager* pTreatmentManager);
-void deleteTreatment(TreatmentManager* pManager, Treatment* pTreatment);
 void getTreatmentsWithCode(TreatmentManager* pManager, char* code);
+void deleteTreatment(Treatment* pTreatment);
 int calculateTreatmentsRevenue(TreatmentManager* pTreatmentManager);
 
 #endif
