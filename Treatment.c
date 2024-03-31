@@ -13,6 +13,7 @@ int initTreatmentNoCode(Treatment* pTreatment)
     getCorrectDate(&pTreatment->date);
     getCorrentHour(&pTreatment->date);
     getPrice(pTreatment);
+    pTreatment->pTreatmentRoom = NULL;
     return 1;
 }
 
