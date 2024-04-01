@@ -1,5 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+#include <string.h>
 #include <cstddef>
 #include <stdlib.h>
 
@@ -39,12 +40,19 @@ void initRoom(Room* pRoom, RoomManager* pRoomManager)
 	while (1)
 	{
 		getRoomCode(pRoom->code);
-		if (checkUniqeCode(pRoom->code, pRoomManager))
+		if (checkUniqueRoomCode(pRoom->code, pRoomManager))
 			break;
 
 		printf("This code already in use - enter a different code\n");
 	}
 	initRoomNoCode(pRoom);
+}
+
+int checkUniqueRoomCode(const char* code, RoomManager* pRoomManager)
+{
+	for (int i = 0; i < pRoomManager->roomCount; i++)
+		if (!strcmp(code, pRoomManager->roomArr[i].code)) return 0;
+	return 1;
 }
 
 int deleteRoom(Room* pRoom, RoomManager* pRoomManager)

@@ -10,7 +10,7 @@ typedef struct {
 
 int initTreatmentManager(TreatmentManager* pTreatmentManager);
 void initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager);
-int checkUniqeTreatmentCode(char* code, TreatmentManager* pTreatmentManager);
+int checkUniqueTreatmentCode(char* code, TreatmentManager* pTreatmentManager);
 int addTreatment(TreatmentManager* pTreatmentManager);
 void getTreatmentsWithCode(TreatmentManager* pManager, char* code);
 void deleteTreatment(Treatment* pTreatment);

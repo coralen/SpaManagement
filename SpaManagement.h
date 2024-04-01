@@ -4,7 +4,7 @@
 #include "TreatmentManager.h"
 #include "RoomManager.h"
 
-void startTreatment(Treatment* pTreatment, Date date, int hour);
-void endTreatment(Treatment* pTreatment, Date date, int hour);
+//void startTreatment(Treatment* pTreatment, Date date, int hour);
+//void endTreatment(Treatment* pTreatment, Date date, int hour);
 
 #endif

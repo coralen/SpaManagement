@@ -42,7 +42,7 @@ void initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager)
 	while (1)
 	{
 		getTreatmentCode(pTreatment->code);
-		if (checkUniqeTreatmentCode(pTreatment->code, pTreatmentManager))
+		if (checkUniqueTreatmentCode(pTreatment->code, pTreatmentManager))
 			break;
 
 		printf("This code already in use - enter a different code\n");
@@ -51,7 +51,7 @@ void initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager)
 	initTreatmentNoCode(pTreatment);
 }
 
-int checkUniqeTreatmentCode(char* code, TreatmentManager* pTreatmentManager)
+int checkUniqueTreatmentCode(char* code, TreatmentManager* pTreatmentManager)
 {
 	NODE* ptr = &pTreatmentManager->treatments.head;
 	while (ptr != NULL) 
