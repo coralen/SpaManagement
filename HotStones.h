@@ -1,9 +1,6 @@
 #ifndef _HOTSTONES_H
 #define _HOTSTONES_H
 
-#include "Date.h"
-#include "Room.h"
-
 #define HOT_STONES_ROOM_TYPE 0
 #define HOT_STONES_TYPE_COUNT 3
 #define HOT_STONES_PLACEMENT_COUNT 4

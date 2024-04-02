@@ -1,8 +1,6 @@
 #ifndef _MASSAGE_H
 #define _MASSAGE_H
 
-#include "Treatment.h"
-
 #define MASSAGE_TYPE_COUNT 4
 #define MASSAGE_ROOM_TYPE 0
 

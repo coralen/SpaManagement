@@ -6,6 +6,7 @@
 #include <ctype.h>
 
 #include "Treatment.h"
+#include "General.h"
 #include "List.h"
 
 int initTreatmentNoCode(Treatment* pTreatment, int option, Room* pRoom, RoomType rType)
@@ -41,7 +42,7 @@ void getTreatmentCode(char* code)
     do {
         printf("Enter treatment code, Format is T- following %d UPPER CASE letters\n", CODE);
         scanf(" %[^\n]", &inputCode);
-    } while (!isCodeValid(inputCode, TREATMENT_START_CHAR));
+    } while (!isCodeValid(inputCode, TREATMENT_START_CHARS));
 
     printf("\n");
     strcpy(code, inputCode);
@@ -51,6 +52,7 @@ int initMassage(Treatment* pTreatment, Room* pRoom, RoomType rType)
 {
     getMassageType(&pTreatment->data.massage);
     if (!getNotesFromClient(&pTreatment->data.massage)) return 0;
+    return 1;
 }
 
 void initHotStones(Treatment* pTreatment, Room* pRoom, RoomType rType)

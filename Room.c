@@ -46,5 +46,5 @@ void getRoomCode(char* code)
 void printRoomTypes()
 {
     for (int i = 0; i < ROOM_TYPE_COUNT; i++)
-        printf("%d - %s\n", i, typeString[i]);
+        printf("%d - %s\n", i, roomTypeString[i]);
 }

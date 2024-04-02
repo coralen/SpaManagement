@@ -1,5 +1,8 @@
+#pragma warning(disable : 4996)
 #define _CRT_SECURE_NO_WARNINGS
+
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "RoomManager.h"
 #include "TreatmentManager.h"
@@ -60,5 +63,5 @@ int checkRequirments(TreatmentManager* pTreatmentManager, RoomManager* pRoomMana
 		printf("Not enough rooms to add a new treatment!\n");
 		return 0;
 	}
-
+	return 1;
 }

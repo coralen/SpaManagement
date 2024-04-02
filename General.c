@@ -1,13 +1,15 @@
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "Helper.h"
 
-int isCodeValid(const char* code, const char* firstChar)
+int isCodeValid(const char* code, const char* firstChars)
 {
+
     if (strlen(code) != TOTAL_CODE)
     {
-        printf("code should be %s and %d letters\n", firstChar, CODE);
+        printf("code should be %s and %d letters\n", firstChars, CODE);
         return 0;
     }
 
@@ -20,9 +22,9 @@ int isCodeValid(const char* code, const char* firstChar)
         }
     }
 
-    if (code[0] != firstChar || code[1] != '-')
+    if (code[0] != firstChars[0] || code[1] != '-')
     {
-        printf("The phrase must start with %s\n", firstChar);
+        printf("The phrase must start with %s\n", firstChars);
         return 0;
     }
     return 1;

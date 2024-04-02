@@ -4,11 +4,12 @@
 #include "Helper.h"
 #include "Date.h"
 #include "Room.h"
+
 #include "Massage.h"
 #include "HotStones.h"
 #include "MeniPedi.h"
 
-#define TREATMENT_START_CHAR "T-"
+#define TREATMENT_START_CHARS "T-"
 #define TREATMENT_TYPE_COUNT 3
 
 static const char* treatmentTypeString[TREATMENT_TYPE_COUNT] = { "Massage", "Hot Stones" ,"Meni Pedi" };
@@ -33,14 +34,14 @@ typedef struct {
     TreatmentData data;
 } Treatment;
 
-int initTreatmentNoCode(Treatment* pTreatment, int option, Room* pRoom, RoomType rType);
-void getTreatmentCode(char* code);
-void initMassage(Treatment* pTreatment, Room* pRoom, RoomType rType);
-void initHotStones(Treatment* pTreatment, Room* pRoom, RoomType rType);
-void initMeniPedi(Treatment* pTreatment, Room* pRoom, RoomType rType);
-void describeTreatment(Treatment* pTreatment); // different implementation using union
-void freeTreatment(Treatment* pTreatment);
-void printTreatmentTypes();
+int     initTreatmentNoCode(Treatment* pTreatment, int option, Room* pRoom, RoomType rType);
+int     initMassage(Treatment* pTreatment, Room* pRoom, RoomType rType);
+void    getTreatmentCode(char* code);
+void    initHotStones(Treatment* pTreatment, Room* pRoom, RoomType rType);
+void    initMeniPedi(Treatment* pTreatment, Room* pRoom, RoomType rType);
+void    describeTreatment(Treatment* pTreatment); // different implementation using union
+void    freeTreatment(Treatment* pTreatment);
+void    printTreatmentTypes();
 
 
 #endif

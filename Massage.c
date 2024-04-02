@@ -1,11 +1,11 @@
+#pragma warning(disable : 4996)
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+#include <stdio.h>
+#include <string.h>
 
 #include "Massage.h"
-
-/* implement 
-*  getMassageType(&pTreatment->data.massage.mType);
-*  getNotesFromClient(&pTreatment->data.massage.notesFromClient);
-*/
+#include "Helper.h"
 
 void getMassageType(Massage* pMassage)
 {	
@@ -14,7 +14,7 @@ void getMassageType(Massage* pMassage)
 	do {
 		printf("Please choose one of the following massage types:\n");
 		printMassageType();
-		scanf("%d", &option);
+		scanf_s("%d", &option);
 	} while (option < 1 || option > MASSAGE_TYPE_COUNT);
 	pMassage->mType = (MassageType)(option - 1);
 }
@@ -22,7 +22,7 @@ void getMassageType(Massage* pMassage)
 int getNotesFromClient(Massage* pMassage)
 {
 	char inputMessage[MAX_STRING];
-	printf("Enter notes from the client:\n", CODE);
+	printf("Enter notes from the client:\n");
 	scanf(" %[^\n]", &inputMessage);
 	printf("\n");
 	pMassage->notesFromClient = strdup(inputMessage);
