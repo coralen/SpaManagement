@@ -33,7 +33,8 @@ int deleteTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager)
 	const NODE* found = L_find(&pTreatmentManager->treatments.head, pTreatment, compareTreatments);
 	if (found)
 	{
-		if (!L_delete(found, freeTreatment)) return 0;
+		NODE* nonConstFound = (NODE*)found; // L_delete can't work with CONST
+		if (!L_delete(nonConstFound, freeTreatmentWrapper)) return 0;
 		return 1;
 	}
 	return 0;
@@ -44,7 +45,7 @@ void initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager, i
 	while (1)
 	{
 		getTreatmentCode(pTreatment->code);
-		if (getTreatmentWithCode(pTreatment->code, pTreatmentManager))
+		if (getTreatmentWithCode(pTreatmentManager, pTreatment->code))
 			break;
 
 		printf("This code already in use - enter a different code\n");

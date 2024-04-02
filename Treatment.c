@@ -81,6 +81,11 @@ void freeTreatment(Treatment* pTreatment)
     free(pTreatment);
 }
 
+void freeTreatmentWrapper(void* treatment) 
+{
+    freeTreatment((Treatment*)treatment);
+}
+
 void printTreatmentTypes()
 {
     for (int i = 0; i < TREATMENT_TYPE_COUNT; i++)

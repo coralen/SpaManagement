@@ -18,7 +18,7 @@ void getMassageType(Massage* pMassage)
 	do {
 		printf("Please choose one of the following massage types:\n");
 		printMassageType();
-		scanf_s("%d", &option);
+		scanf("%d", &option);
 	} while (option < 1 || option > MASSAGE_TYPE_COUNT);
 	pMassage->mType = (MassageType)(option - 1);
 }
@@ -27,7 +27,7 @@ int getNotesFromClient(Massage* pMassage)
 {
 	char inputMessage[MAX_STRING];
 	printf("Enter notes from the client:\n");
-	scanf(" %[^\n]", &inputMessage);
+	scanf(" %[^\n]", inputMessage);
 	printf("\n");
 	pMassage->notesFromClient = strdup(inputMessage);
 	if (!pMassage->notesFromClient) return 0;

@@ -38,6 +38,7 @@ void        initHotStones(Treatment* pTreatment, Room* pRoom, RoomType rType);
 void        initMeniPedi(Treatment* pTreatment, Room* pRoom, RoomType rType);
 void        describeTreatment(Treatment* pTreatment); // different implementation using union
 void        freeTreatment(Treatment* pTreatment);
+void        freeTreatmentWrapper(void* treatment);
 void        printTreatmentTypes();
 const char* getTreatmentTypeString(int typeNum);
 const int   getTreatmentDurationInt(int typeNum);

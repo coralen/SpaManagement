@@ -12,7 +12,7 @@ void getHotStonesType(HotStones* pHotStones)
 	do {
 		printf("Please choose one of the following stone types:\n");
 		printHotStonesType();
-		scanf_s("%d", &option);
+		scanf("%d", &option);
 	} while (option < 1 || option > HOT_STONES_TYPE_COUNT);
 	pHotStones->sType = (StonesType)(option - 1);
 }
@@ -24,7 +24,7 @@ void getStonesPlacement(HotStones* pHotStones)
 	do {
 		printf("Please choose one of the following placement types:\n");
 		printHotStonesPlacement();
-		scanf_s("%d", &option);
+		scanf("%d", &option);
 	} while (option < 1 || option > HOT_STONES_PLACEMENT_COUNT);
 	pHotStones->sType = (stonePlacement)(option - 1);
 }
