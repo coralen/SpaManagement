@@ -10,6 +10,8 @@
 #include "Room.h"
 #include "General.h"
 
+static const char* roomTypeString[ROOM_TYPE_COUNT] = { "Bedded", "Chaired" };
+
 void initRoomNoCode(Room* pRoom)
 {
 	getCorrectDate(&pRoom->date);
@@ -49,5 +51,10 @@ void getRoomCode(char* code)
 void printRoomTypes()
 {
     for (int i = 0; i < ROOM_TYPE_COUNT; i++)
-        printf("%d - %s\n", i, roomTypeString[i]);
+        printf("%d - %s\n", i, getRoomTypeString(i));
+}
+
+const char* getRoomTypeString(int typeNum)
+{
+    return roomTypeString[typeNum];
 }

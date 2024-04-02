@@ -5,10 +5,6 @@
 #define HOT_STONES_TYPE_COUNT 3
 #define HOT_STONES_PLACEMENT_COUNT 4
 
-static const char* stonesTypeString[HOT_STONES_TYPE_COUNT] = { "Basalt", "Marble" ,"Himalayan Salt" };
-static const char* stonesPlacementString[HOT_STONES_PLACEMENT_COUNT] = { "Back", "Neck" ,"Hands", "Legs" };
-
-
 typedef enum { BASALT, MARBLE , HIMALAYAN_SALT } StonesType;
 typedef enum { BACK, NECK, HANDS, LEGS } stonePlacement;
  
@@ -17,8 +13,11 @@ typedef struct {
 	stonePlacement sPlacement;
 } HotStones;
 
-void	getHotStonesType(HotStones* pHotStones);
-void	getStonesPlacement(HotStones* pHotStones);
-void	printHotStonesType();
-void	printHotStonesPlacement();
+void		getHotStonesType(HotStones* pHotStones);
+void		getStonesPlacement(HotStones* pHotStones);
+void		printHotStonesType();
+void		printHotStonesPlacement();
+const char*	getStonesTypeString(int typeNum);
+const char*	getStonesPlacementString(int typeNum);
+
 #endif

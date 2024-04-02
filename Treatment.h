@@ -12,9 +12,6 @@
 #define TREATMENT_START_CHARS "T-"
 #define TREATMENT_TYPE_COUNT 3
 
-static const char* treatmentTypeString[TREATMENT_TYPE_COUNT] = { "Massage", "Hot Stones" ,"Meni Pedi" };
-static const int treatmentDurationInt[TREATMENT_TYPE_COUNT] = { 45, 30 , 60 };
-static const int treatmentPriceInt[TREATMENT_TYPE_COUNT] = { 300, 250, 100 };
 
 typedef enum { MASSAGE, HOT_STONES, MENI_PEDI } TreatmentType;
 
@@ -34,14 +31,16 @@ typedef struct {
     TreatmentData data;
 } Treatment;
 
-int     initTreatmentNoCode(Treatment* pTreatment, int option, Room* pRoom, RoomType rType);
-int     initMassage(Treatment* pTreatment, Room* pRoom, RoomType rType);
-void    getTreatmentCode(char* code);
-void    initHotStones(Treatment* pTreatment, Room* pRoom, RoomType rType);
-void    initMeniPedi(Treatment* pTreatment, Room* pRoom, RoomType rType);
-void    describeTreatment(Treatment* pTreatment); // different implementation using union
-void    freeTreatment(Treatment* pTreatment);
-void    printTreatmentTypes();
-
+int         initTreatmentNoCode(Treatment* pTreatment, int option, Room* pRoom, RoomType rType);
+int         initMassage(Treatment* pTreatment, Room* pRoom, RoomType rType);
+void        getTreatmentCode(char* code);
+void        initHotStones(Treatment* pTreatment, Room* pRoom, RoomType rType);
+void        initMeniPedi(Treatment* pTreatment, Room* pRoom, RoomType rType);
+void        describeTreatment(Treatment* pTreatment); // different implementation using union
+void        freeTreatment(Treatment* pTreatment);
+void        printTreatmentTypes();
+const char* getTreatmentTypeString(int typeNum);
+const int   getTreatmentDurationInt(int typeNum);
+const int   getTreatmentPriceInt(int typeNum);
 
 #endif

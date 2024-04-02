@@ -9,6 +9,8 @@
 #include "Massage.h"
 #include "Helper.h"
 
+static const char* massageTypeString[MASSAGE_TYPE_COUNT] = { "Swedish", "Deep Tissue" ,"Reflexology", "Shiatsu" };
+
 void getMassageType(Massage* pMassage)
 {	
 	int option;
@@ -35,5 +37,10 @@ int getNotesFromClient(Massage* pMassage)
 void printMassageType()
 {
 	for (int i = 0; i < MASSAGE_TYPE_COUNT; i++)
-		printf("%d - %s\n", i + 1, massageTypeString[i]);
+		printf("%d - %s\n", i + 1, getMassageTypeString(i));
+}
+
+const char* getMassageTypeString(int typeNum)
+{
+	return massageTypeString[typeNum];
 }

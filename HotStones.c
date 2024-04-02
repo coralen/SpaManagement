@@ -2,6 +2,9 @@
 
 #include "HotStones.h"
 
+static const char* stonesTypeString[HOT_STONES_TYPE_COUNT] = { "Basalt", "Marble" ,"Himalayan Salt" };
+static const char* stonesPlacementString[HOT_STONES_PLACEMENT_COUNT] = { "Back", "Neck" ,"Hands", "Legs" };
+
 void getHotStonesType(HotStones* pHotStones)
 {
 	int option;
@@ -29,11 +32,21 @@ void getStonesPlacement(HotStones* pHotStones)
 void printHotStonesType()
 {
 	for (int i = 0; i < HOT_STONES_TYPE_COUNT; i++)
-		printf("%d - %s\n", i + 1, stonesTypeString[i]);
+		printf("%d - %s\n", i + 1, getStonesPlacementString(i));
 }
 
 void printHotStonesPlacement()
 {
 	for (int i = 0; i < HOT_STONES_PLACEMENT_COUNT; i++)
-		printf("%d - %s\n", i + 1, stonesPlacementString[i]);
+		printf("%d - %s\n", i + 1, getStonesPlacementString(i));
+}
+
+const char* getStonesTypeString(int typeNum)
+{
+	return stonesTypeString[typeNum];
+}
+
+const char* getStonesPlacementString(int typeNum)
+{
+	return stonesPlacementString[typeNum];
 }

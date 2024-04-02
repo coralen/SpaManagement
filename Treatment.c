@@ -10,12 +10,16 @@
 #include "Treatment.h"
 #include "General.h"
 
+static const char* treatmentTypeString[TREATMENT_TYPE_COUNT] = { "Massage", "Hot Stones" ,"Meni Pedi" };
+static const int treatmentDurationInt[TREATMENT_TYPE_COUNT] = { 45, 30 , 60 };
+static const int treatmentPriceInt[TREATMENT_TYPE_COUNT] = { 300, 250, 100 };
+
 int initTreatmentNoCode(Treatment* pTreatment, int option, Room* pRoom, RoomType rType)
 {
     getCorrectDate(&pTreatment->date);
     getCorrentHour(&pTreatment->date);
-    pTreatment->duration = treatmentDurationInt[option];
-    pTreatment->price = treatmentPriceInt[option];
+    pTreatment->duration = getTreatmentDurationInt(option);
+    pTreatment->price = getTreatmentPriceInt(option);
     pTreatment->type = (TreatmentType)option;
     pTreatment->pTreatmentRoom = pRoom;
 
@@ -80,5 +84,20 @@ void freeTreatment(Treatment* pTreatment)
 void printTreatmentTypes()
 {
     for (int i = 0; i < TREATMENT_TYPE_COUNT; i++)
-        printf("%d - %s\n", i, treatmentTypeString[i]);
+        printf("%d - %s\n", i, getTreatmentTypeString(i));
+}
+
+const char* getTreatmentTypeString(int typeNum)
+{
+    return treatmentTypeString[typeNum];
+}
+
+const int getTreatmentDurationInt(int typeNum)
+{
+    return treatmentDurationInt[typeNum];
+}
+
+const int getTreatmentPriceInt(int typeNum)
+{
+    return treatmentPriceInt[typeNum];
 }

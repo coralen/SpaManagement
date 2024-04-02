@@ -20,7 +20,7 @@ int addTreatment(TreatmentManager* pTreatmentManager, RoomManager* pRoomManager)
 	do {
 		printf("Please choose the type of treatment:\n");
 		for (int i = 0; i < TREATMENT_TYPE_COUNT; i++)
-			printf("Enter %d for %s\n", i + 1, treatmentTypeString[i]);
+			printf("Enter %d for %s\n", i + 1, getTreatmentTypeString(i));
 		scanf("%d", &option);
 	} while (option < 1 || option > TREATMENT_TYPE_COUNT);
 
