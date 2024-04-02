@@ -1,4 +1,4 @@
-#include "Helper.h"
+#include "../headers/Helper.h"
 
 //Check beggining wirh R- (for rooms) or T- (for treatments)
 int isCodeValid(const char* code, const char firstChar)
@@ -18,4 +18,13 @@ int isCodeValid(const char* code, const char firstChar)
         }
     }
     return 1;
+}
+
+void generalArrayFunction(void* array, int elementsInArray, int sizeOfElement, void (generalFunction)(void*)) {
+    void* ptr=array;
+
+    for (int i = 0; i < elementsInArray; ++i) {
+        generalFunction(ptr);
+        ptr += sizeOfElement;
+    }
 }
