@@ -1,5 +1,7 @@
-#include "Helper.h"
+#include <stdio.h>
+#include <string.h>
 
+#include "Helper.h"
 
 int isCodeValid(const char* code, const char* firstChar)
 {

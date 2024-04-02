@@ -2,6 +2,6 @@
 #define _GENERAL_H
 
 
-int isCodeValid(const char* code, const char startChar);
+int isCodeValid(const char* code, const char* firstChar);
 
 #endif

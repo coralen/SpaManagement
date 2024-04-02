@@ -3,12 +3,16 @@
 #include <stdio.h>
 #include "Helper.h"
 
-#define FF 5
+#include "SpaManagement.h"
 
 int menu();
 
 int main()
 {
+	TreatmentManager tManager;
+	RoomManager rManager;
+
+	addTreatment(&tManager, &rManager);
 	return 1;
 }
 
