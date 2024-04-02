@@ -1,3 +1,5 @@
+#pragma warning(disable : 4996)
+#pragma warning(disable : 6031)
 #define _CRT_SECURE_NO_WARNINGS
 
 #include "stdio.h"
@@ -7,7 +9,7 @@
 
 #include "Treatment.h"
 #include "General.h"
-#include "List.h"
+//#include "List.h"
 
 int initTreatmentNoCode(Treatment* pTreatment, int option, Room* pRoom, RoomType rType)
 {

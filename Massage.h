@@ -13,9 +13,9 @@ typedef struct {
     char* notesFromClient;
 } Massage;
 
-void printMassageType();
-void getMassageType(Massage* pMassage);
-int getNotesFromClient(Massage* pMassage);
+int     getNotesFromClient(Massage* pMassage);
+void    printMassageType();
+void    getMassageType(Massage* pMassage);
 
 
 #endif

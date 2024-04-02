@@ -3,6 +3,7 @@
 #include <ctype.h>
 
 #include "Helper.h"
+#include "General.h"
 
 int isCodeValid(const char* code, const char* firstChars)
 {

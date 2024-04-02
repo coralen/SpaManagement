@@ -1,10 +1,6 @@
 #include <stdio.h>
-#include "HotStones.h"
 
-/* implement
-*  getHotStonesType(&pTreatment->data.hotStones.sType);
-*  getStonesPlacement(&pTreatment->data.hotStones.sPlacement);
-*/
+#include "HotStones.h"
 
 void getHotStonesType(HotStones* pHotStones)
 {

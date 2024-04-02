@@ -7,13 +7,13 @@ typedef struct {
     int roomCount;
 } RoomManager;
 
-int initRoomManager(RoomManager* pRoomManager);
-int addRoom(RoomManager* pRoomManager);
-int findRoomIndexInArray(const Room* pRoom, const RoomManager* pRoomManager);
-void initRoom(Room* pRoom, RoomManager* pRoomManager);
-int checkUniqueRoomCode(const char* code, RoomManager* pRoomManager);
-int deleteRoom(Room* pRoom, RoomManager* pRoomManager);
-Room* findAvailableRoom(RoomManager* pRoomManager, RoomType type);
+int     initRoomManager(RoomManager* pRoomManager);
+int     addRoom(RoomManager* pRoomManager);
+int     findRoomIndexInArray(const Room* pRoom, const RoomManager* pRoomManager);
+int     checkUniqueRoomCode(const char* code, RoomManager* pRoomManager);
+int     deleteRoom(Room* pRoom, RoomManager* pRoomManager);
+void    initRoom(Room* pRoom, RoomManager* pRoomManager);
+Room*   findAvailableRoom(RoomManager* pRoomManager, RoomType type);
 
 
 #endif

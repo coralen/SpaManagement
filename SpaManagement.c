@@ -1,18 +1,18 @@
 #pragma warning(disable : 4996)
+#pragma warning(disable : 6031)
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "RoomManager.h"
-#include "TreatmentManager.h"
+#include "SpaManagement.h"
 
 int addTreatment(TreatmentManager* pTreatmentManager, RoomManager* pRoomManager)
 {
 	if (!checkRequirments(pTreatmentManager, pRoomManager)) return 0;
 
 	int option;
-	RoomType rType;
+	RoomType rType = (RoomType)0; // initiallize
 	Room* pRoom;
 
 	printf("\n");
