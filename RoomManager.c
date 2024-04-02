@@ -80,7 +80,7 @@ int findRoomIndexInArray(const Room* pRoom, const RoomManager* pRoomManager)
 	return -1;
 }
 
-Room* getAvailableRoom(RoomManager* pRoomManager, RoomType type)
+Room* findAvailableRoom(RoomManager* pRoomManager, RoomType type)
 {
 	for (int i = 0; i < pRoomManager->roomCount; i++)
 	{

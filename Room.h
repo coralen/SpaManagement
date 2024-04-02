@@ -4,12 +4,12 @@
 #include "Date.h"
 #include "Def.h"
 
-#define ROOM_TYPE_COUNT 3
 #define ROOM_START_CHAR "R-"
+#define ROOM_TYPE_COUNT 2
 
-static const char* typeString[ROOM_TYPE_COUNT] = { "Massage", "Hot Stones" ,"Meni Pedi" };
+static const char* roomTypeString[ROOM_TYPE_COUNT] = { "Bedded", "Chaired" };
 
-typedef enum { MASSAGE, HOT_STONES, MENI_PEDI } RoomType;
+typedef enum { BEDDED, CHAIRED } RoomType;
 
 typedef struct {
     char code[CODE];

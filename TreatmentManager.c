@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <cstddef>
+#include <stdlib.h>
 
 #include "TreatmentManager.h"
 
@@ -11,14 +12,8 @@ int initTreatmentManager(TreatmentManager* pTreatmentManager)
 	return 1;
 }
 
-int addTreatment(TreatmentManager* pTreatmentManager)
+int addTreatmentToList(Treatment* pTreatment, TreatmentManager* pTreatmentManager)
 {
-	// check first if there are enought rooms and employees
-	Treatment* pTreatment = (Treatment*)calloc(1, sizeof(Treatment));
-	if (!pTreatment) return 0;
-
-	initTreatment(pTreatment, pTreatmentManager);
-
 	if (!&pTreatmentManager->treatments.head)
 	{
 		freeTreatment(pTreatment);
@@ -28,6 +23,7 @@ int addTreatment(TreatmentManager* pTreatmentManager)
 
 	NODE* ptr = &pTreatmentManager->treatments.head;
 	L_insert(ptr, pTreatment);
+	pTreatmentManager->roomCount++;
 
 	return 1;
 }
@@ -37,24 +33,24 @@ void deleteTreatment(Treatment* pTreatment)
 	L_delete(pTreatment, freeTreatment);
 }
 
-void initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager)
+void initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager, int option, Room* pRoom, RoomType rType)
 {
 	while (1)
 	{
 		getTreatmentCode(pTreatment->code);
-		if (checkUniqueTreatmentCode(pTreatment->code, pTreatmentManager))
+		if (getTreatmentWithCode(pTreatment->code, pTreatmentManager))
 			break;
 
 		printf("This code already in use - enter a different code\n");
 	}
 
-	initTreatmentNoCode(pTreatment);
+	initTreatmentNoCode(pTreatment, option, pRoom, rType);
 }
 
-int checkUniqueTreatmentCode(char* code, TreatmentManager* pTreatmentManager)
+Treatment* getTreatmentWithCode(TreatmentManager* pTreatmentManager, char* code)
 {
 	NODE* ptr = &pTreatmentManager->treatments.head;
-	while (ptr != NULL) 
+	while (ptr != NULL)
 	{
 		if (((Treatment*)ptr->key)->code == code)
 			return ptr->key;
@@ -62,11 +58,6 @@ int checkUniqueTreatmentCode(char* code, TreatmentManager* pTreatmentManager)
 		ptr = ptr->next;
 	}
 	return NULL;
-}
-
-void getTreatmentsWithCode(TreatmentManager* pManager, char* code)
-{
-
 }
 
 
