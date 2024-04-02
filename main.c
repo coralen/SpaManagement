@@ -11,7 +11,6 @@ int main()
 {
 	TreatmentManager tManager;
 	RoomManager rManager;
-
 	addTreatment(&tManager, &rManager);
 	return 1;
 }

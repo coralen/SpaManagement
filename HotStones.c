@@ -1,5 +1,8 @@
-#include <stdio.h>
+#pragma warning(disable : 4996)
+#pragma warning(disable : 6031)
+#define _CRT_SECURE_NO_WARNINGS
 
+#include <stdio.h>
 #include "HotStones.h"
 
 static const char* stonesTypeString[HOT_STONES_TYPE_COUNT] = { "Basalt", "Marble" ,"Himalayan Salt" };
