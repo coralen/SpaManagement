@@ -1,7 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
-#include <cstddef>
 #include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
 #include "TreatmentManager.h"
 
@@ -27,9 +28,15 @@ int addTreatmentToList(Treatment* pTreatment, TreatmentManager* pTreatmentManage
 	return 1;
 }
 
-void deleteTreatment(Treatment* pTreatment)
+int deleteTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager)
 {
-	L_delete(pTreatment, freeTreatment);
+	const NODE* found = L_find(&pTreatmentManager->treatments.head, pTreatment, compareTreatments);
+	if (found)
+	{
+		if (!L_delete(found, freeTreatment)) return 0;
+		return 1;
+	}
+	return 0;
 }
 
 void initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager, int option, Room* pRoom, RoomType rType)
@@ -63,4 +70,11 @@ Treatment* getTreatmentWithCode(TreatmentManager* pTreatmentManager, char* code)
 int calculateTreatmentsRevenue(TreatmentManager* pTreatmentManager)
 {
 	return 1;
+}
+
+int compareTreatments(const void* treatment1, const void* treatment2)
+{
+	const Treatment* treatmentA = (const Treatment*)treatment1;
+	const Treatment* treatmentB = (const Treatment*)treatment2;
+	return !(treatmentA == treatmentB); // Return 0 if equal, non-zero otherwise
 }

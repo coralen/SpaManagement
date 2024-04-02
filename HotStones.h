@@ -1,5 +1,5 @@
-#ifndef _HOTSTONES_H
-#define _HOTSTONES_H
+#ifndef _HOT_STONES_H
+#define _HOT_STONES_H
 
 #define HOT_STONES_ROOM_TYPE 0
 #define HOT_STONES_TYPE_COUNT 3

@@ -12,8 +12,9 @@ typedef struct {
 int			initTreatmentManager(TreatmentManager* pTreatmentManager);
 int			addTreatmentToList(Treatment* pTreatment, TreatmentManager* pTreatmentManager);
 int			calculateTreatmentsRevenue(TreatmentManager* pTreatmentManager);
+int			compareTreatments(const void* treatment1, const void* treatment2);
+int			deleteTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager);
 void		initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager, int option, Room* pRoom, RoomType rType);
-void		deleteTreatment(Treatment* pTreatment);
 Treatment*	getTreatmentWithCode(TreatmentManager* pTreatmentManager, char* code);
 
 

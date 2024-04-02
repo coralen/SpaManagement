@@ -2,6 +2,7 @@
 #define _ROOM_MANAGER_H
 
 #include "Room.h"
+
 typedef struct {
     Room* roomArr;
     int roomCount;
