@@ -55,7 +55,6 @@ int initMassage(Treatment* pTreatment, Room* pRoom, RoomType rType)
 
 void initHotStones(Treatment* pTreatment, Room* pRoom, RoomType rType)
 {
-    // implement
     getHotStonesType(&pTreatment->data.hotStones);
     getStonesPlacement(&pTreatment->data.hotStones);
 }
