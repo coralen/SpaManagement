@@ -9,7 +9,6 @@
 
 #include "Treatment.h"
 #include "General.h"
-//#include "List.h"
 
 int initTreatmentNoCode(Treatment* pTreatment, int option, Room* pRoom, RoomType rType)
 {

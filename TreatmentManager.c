@@ -4,7 +4,6 @@
 #include <stdlib.h>
 
 #include "TreatmentManager.h"
-#include "List.h"
 
 int initTreatmentManager(TreatmentManager* pTreatmentManager)
 {
