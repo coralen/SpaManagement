@@ -83,6 +83,8 @@ Room* findAvailableRoom(RoomManager* pRoomManager, RoomType type)
 
 void printRoomsStatus(RoomManager* pRoomManager)
 {
+	printRoomHeaders();
+	printf("\n");
 	for (int i = 0; i < pRoomManager->roomCount; i++)
 		printRoom(&pRoomManager->roomArr[i]);
 }

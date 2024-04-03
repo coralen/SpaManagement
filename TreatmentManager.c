@@ -8,29 +8,29 @@
 
 int initTreatmentManager(TreatmentManager* pTreatmentManager)
 {
-	if (!L_init(&pTreatmentManager->treatments)) return 0;
+	if (!L_init(&pTreatmentManager->treatmentArr)) return 0;
 	return 1;
 }
 
 int addTreatmentToList(Treatment* pTreatment, TreatmentManager* pTreatmentManager)
 {
-	if (!&pTreatmentManager->treatments.head)
+	if (!&pTreatmentManager->treatmentArr.head)
 	{
 		freeTreatment(pTreatment);
 		free(pTreatment);
 		return 0;
 	}
 
-	NODE* ptr = &pTreatmentManager->treatments.head;
+	NODE* ptr = &pTreatmentManager->treatmentArr.head;
 	L_insert(ptr, pTreatment);
 	pTreatmentManager->roomCount++;
 
 	return 1;
 }
 
-int deleteTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager)
+int deleteTreatmentFromList(Treatment* pTreatment, TreatmentManager* pTreatmentManager)
 {
-	const NODE* found = L_find(&pTreatmentManager->treatments.head, pTreatment, compareTreatments);
+	const NODE* found = L_find(&pTreatmentManager->treatmentArr.head, pTreatment, compareTreatments);
 	if (found)
 	{
 		NODE* nonConstFound = (NODE*)found; // L_delete can't work with CONST
@@ -45,7 +45,7 @@ void initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager, i
 	while (1)
 	{
 		getTreatmentCode(pTreatment->code);
-		if (getTreatmentWithCode(pTreatmentManager, pTreatment->code))
+		if (!getTreatmentWithCode(pTreatmentManager, pTreatment->code))
 			break;
 
 		printf("This code already in use - enter a different code\n");
@@ -56,7 +56,7 @@ void initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager, i
 
 Treatment* getTreatmentWithCode(TreatmentManager* pTreatmentManager, char* code)
 {
-	NODE* ptr = &pTreatmentManager->treatments.head;
+	NODE* ptr = &pTreatmentManager->treatmentArr.head;
 	while (ptr != NULL)
 	{
 		if (((Treatment*)ptr->key)->code == code)
@@ -78,4 +78,10 @@ int compareTreatments(const void* treatment1, const void* treatment2)
 	const Treatment* treatmentA = (const Treatment*)treatment1;
 	const Treatment* treatmentB = (const Treatment*)treatment2;
 	return !(treatmentA == treatmentB); // Return 0 if equal, non-zero otherwise
+}
+
+void printTreatments(TreatmentManager* pTreatmentManager)
+{
+	printTreatmentHeaders();
+	L_print(&pTreatmentManager->treatmentArr, (void (*)(const void*)) printTreatment);
 }

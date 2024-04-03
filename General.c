@@ -10,15 +10,15 @@ int isCodeValid(const char* code, const char* firstChars)
 
     if (strlen(code) != TOTAL_CODE)
     {
-        printf("code should be %s and %d letters\n", firstChars, CODE);
+        printf("Code should be %s and %d digits\n", firstChars, CODE);
         return 0;
     }
 
     for (int i = TOTAL_CODE-CODE; i < TOTAL_CODE; i++)
     {
-        if (!isupper(code[i]))
+        if (!isdigit(code[i]))
         {
-            printf("Need to be upper case letter\n");
+            printf("Need to be digits after the %s\n", firstChars);
             return 0;
         }
     }

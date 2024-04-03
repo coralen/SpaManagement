@@ -10,7 +10,7 @@
 typedef enum { BEDDED, CHAIRED } RoomType;
 
 typedef struct {
-    char code[CODE];
+    char code[TOTAL_CODE + 1];
     RoomType type;
     Date date;
     int size;
@@ -23,6 +23,7 @@ void        getRoomType(Room* pRoom);
 void        getRoomCode(char* code);
 void        printRoomTypes();
 void        printRoom(const Room* pRoom);
+void        printRoomHeaders();
 const char* getRoomTypeString(int typeNum);
 
 #endif

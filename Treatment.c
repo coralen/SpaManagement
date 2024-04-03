@@ -16,8 +16,8 @@ static const int treatmentPriceInt[TREATMENT_TYPE_COUNT] = { 300, 250, 100 };
 
 int initTreatmentNoCode(Treatment* pTreatment, int option, Room* pRoom, RoomType rType)
 {
-    getCorrectDate(&pTreatment->date);
-    getCorrentHour(&pTreatment->date);
+    //getCorrectDate(&pTreatment->date);
+    //getCorrentHour(&pTreatment->date);
     pTreatment->duration = getTreatmentDurationInt(option);
     pTreatment->price = getTreatmentPriceInt(option);
     pTreatment->type = (TreatmentType)option;
@@ -45,11 +45,10 @@ void getTreatmentCode(char* code)
 {
     char inputCode[MAX_STRING];
     do {
-        printf("Enter treatment code, Format is T- following %d UPPER CASE letters\n", CODE);
-        scanf(" %[^\n]", &inputCode);
+        printf("Enter treatment code, Format is T- following %d digits\n", CODE);
+        scanf(" %[^\n]", inputCode);
     } while (!isCodeValid(inputCode, TREATMENT_START_CHARS));
 
-    printf("\n");
     strcpy(code, inputCode);
 }
 
@@ -105,4 +104,18 @@ const int getTreatmentDurationInt(int typeNum)
 const int getTreatmentPriceInt(int typeNum)
 {
     return treatmentPriceInt[typeNum];
+}
+
+void printTreatment(const Treatment* pTreatment)
+{
+    printf("%-10s\t%-10s\t%-10d\t%-10d\t%-10s", pTreatment->code, getMassageTypeString(pTreatment->type), pTreatment->duration, pTreatment->price, pTreatment->pTreatmentRoom->code);
+    if (!pTreatment->date.day) printf("None\t");
+    else printDate(&pTreatment->date);
+    printf("\n");
+}
+
+void printTreatmentHeaders()
+{
+    printf("Code%-10s\tType%-10s\tDuration%-15s\tPrice%-15s\tRoom%-10s\tDate%-10s\t", " ", " ", " ", " ", " ", " ");
+    printf("\n");
 }

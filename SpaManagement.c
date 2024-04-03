@@ -58,7 +58,7 @@ int addTreatment(TreatmentManager* pTreatmentManager, RoomManager* pRoomManager)
 	if (!pTreatment) return 0;
 
 	initTreatment(pTreatment, pTreatmentManager, option, pRoom, rType);
-	addTreatmentToList(pTreatment, pTreatmentManager);
+	if (!addTreatmentToList(pTreatment, pTreatmentManager)) return 0;
 	return 1;
 
 }

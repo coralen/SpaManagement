@@ -14,10 +14,9 @@ static const char* roomTypeString[ROOM_TYPE_COUNT] = { "Bedded", "Chaired" };
 
 void initRoomNoCode(Room* pRoom)
 {
-	getCorrectDate(&pRoom->date);
+    getRoomType(pRoom);
 	getSize(pRoom);
 	pRoom->isBooked = (BOOL)0;
-	getRoomType(pRoom);
 }
 
 void getSize(Room* pRoom)
@@ -34,21 +33,19 @@ void getRoomType(Room* pRoom)
         printf("Choose one of the room types:\n");
         printRoomTypes();
         scanf("%d", &choice);
-    } while (choice < 0 || choice > ROOM_TYPE_COUNT - 1);
+    } while (choice < 0 || choice >= ROOM_TYPE_COUNT );
 
     pRoom->type = (RoomType)choice;
-    printf("%s\n", pRoom->code);
 }
 
 void getRoomCode(char* code)
 {
     char inputCode[MAX_STRING];
     do {
-        printf("Enter Room code, Format is %s following %d UPPER CASE letters\n", ROOM_START_CHAR, CODE);
+        printf("Enter Room code, Format is %s following %d digits\n", ROOM_START_CHAR, CODE);
         scanf(" %[^\n]", inputCode);
     } while (!isCodeValid(inputCode, ROOM_START_CHAR));
 
-    printf("\n");
     strcpy(code, inputCode);
 }
 
@@ -65,5 +62,10 @@ const char* getRoomTypeString(int typeNum)
 
 void printRoom(const Room* pRoom)
 {
-    printf("code: %s, size: %d, type: %s\n", pRoom->code, pRoom->size, getRoomTypeString(pRoom->type));
+    printf("%-10s\t%-10d\t%-10s\t%-10d\n", pRoom->code, pRoom->size, getRoomTypeString(pRoom->type), (int)pRoom->isBooked);
+}
+
+void printRoomHeaders()
+{
+    printf("Code%-10s\tSize%-10s\tType%-10s\isBooked%-10s\t", " ", " ", " ", " ");
 }

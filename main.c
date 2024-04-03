@@ -7,12 +7,15 @@
 
 typedef enum
 {
-	eAddRoom, eAddEmployee, eAddTreatment, ePrintSpaSchedule, ePrintRoomsStatus,
+	eAddRoom, eAddEmployee, eAddTreatment, ePrintTreatments, ePrintSpa, ePrintRoomsStatus,
 	eCalcSpaRevenue, eSortEmployees, eFindTreatment, eNofOptions
 } eMenuOptions;
 
-const char* str[eNofOptions] = { "Add Room","Add Employee","Add Treatment",
-								"Print Spa Schedule", "Print rooms status (up to date)",
+// give a raise to an employee
+// add treatment, ask if to set a treatment by seniority and role
+// add a sync with clock before gettin room status
+const char* str[eNofOptions] = { "Add Room","Add Employee","Add Treatment", "Print treatments",
+								"Print Spa", "Print rooms status (up to date)",
 								"Calc the spa's revenue" , "Sort employees", "Find treatment" };
 
 #define EXIT			-1
@@ -42,11 +45,16 @@ int main()
 			break;
 
 		case eAddTreatment:
-			addTreatment(&tManager, &rManager);
+			if (!addTreatment(&tManager, &rManager)) printf("Couldn't add treatment!");
 			break;
 
-		case ePrintSpaSchedule:
-			//printSpaSchedule(&tManager, &rManager); // implement
+		case ePrintTreatments:
+			printf("in print treatments case\n");
+			printTreatments(&tManager);
+			break;
+
+		case ePrintSpa:
+			//printSpa(&tManager, &rManager); // implement
 			break;
 
 		case ePrintRoomsStatus:

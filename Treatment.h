@@ -22,7 +22,7 @@ typedef union {
 } TreatmentData;
 
 typedef struct {
-    char code[CODE];
+    char code[TOTAL_CODE + 1];
     Date date;
     int duration;
     int price;
@@ -40,6 +40,8 @@ void        describeTreatment(Treatment* pTreatment); // different implementatio
 void        freeTreatment(Treatment* pTreatment);
 void        freeTreatmentWrapper(void* treatment);
 void        printTreatmentTypes();
+void        printTreatment(const Treatment* pTreatment);
+void        printTreatmentHeaders();
 const char* getTreatmentTypeString(int typeNum);
 const int   getTreatmentDurationInt(int typeNum);
 const int   getTreatmentPriceInt(int typeNum);

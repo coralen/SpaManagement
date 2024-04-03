@@ -50,7 +50,7 @@ void getCorrentHour(Date* pDate)
 
 void printDate(const Date* pdate)
 {
-	printf("Date: %d/%d/%d", pdate->day, pdate->month, pdate->year);
+	printf("%d/%d/%d", pdate->day, pdate->month, pdate->year);
 }
 
 int validateDate(const int day, const int month, const int year)
