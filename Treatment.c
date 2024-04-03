@@ -5,8 +5,8 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "Treatment.h"
-#include "List.h"
+#include "../headers/Treatment.h"
+#include "../headers/List.h"
 
 int initTreatmentNoCode(Treatment* pTreatment)
 {
