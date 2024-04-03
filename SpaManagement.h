@@ -8,6 +8,6 @@
 //void endTreatment(Treatment* pTreatment, Date date, int hour);
 int	checkRequirments(TreatmentManager* pTreatmentManager, RoomManager* pRoomManager);
 int	addTreatment(TreatmentManager* pTreatmentManager, RoomManager* pRoomManager);
-
+int initTreatmentManagerAndRoomManager(TreatmentManager* pTreatmentManager, RoomManager* pRoomManager);
 
 #endif

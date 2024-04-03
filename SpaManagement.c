@@ -7,6 +7,14 @@
 
 #include "SpaManagement.h"
 
+int initTreatmentManagerAndRoomManager(TreatmentManager* pTreatmentManager, RoomManager* pRoomManager)
+{
+	if (!initTreatmentManager(pTreatmentManager)) return 0;
+	if (!initRoomManager(pRoomManager)) return 0;
+	return 1;
+}
+
+
 int addTreatment(TreatmentManager* pTreatmentManager, RoomManager* pRoomManager)
 {
 	if (!checkRequirments(pTreatmentManager, pRoomManager)) return 0;

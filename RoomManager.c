@@ -17,19 +17,10 @@ int initRoomManager(RoomManager* pRoomManager)
 
 int addRoom(RoomManager* pRoomManager)
 {
-	Room* pRoom = (Room*)calloc(1, sizeof(Room));
-	if (!pRoom) return 0;
-
-	initRoom(pRoom, pRoomManager);
-
 	pRoomManager->roomArr = (Room*)realloc(pRoomManager->roomArr, (pRoomManager->roomCount + 1) * sizeof(Room));
-	if (!pRoomManager->roomArr)
-	{
-		free(pRoom);
-		return 0;
-	}
+	if (!pRoomManager->roomArr) return 0;
 
-	pRoomManager->roomArr[pRoomManager->roomCount] = *pRoom;
+	initRoom(&pRoomManager->roomArr[pRoomManager->roomCount], pRoomManager);
 	pRoomManager->roomCount++;
 	return 1;
 
@@ -88,6 +79,12 @@ Room* findAvailableRoom(RoomManager* pRoomManager, RoomType type)
 			return &pRoomManager->roomArr[i];
 	}
 	return NULL;
+}
+
+void printRoomsStatus(RoomManager* pRoomManager)
+{
+	for (int i = 0; i < pRoomManager->roomCount; i++)
+		printRoom(&pRoomManager->roomArr[i]);
 }
 
 

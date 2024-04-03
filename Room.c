@@ -28,20 +28,24 @@ void getSize(Room* pRoom)
 
 void getRoomType(Room* pRoom)
 {
-    int choice;
+    int choice = -1;
 
-    printf("Choose one of the room types:\n");
-    printRoomTypes();
-    scanf("%d", &choice);
+    do {
+        printf("Choose one of the room types:\n");
+        printRoomTypes();
+        scanf("%d", &choice);
+    } while (choice < 0 || choice > ROOM_TYPE_COUNT - 1);
+
     pRoom->type = (RoomType)choice;
+    printf("%s\n", pRoom->code);
 }
 
 void getRoomCode(char* code)
 {
     char inputCode[MAX_STRING];
     do {
-        printf("Enter treatment code, Format is R- following %d UPPER CASE letters\n", CODE);
-        scanf(" %[^\n]", &inputCode);
+        printf("Enter Room code, Format is %s following %d UPPER CASE letters\n", ROOM_START_CHAR, CODE);
+        scanf(" %[^\n]", inputCode);
     } while (!isCodeValid(inputCode, ROOM_START_CHAR));
 
     printf("\n");
@@ -57,4 +61,9 @@ void printRoomTypes()
 const char* getRoomTypeString(int typeNum)
 {
     return roomTypeString[typeNum];
+}
+
+void printRoom(const Room* pRoom)
+{
+    printf("code: %s, size: %d, type: %s\n", pRoom->code, pRoom->size, getRoomTypeString(pRoom->type));
 }

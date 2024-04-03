@@ -22,6 +22,7 @@ void        getSize(Room* pRoom);
 void        getRoomType(Room* pRoom);
 void        getRoomCode(char* code);
 void        printRoomTypes();
+void        printRoom(const Room* pRoom);
 const char* getRoomTypeString(int typeNum);
 
 #endif

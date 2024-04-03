@@ -14,6 +14,7 @@ int     findRoomIndexInArray(const Room* pRoom, const RoomManager* pRoomManager)
 int     checkUniqueRoomCode(const char* code, RoomManager* pRoomManager);
 int     deleteRoom(Room* pRoom, RoomManager* pRoomManager);
 void    initRoom(Room* pRoom, RoomManager* pRoomManager);
+void    printRoomsStatus(RoomManager* pRoomManager);
 Room*   findAvailableRoom(RoomManager* pRoomManager, RoomType type);
 
 
