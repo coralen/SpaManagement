@@ -1,4 +1,7 @@
+#pragma warning(disable : 4996)
+#pragma warning(disable : 6031)
 #define _CRT_SECURE_NO_WARNINGS
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -47,7 +50,7 @@ void getCorrentHour(Date* pDate)
 
 void printDate(const Date* pdate)
 {
-	printf("Date: %d/%d/%d", pdate->day, pdate->month, pdate->year);
+	printf("%d/%d/%d", pdate->day, pdate->month, pdate->year);
 }
 
 int validateDate(const int day, const int month, const int year)

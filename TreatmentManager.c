@@ -1,60 +1,63 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
-#include <cstddef>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
 #include "TreatmentManager.h"
 
-
 int initTreatmentManager(TreatmentManager* pTreatmentManager)
 {
-	if (!L_init(&pTreatmentManager->treatments)) return 0;
+	if (!L_init(&pTreatmentManager->treatmentArr)) return 0;
 	return 1;
 }
 
-int addTreatment(TreatmentManager* pTreatmentManager)
+int addTreatmentToList(Treatment* pTreatment, TreatmentManager* pTreatmentManager)
 {
-	// check first if there are enought rooms and employees
-	Treatment* pTreatment = (Treatment*)calloc(1, sizeof(Treatment));
-	if (!pTreatment) return 0;
-
-	initTreatment(pTreatment, pTreatmentManager);
-
-	if (!&pTreatmentManager->treatments.head)
+	if (!&pTreatmentManager->treatmentArr.head)
 	{
 		freeTreatment(pTreatment);
 		free(pTreatment);
 		return 0;
 	}
 
-	NODE* ptr = &pTreatmentManager->treatments.head;
+	NODE* ptr = &pTreatmentManager->treatmentArr.head;
 	L_insert(ptr, pTreatment);
+	pTreatmentManager->roomCount++;
 
 	return 1;
 }
 
-void deleteTreatment(Treatment* pTreatment)
+int deleteTreatmentFromList(Treatment* pTreatment, TreatmentManager* pTreatmentManager)
 {
-	L_delete(pTreatment, freeTreatment);
+	const NODE* found = L_find(&pTreatmentManager->treatmentArr.head, pTreatment, compareTreatments);
+	if (found)
+	{
+		NODE* nonConstFound = (NODE*)found; // L_delete can't work with CONST
+		if (!L_delete(nonConstFound, freeTreatmentWrapper)) return 0;
+		return 1;
+	}
+	return 0;
 }
 
-void initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager)
+void initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager, int option, Room* pRoom, RoomType rType)
 {
 	while (1)
 	{
 		getTreatmentCode(pTreatment->code);
-		if (checkUniqeTreatmentCode(pTreatment->code, pTreatmentManager))
+		if (!getTreatmentWithCode(pTreatmentManager, pTreatment->code))
 			break;
 
 		printf("This code already in use - enter a different code\n");
 	}
 
-	initTreatmentNoCode(pTreatment);
+	initTreatmentNoCode(pTreatment, option, pRoom, rType);
 }
 
-int checkUniqeTreatmentCode(char* code, TreatmentManager* pTreatmentManager)
+Treatment* getTreatmentWithCode(TreatmentManager* pTreatmentManager, char* code)
 {
-	NODE* ptr = &pTreatmentManager->treatments.head;
-	while (ptr != NULL) 
+	NODE* ptr = &pTreatmentManager->treatmentArr.head;
+	while (ptr != NULL)
 	{
 		if (((Treatment*)ptr->key)->code == code)
 			return ptr->key;
@@ -64,13 +67,21 @@ int checkUniqeTreatmentCode(char* code, TreatmentManager* pTreatmentManager)
 	return NULL;
 }
 
-void getTreatmentsWithCode(TreatmentManager* pManager, char* code)
-{
-
-}
-
 
 int calculateTreatmentsRevenue(TreatmentManager* pTreatmentManager)
 {
 	return 1;
+}
+
+int compareTreatments(const void* treatment1, const void* treatment2)
+{
+	const Treatment* treatmentA = (const Treatment*)treatment1;
+	const Treatment* treatmentB = (const Treatment*)treatment2;
+	return !(treatmentA == treatmentB); // Return 0 if equal, non-zero otherwise
+}
+
+void printTreatments(TreatmentManager* pTreatmentManager)
+{
+	printTreatmentHeaders();
+	L_print(&pTreatmentManager->treatmentArr, (void (*)(const void*)) printTreatment);
 }

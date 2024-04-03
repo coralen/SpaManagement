@@ -1,8 +1,11 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
-#include <cstddef>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
 #include "RoomManager.h"
+#include "General.h"
 #include "Date.h"
 
 int initRoomManager(RoomManager* pRoomManager)
@@ -14,19 +17,10 @@ int initRoomManager(RoomManager* pRoomManager)
 
 int addRoom(RoomManager* pRoomManager)
 {
-	Room* pRoom = (Room*)calloc(1, sizeof(Room));
-	if (!pRoom) return 0;
-
-	initRoom(pRoom, pRoomManager);
-
 	pRoomManager->roomArr = (Room*)realloc(pRoomManager->roomArr, (pRoomManager->roomCount + 1) * sizeof(Room));
-	if (!pRoomManager->roomArr)
-	{
-		free(pRoom);
-		return 0;
-	}
+	if (!pRoomManager->roomArr) return 0;
 
-	pRoomManager->roomArr[pRoomManager->roomCount] = *pRoom;
+	initRoom(&pRoomManager->roomArr[pRoomManager->roomCount], pRoomManager);
 	pRoomManager->roomCount++;
 	return 1;
 
@@ -37,7 +31,7 @@ void initRoom(Room* pRoom, RoomManager* pRoomManager)
 	while (1)
 	{
 		getRoomCode(pRoom->code);
-		if (checkUniqeCode(pRoom->code, pRoomManager))
+		if (checkUniqueRoomCode(pRoom->code, pRoomManager))
 			break;
 
 		printf("This code already in use - enter a different code\n");
@@ -45,15 +39,54 @@ void initRoom(Room* pRoom, RoomManager* pRoomManager)
 	initRoomNoCode(pRoom);
 }
 
-void getRoomCode(pRoom, pRoomManager)
+int checkUniqueRoomCode(const char* code, RoomManager* pRoomManager)
 {
-
+	for (int i = 0; i < pRoomManager->roomCount; i++)
+		if (!strcmp(code, pRoomManager->roomArr[i].code)) return 0;
+	return 1;
 }
 
-void deleteRoom(Room* pRoom)
-{}
+int deleteRoom(Room* pRoom, RoomManager* pRoomManager)
+{
+	int location = findRoomIndexInArray(pRoom, pRoomManager);
+	if (location == -1) return 0;
 
-Room* getAvailableRoom(RoomManager* pRoomManager, RoomType type)
-{}
+	for (int i = location; i < pRoomManager->roomCount; i++)
+		pRoomManager->roomArr[i] = pRoomManager->roomArr[i + 1];
+	pRoomManager->roomCount--;
+
+	Room* tempRoomArray = realloc(pRoomManager->roomArr, pRoomManager->roomCount * sizeof(Room));
+	if (tempRoomArray != NULL || pRoomManager->roomCount == 0)
+		pRoomManager->roomArr = tempRoomArray;
+	else return 0;
+
+	return 1;
+}
+
+int findRoomIndexInArray(const Room* pRoom, const RoomManager* pRoomManager)
+{
+	for (int i = 0; i < pRoomManager->roomCount; i++) 
+		if (&pRoomManager->roomArr[i] == pRoom)
+			return i;
+	return -1;
+}
+
+Room* findAvailableRoom(RoomManager* pRoomManager, RoomType type)
+{
+	for (int i = 0; i < pRoomManager->roomCount; i++)
+	{
+		if (pRoomManager->roomArr[i].type == type && !pRoomManager->roomArr[i].isBooked)
+			return &pRoomManager->roomArr[i];
+	}
+	return NULL;
+}
+
+void printRoomsStatus(RoomManager* pRoomManager)
+{
+	printRoomHeaders();
+	printf("\n");
+	for (int i = 0; i < pRoomManager->roomCount; i++)
+		printRoom(&pRoomManager->roomArr[i]);
+}
 
 
