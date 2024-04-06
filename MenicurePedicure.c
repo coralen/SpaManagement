@@ -7,17 +7,19 @@
 #include <string.h>
 #include <ctype.h>
 
+#include "General.h"
 #include "MenicurePedicure.h"
 
+static const char* NailTypeString[eNoNailArtType] = { "ChromePowder", "Sticker", "French" };
 
 void setMedicoreAndPedicore(MenicurePedicure* MediPedi) 
 {
-    printf("Do you want to get medicure? \n0- no\n1-yes\n ");
+    printf("Do you want to get medicure? \n0 - no\n1 - yes\n ");
     int choise;
     scanf("%d", &choise);
     if (choise == 1) MediPedi->Manicure = True;
 
-    printf("Do you want to get pedicore? \n0- no\n1-yes\n ");
+    printf("Do you want to get pedicore? \n0 - no\n1 - yes\n ");
     scanf("%d", &choise);
     if (choise == 1) MediPedi->Pedicure = True;
 }
@@ -38,20 +40,29 @@ int setPolishColor(char** color)
 
 void setNailArtType(MenicurePedicure* MediPedi) 
 {
-    printf("Enter the type of your nail art, the options are: \n0- ChromePowder\n1- Sticker\n2- French\n");
+    printf("Enter the type of your nail art, the options are:\n");
+    printNailArtType();
     int numType;
     scanf("%d", &numType);
-    if (numType >= 0 && numType < eNoType) 
-    {
+    if (numType >= 0 && numType < eNoNailArtType)
         MediPedi->NailArtType = numType;
-        printf("Role set to: %s\n", NailType[MediPedi->NailArtType]);
-    }
     else printf("Invalid type number\n");
+}
+
+void printNailArtType()
+{
+    for (int i = 0; i < eNoNailArtType; i++)
+        printf("%d - %s\n", i, getNailArtTypeString(i));
+}
+
+const char* getNailArtTypeString(int typeNum)
+{
+    return NailTypeString[typeNum];
 }
 
 void printMenicurePedicure(const MenicurePedicure* pMeniPedi)
 {
-    printf("%-10s\t%-10d\t%-10d\t%-10d\t", pMeniPedi->color, pMeniPedi->Manicure, pMeniPedi->Manicure, pMeniPedi->NailArtType);
+    printf("%-10s\t%-10s\t%-10s\t%-10s\t", pMeniPedi->color, getBoolString(pMeniPedi->Manicure), getBoolString(pMeniPedi->Manicure), getNailArtTypeString(pMeniPedi->NailArtType));
 }
 
 void printMenicurePedicureHeaders()

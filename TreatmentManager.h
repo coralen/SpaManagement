@@ -20,13 +20,14 @@ int			writeTreatmentManagerToTextFile(FILE* pFile, TreatmentManager* pTreatmentM
 int			readTreatmentManagerFromTextFile(FILE* pFile, TreatmentManager* pTreatmentManager, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager);
 int			findTreatmentWithRoomAndDate(TreatmentManager* pTreatmentManager, Date* pDate, char* roomCode);
 int			findTreatmentWithEmployeeAndDate(TreatmentManager* pTreatmentManager, Date* pDate, int employeeId);
+int			deleteTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager);
 void		initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager, int option, Room* pRoom, Employee* pEmployee, Date* pDate);
 void		printTreatmentArr(const TreatmentManager* pTreatmentManager);
 void		printTreatmentArrWithData(const TreatmentManager* pTreatmentManager);
 void		printArrByTreatmentType(const TreatmentManager* pTreatmentManager, int type);
 void		updateTreatmenArrUtilitiesStatus(TreatmentManager* pTreatmentManager);
-Treatment*	getTreatmentWithCode(TreatmentManager* pTreatmentManager, Treatment* pTreatment);
-
-
+Treatment*	findTreatmentWithCode(TreatmentManager* pTreatmentManager, char* treatmentCode);
+Treatment*	findTreatmentWithRoom(TreatmentManager* pTreatmentManager, char* roomCode);
+Treatment*	findTreatmentWithEmployee(TreatmentManager* pTreatmentManager, int employeeId);
 
 #endif

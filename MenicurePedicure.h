@@ -10,10 +10,8 @@
 #define MENI_PEDI_EMPLOYEE_ROLE 2
 
 typedef enum {
-    eChromePowder, eSticker, eFrench, eNoType
+    eChromePowder, eSticker, eFrench, eNoNailArtType
 } eNailArtType;
-
-static const char* NailType[eNoType] = { "ChromePowder", "Sticker", "French" };
 
 typedef struct
 {
@@ -23,14 +21,16 @@ typedef struct
     eNailArtType NailArtType;
 } MenicurePedicure;
 
-int     setPolishColor(char** color);
-int     writeMenicurePedicureToBFile(FILE* pFile, MenicurePedicure* pMeniPedi);
-int     readMenicurePedicureFromBFile(FILE* pFile, MenicurePedicure* pMeniPedi);
-int     writeMenicurePedicureToTextFile(FILE* pFile, MenicurePedicure* pMeniPedi);
-int     readMenicurePedicureFromTextFile(FILE* pFile, MenicurePedicure* pMeniPedi);
-void    setMedicoreAndPedicore(MenicurePedicure* MediPedi);
-void    setNailArtType(MenicurePedicure* MediPedi);
-void    printMenicurePedicure(const MenicurePedicure* pMeniPedi);
-void    printMenicurePedicureHeaders();
+int         setPolishColor(char** color);
+int         writeMenicurePedicureToBFile(FILE* pFile, MenicurePedicure* pMeniPedi);
+int         readMenicurePedicureFromBFile(FILE* pFile, MenicurePedicure* pMeniPedi);
+int         writeMenicurePedicureToTextFile(FILE* pFile, MenicurePedicure* pMeniPedi);
+int         readMenicurePedicureFromTextFile(FILE* pFile, MenicurePedicure* pMeniPedi);
+void        printNailArtType();
+void        setMedicoreAndPedicore(MenicurePedicure* MediPedi);
+void        setNailArtType(MenicurePedicure* MediPedi);
+void        printMenicurePedicure(const MenicurePedicure* pMeniPedi);
+void        printMenicurePedicureHeaders();
+const char* getNailArtTypeString(int typeNum);
 
 #endif

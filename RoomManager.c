@@ -53,12 +53,20 @@ int deleteRoom(Room* pRoom, RoomManager* pRoomManager)
 	int location = findRoomIndexInArray(pRoom, pRoomManager);
 	if (location == -1) return 0;
 
+	if (!(pRoomManager->roomCount - 1))
+	{
+		free(pRoomManager->roomArr);
+		pRoomManager->roomArr = NULL;
+		return 1;
+	}
+
 	for (int i = location; i < pRoomManager->roomCount; i++)
 		pRoomManager->roomArr[i] = pRoomManager->roomArr[i + 1];
+
 	pRoomManager->roomCount--;
 
 	Room* tempRoomArray = realloc(pRoomManager->roomArr, pRoomManager->roomCount * sizeof(Room));
-	if (tempRoomArray != NULL || pRoomManager->roomCount == 0)
+	if (tempRoomArray != NULL)
 		pRoomManager->roomArr = tempRoomArray;
 	else return 0;
 

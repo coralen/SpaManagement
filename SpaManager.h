@@ -31,9 +31,9 @@ int         initManagerFromTextFile(SpaManager* pSpaManager, const char* fileNam
 int         readSpaFromBFile(FILE* pFile, SpaManager* pSpaManager);
 int         writeSpaToTextFile(FILE* pFile, const SpaManager* pSpaManager);
 int         readSpaFromTextFile(FILE* pFile, SpaManager* pSpaManager);
-int         deleteSpaRoom(RoomManager* pRoomManager, TreatmentManager* pTreatmentManager);
-int         deleteSpaEmployee(EmployeeManager* pEmployeeManager, TreatmentManager* pTreatmentManager);
-int         deleteSpaTreatment(TreatmentManager* pTreatmentManager);
+int         deleteRoomFromSpa(RoomManager* pRoomManager, TreatmentManager* pTreatmentManager);
+int         deleteEmployeeFromSpa(EmployeeManager* pEmployeeManager, TreatmentManager* pTreatmentManager);
+int         deleteTreatmentFromSpa(TreatmentManager* pTreatmentManager);
 void        getSpaBudget(SpaManager* pSpa);
 void        printSpa(const SpaManager* pSpaManager);
 void        setSpaDefaults(SpaManager* pSpaManager);

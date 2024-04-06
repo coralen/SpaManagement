@@ -15,25 +15,17 @@ void initEmployeeManager(EmployeeManager* pEmployeeManager)
     pEmployeeManager->employeeCount = 0;
 }
 
-
 int addEmployee(EmployeeManager* pEmployeeManager) 
 {
     Employee* pEmployee = (Employee*)calloc(1, sizeof(Employee));
     if (!pEmployee) return 0;
 
     initEmployee(pEmployee);
+    pEmployeeManager->EmployeeArr = (Employee**)realloc(pEmployeeManager->EmployeeArr, (pEmployeeManager->employeeCount+ 1) * sizeof(Employee*));
 
-    if (pEmployeeManager->EmployeeArr == NULL)
-        pEmployeeManager->EmployeeArr = (Employee**)realloc(NULL, sizeof(Employee*));
-    else {
-        pEmployeeManager->EmployeeArr = (Employee**)realloc(pEmployeeManager->EmployeeArr,
-            (pEmployeeManager->employeeCount + 1) * sizeof(Employee*));
-    }
-    // check if we can reduce to one line as we did on Task 2/3.
-
-    if (!pEmployeeManager->EmployeeArr) {
+    if (!pEmployeeManager->EmployeeArr)
+    {
         free(pEmployee);
-        printf("Memory allocation failed\n");
         return 0;
     }
 
@@ -42,14 +34,30 @@ int addEmployee(EmployeeManager* pEmployeeManager)
     return 1;
 }
 
-BOOL isEmployeeAvailable(Employee* pEmployee) 
+void giveEmployeeARaise(EmployeeManager* pEmployeeManager)
 {
-    return pEmployee->isBooked;
-}
+    int eployeeId, raise;
+    Employee* pEmployee;
+    int validFlag = 0;
 
+    printf("Please choose id of an available employee:\n");
+    printEmployeeArr(pEmployeeManager);
+    while (!validFlag)
+    {
+        scanf("%d", &eployeeId);
+        if (!(pEmployee = findEmployeeById(pEmployeeManager, eployeeId))) printf("No employee with this id! try again\n");
+        else {
+            printf("Enter the raise:\n");
+            scanf("%d", &raise);
+            giveARaise(pEmployee, raise);
+            validFlag = 1;
+        }
+    }
+}
 Employee* findEmployeeById(EmployeeManager* pEmployeeManager, int id)
 {
-    for (int i = 0; i < pEmployeeManager->employeeCount; i++) {
+    for (int i = 0; i < pEmployeeManager->employeeCount; i++) 
+    {
         if (pEmployeeManager->EmployeeArr[i]->id == id)
             return pEmployeeManager->EmployeeArr[i];
     }
@@ -87,14 +95,29 @@ int findEmployeeByName(EmployeeManager* pEmployeeManager, char* name)
     return -1;
 }
 
-void deleteEmployee(EmployeeManager* pEmployeeManager, char* name) 
+int deleteEmployee(EmployeeManager* pEmployeeManager, char* name) 
 {
     int employeeIndex = findEmployeeByName(pEmployeeManager, name);
-    freeEmployee(pEmployeeManager->EmployeeArr[employeeIndex]); //releasing the info that employee has
+    if (employeeIndex == -1) return 0;
+    freeEmployee(pEmployeeManager->EmployeeArr[employeeIndex]);
 
-    pEmployeeManager->EmployeeArr[employeeIndex] = pEmployeeManager->EmployeeArr[pEmployeeManager->employeeCount - 1]; //changing the pointer in the array to the last employee
-    pEmployeeManager->EmployeeArr[pEmployeeManager->employeeCount - 1] = NULL; //last pointer in array points to null and free for reuse when adding an employee
-    // check if need to add realloc for EmployeeArr - note that itll effect the addEmployee function (if else)
+    if (!(pEmployeeManager->employeeCount - 1))
+    {
+        free(pEmployeeManager->EmployeeArr);
+        pEmployeeManager->EmployeeArr = NULL;
+        return 1;
+    }
+
+    for (int i = employeeIndex; i < pEmployeeManager->employeeCount - 1; i++)
+        pEmployeeManager->EmployeeArr[i] = pEmployeeManager->EmployeeArr[i + 1];
+
+    pEmployeeManager->employeeCount--;
+
+    Employee** tempEmployeeArray = realloc(pEmployeeManager->EmployeeArr, pEmployeeManager->employeeCount * sizeof(Employee*));
+    if (tempEmployeeArray != NULL) pEmployeeManager->EmployeeArr = tempEmployeeArray;
+    else return 0;
+
+    return 1;
 }
 
 int getEmployee(EmployeeManager* eManager, int role) 

@@ -57,7 +57,7 @@ NODE* L_insert(NODE* pNode, DATA Value)
 //////////////////////////////////////////////////////////////
 BOOL L_delete(NODE* pNode, void (*freeFunc)(void*))
 {
-    NODE* tmp;
+    NODE* tmp = pNode;
     if (!pNode || !(tmp = pNode->next))
         return False;
 
@@ -65,6 +65,30 @@ BOOL L_delete(NODE* pNode, void (*freeFunc)(void*))
     if (freeFunc != NULL)
         freeFunc(tmp->key);
     free(tmp);
+    return True;
+}
+
+BOOL L_delete_current(NODE* pHead, NODE* target, void (*freeFunc)(void*))
+{
+    if (!pHead || !pHead || !target) return False;
+
+    NODE* current = pHead;
+    NODE* previous = NULL;
+
+    while (current != NULL && current != target) {
+        previous = current;
+        current = current->next;
+    }
+
+    if (current != target) return False;
+    if (previous == NULL) 
+        pHead = current->next;
+    else 
+        previous->next = current->next;
+
+    if (freeFunc != NULL) freeFunc(current->key);
+    free(current);
+
     return True;
 }
 

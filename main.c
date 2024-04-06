@@ -11,13 +11,14 @@
 
 typedef enum
 {
-	eAddRoom, eAddEmployee, eAddTreatment, ePrintRoomsStatus, ePrintEmployees, ePrintTreatments, ePrintSpa,
-	eCalcSpaRevenue, eSortEmployees, eFindTreatment, eNofOptions
+	eAddRoom, eAddEmployee, eAddTreatment, ePrintRooms, ePrintEmployees, ePrintTreatments, ePrintSpa,
+	eDeleteRoom, eDeleteEmployee, eDeleteTreatment,
+	eGiveEmployeeARaise, eCalcSpaRevenue, eSortEmployees, eFindTreatment, eNofOptions
 } eMenuOptions;
 
 const char* str[eNofOptions] = { "Add Room","Add Employee","Add Treatment", "Print rooms", "Print Employees",
-								"Print treatments", "Print spa",
-								"Calc the spa's revenue" , "Sort employees", "Find treatment" };
+								"Print treatments", "Print spa", "Delete room", "Delete employee", "Delete treatment",
+								"Give employee a raise", "Calc the spa's revenue" , "Sort employees", "Find treatment" };
 
 #define EXIT			-1
 
@@ -49,7 +50,7 @@ int main()
 			addTreatment(&spaManager.treatmentManager, &spaManager.roomManager, &spaManager.employeeManager);
 			break;
 
-		case ePrintRoomsStatus:
+		case ePrintRooms:
 			printRoomArr(&spaManager.roomManager);
 			break;
 
@@ -65,6 +66,22 @@ int main()
 			printSpa(&spaManager);
 			break;
 
+		case eDeleteRoom:
+			deleteRoomFromSpa(&spaManager.roomManager, &spaManager.treatmentManager);
+			break;
+
+		case eDeleteEmployee:
+			deleteEmployeeFromSpa(&spaManager.employeeManager, &spaManager.treatmentManager);
+			break;
+
+		case eDeleteTreatment:
+			deleteTreatmentFromSpa(&spaManager.treatmentManager);
+			break;
+
+		case eGiveEmployeeARaise:
+			giveEmployeeARaise(&spaManager.employeeManager);
+			break;
+		
 		case eCalcSpaRevenue:
 			//calcSpaRevenue(); // implement
 			break;

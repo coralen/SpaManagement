@@ -20,14 +20,14 @@ int         writeEmployeeManagerToBFile(FILE* pFile, const EmployeeManager* pEmp
 int         readEmployeeManagerFromBFile(FILE* pFile, EmployeeManager* pEmployeeManager);
 int         writeEmployeeManagerToTextFile(FILE* pFile, const EmployeeManager* pEmployeeManager);
 int         readEmployeeManagerFromTextFile(FILE* pFile, EmployeeManager* pEmployeeManager);
-BOOL        isEmployeeAvailable(Employee* pEmployee);
+int         deleteEmployee(EmployeeManager* pEmployeeManager, char* name);
+void        initEmployeeManager(EmployeeManager* pEmployeeManager);
+void        printEmployeeArr(const EmployeeManager* pEmployeeManager);
+void	    freeEmployeeArr(Employee** EmployeeArr, int size);
+void        giveEmployeeARaise(EmployeeManager* pEmployeeManager);
 Employee*   findEmployeeByRole(EmployeeManager* pEmployeeManager, eEmployeeRole role);
 Employee*   findEmployeeBySeniorityAndRole(EmployeeManager* pEmployeeManager, int seniority, int role);
 Employee*   findEmployeeById(EmployeeManager* pEmployeeManager, int id);
-void        initEmployeeManager(EmployeeManager* pEmployeeManager);
-void        deleteEmployee(EmployeeManager* pEmployeeManager, char* name);
-void        printEmployeeArr(const EmployeeManager* pEmployeeManager);
-void	    freeEmployeeArr(Employee** EmployeeArr, int size);
 
 
 #endif

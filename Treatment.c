@@ -115,7 +115,7 @@ const int getTreatmentPriceInt(int typeNum)
 
 void printTreatment(const Treatment* pTreatment)
 {
-    printf("%-5s\t%-10s\t%-10d\t%-10d\t%-5d\t%-5s\t%-10d\t", pTreatment->code, getTreatmentTypeString(pTreatment->type), pTreatment->isActive, pTreatment->duration, pTreatment->price, pTreatment->pTreatmentRoom->code, pTreatment->pTreatmentEmployee->id);
+    printf("%-5s\t%-10s\t%-10s\t%-10d\t%-5d\t%-5s\t%-10d\t", pTreatment->code, getTreatmentTypeString(pTreatment->type), getBoolString(pTreatment->isActive), pTreatment->duration, pTreatment->price, pTreatment->pTreatmentRoom->code, pTreatment->pTreatmentEmployee->id);
     if (!pTreatment->date.day) printf("%-10s\t", "None");
     else printDate(&pTreatment->date);
     printf("%-10d\t", pTreatment->date.hour);
@@ -125,7 +125,7 @@ void printTreatment(const Treatment* pTreatment)
 void printTreatmentWithData(const Treatment* pTreatment, int type)
 {
     if (pTreatment->type != type) return;
-    printf("%-5s\t%-10s\t%-10d\t%-10d\t%-5d\t%-5s\t%-10d\t", pTreatment->code, getTreatmentTypeString(pTreatment->type), pTreatment->isActive ,pTreatment->duration, pTreatment->price, pTreatment->pTreatmentRoom->code, pTreatment->pTreatmentEmployee->id);
+    printf("%-5s\t%-10s\t%-10s\t%-10d\t%-5d\t%-5s\t%-10d\t", pTreatment->code, getTreatmentTypeString(pTreatment->type), getBoolString(pTreatment->isActive) ,pTreatment->duration, pTreatment->price, pTreatment->pTreatmentRoom->code, pTreatment->pTreatmentEmployee->id);
     if (!pTreatment->date.day) printf("%-10s\t", "None");
     else printDate(&pTreatment->date);
     printf("%-10d\t", pTreatment->date.hour);

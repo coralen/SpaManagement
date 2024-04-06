@@ -14,7 +14,7 @@ typedef struct
 {
     char* name;
     int id;
-    int baseSalary;
+    int salary;
     int seniority;
     eEmployeeRole role;
     BOOL isBooked;
@@ -24,6 +24,7 @@ typedef struct
 int         initEmployee(Employee* pEmployee);
 int         getEmployeeId();
 int         getEmployeeName(char** name);
+int         getEmployeeSalaryInt(int roleNum);
 int         freeEmployee(Employee* employee);
 int         writeEmployeeToBFile(FILE* pFile, Employee* pEmployee);
 int         readEmployeeFromBFile(FILE* pFile, Employee* pEmployee);
@@ -38,6 +39,8 @@ void        changeRole(Employee* pEmployee);
 void        printEmployee(const Employee* pEmployee);
 void        printEmployeeRoles();
 void        printEmployeeHeaders();
+BOOL        isEmployeeAvailable(Employee* pEmployee);
 const char* getEmployeeRoleString(int roleNum);
+
 
 #endif

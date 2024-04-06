@@ -63,7 +63,7 @@ const char* getRoomTypeString(int typeNum)
 
 void printRoom(const Room* pRoom)
 {
-    printf("%-10s\t%-10d\t%-10s\t%-10d\n", pRoom->code, pRoom->size, getRoomTypeString(pRoom->type), (int)pRoom->isBooked);
+    printf("%-10s\t%-10d\t%-10s\t%-10s\n", pRoom->code, pRoom->size, getRoomTypeString(pRoom->type), getStatusString(pRoom->isBooked));
 }
 
 void printRoomHeaders()

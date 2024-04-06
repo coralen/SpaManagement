@@ -37,10 +37,17 @@ int deleteTreatmentFromList(Treatment* pTreatment, TreatmentManager* pTreatmentM
 	if (found)
 	{
 		NODE* nonConstFound = (NODE*)found;
-		if (!L_delete(nonConstFound, freeTreatmentWrapper)) return 0;
+		if (!L_delete_current(&pTreatmentManager->treatmentArr.head, nonConstFound, freeTreatmentWrapper)) return 0;
 		return 1;
 	}
 	return 0;
+}
+
+int deleteTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager)
+{
+	if (!deleteTreatmentFromList(pTreatment, pTreatmentManager)) return 0;
+	pTreatmentManager->treatmentCount--;
+	return 1;
 }
 
 void initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager, int option, Room* pRoom, Employee* pEmployee, Date* pDate)
@@ -48,7 +55,7 @@ void initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager, i
 	while (1)
 	{
 		getTreatmentCode(pTreatment->code);
-		if (!getTreatmentWithCode(pTreatmentManager, pTreatment))
+		if (!findTreatmentWithCode(pTreatmentManager, pTreatment->code))
 			break;
 
 		printf("This code already in use - enter a different code\n");
@@ -57,14 +64,14 @@ void initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager, i
 	initTreatmentNoCode(pTreatment, option, pRoom, pEmployee, pDate);
 }
 
-Treatment* getTreatmentWithCode(TreatmentManager* pTreatmentManager, Treatment* pTreatment)
+Treatment* findTreatmentWithCode(TreatmentManager* pTreatmentManager, char* treatmentCode)
 {
 	NODE* ptr = &pTreatmentManager->treatmentArr.head;
 	ptr = ptr->next;
 	while (ptr != NULL)
 	{
 		const char* currCode = ((Treatment*)ptr->key)->code;
-		if (!strcmp(currCode, pTreatment->code))
+		if (!strcmp(currCode, treatmentCode))
 			return ptr->key;
 
 		ptr = ptr->next;
@@ -208,6 +215,21 @@ int findTreatmentWithRoomAndDate(TreatmentManager* pTreatmentManager, Date* pDat
 	return 0;
 }
 
+Treatment* findTreatmentWithRoom(TreatmentManager* pTreatmentManager, char* roomCode)
+{
+	if (!pTreatmentManager->treatmentCount) return 0;
+	if (!&pTreatmentManager->treatmentArr.head) return 0;
+
+	NODE* ptr = &pTreatmentManager->treatmentArr.head;
+
+	ptr = ptr->next;
+	while (ptr) {
+		if ((!strcmp(((Treatment*)ptr->key)->pTreatmentRoom->code, roomCode))) return ptr->key;
+		ptr = ptr->next;
+	}
+	return NULL;
+}
+
 int findTreatmentWithEmployeeAndDate(TreatmentManager* pTreatmentManager, Date* pDate, int employeeId)
 {
 	if (!pTreatmentManager->treatmentCount) return 0;
@@ -221,4 +243,19 @@ int findTreatmentWithEmployeeAndDate(TreatmentManager* pTreatmentManager, Date* 
 		ptr = ptr->next;
 	}
 	return 0;
+}
+
+Treatment* findTreatmentWithEmployee(TreatmentManager* pTreatmentManager, int employeeId)
+{
+	if (!pTreatmentManager->treatmentCount) return 0;
+	if (!&pTreatmentManager->treatmentArr.head) return 0;
+
+	NODE* ptr = &pTreatmentManager->treatmentArr.head;
+
+	ptr = ptr->next;
+	while (ptr) {
+		if (((((Treatment*)ptr->key)->pTreatmentEmployee->id == employeeId))) return ptr->key;
+		ptr = ptr->next;
+	}
+	return NULL;
 }

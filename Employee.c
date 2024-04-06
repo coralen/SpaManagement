@@ -11,9 +11,7 @@
 
 static int idCounter = 1;
 static const char* employeeRolesString[eNofRole] = { "Receptionist", "Masseuse", "NailTechnician", "HotStonesTherapist" , "Manager" };
-
-/*Change status property to isBooked */
-
+static const int employeeSalaryInt[eNofRole] = { 30, 70, 70, 100, 150 };
 
 // add receiving the info from user
 int initEmployee(Employee* pEmployee) 
@@ -22,10 +20,8 @@ int initEmployee(Employee* pEmployee)
     pEmployee->id = getEmployeeId();
     getEmployeeRole(pEmployee);
     getEmployeeSeniority(pEmployee);
-    int salary = MIN_WAGE;
+    pEmployee->salary = getEmployeeSalaryInt(pEmployee->role);
     BOOL isBooked = 0;
-
-    //setSalary(pEmployee, salary);
 
     return 1;
 }
@@ -54,6 +50,7 @@ void getEmployeeRole(Employee* pEmployee)
     printEmployeeRoles();
     int numRole;
     scanf("%d", &numRole);
+
     if (numRole >= 0 && numRole < eNofRole)
     {
         pEmployee->role = numRole;
@@ -68,16 +65,26 @@ void getEmployeeSeniority(Employee* pEmployee)
     scanf("%d", &pEmployee->seniority);
 }
 
+int getEmployeeSalaryInt(int roleNum)
+{
+    return employeeSalaryInt[roleNum];
+}
+
 void giveARaise(Employee* pEmployee, int newSalary)
 {
-    pEmployee->baseSalary = newSalary;
+    pEmployee->salary = pEmployee->salary + newSalary;
+}
+
+BOOL isEmployeeAvailable(Employee* pEmployee)
+{
+    return pEmployee->isBooked;
 }
 
 void setSalary(Employee* pEmployee, int salary) 
 {
     printf("Currently, the salary is %d enter the new salary of the employee: \n", salary);
     scanf("%d", &salary);
-    pEmployee->baseSalary = salary;
+    pEmployee->salary = salary;
 }
 
 void changeStatus(Employee* pEmployee) 
@@ -105,12 +112,12 @@ void changeRole(Employee* pEmployee)
 
 void printEmployee(const Employee* pEmployee) 
 {
-    printf("%-10d\t%-10s\t%-10d\t%-10d\t%-20s\t%-10s\t\n", pEmployee->id, pEmployee->name, pEmployee->baseSalary, pEmployee->seniority, getEmployeeRoleString(pEmployee->role), !pEmployee->isBooked ? "Busy" : "Available");
+    printf("%-10d\t%-10s\t%-10d\t%-10d\t%-20s\t%-10s\t\n", pEmployee->id, pEmployee->name, pEmployee->salary, pEmployee->seniority, getEmployeeRoleString(pEmployee->role), getStatusString(pEmployee->isBooked));
 }
 
 void printEmployeeHeaders()
 {
-    printf("%-10s\t%-10s\t%-10s\t%-10s\t%-20s\t%-10s\t", "ID", "Name", "Base Salary", "Seniority", "Role", "Status");
+    printf("%-10s\t%-10s\t%-10s\t%-10s\t%-20s\t%-10s\t", "ID", "Name", "Salary", "Seniority", "Role", "Status");
 }
 
 void printEmployeeRoles()
@@ -139,7 +146,7 @@ int writeEmployeeToBFile(FILE* pFile, Employee* pEmployee)
     if (fwrite(pEmployee->name, sizeof(char), len, pFile) != len) return 0;
 
     if (fwrite(&pEmployee->id, sizeof(int), 1, pFile) != 1) return 0;
-    if (fwrite(&pEmployee->baseSalary, sizeof(int), 1, pFile) != 1) return 0;
+    if (fwrite(&pEmployee->salary, sizeof(int), 1, pFile) != 1) return 0;
     if (fwrite(&pEmployee->seniority, sizeof(int), 1, pFile) != 1) return 0;
     if (fwrite(&pEmployee->role, sizeof(eEmployeeRole), 1, pFile) != 1) return 0;
     if (fwrite(&pEmployee->isBooked, sizeof(BOOL), 1, pFile) != 1) return 0;
@@ -157,7 +164,7 @@ int readEmployeeFromBFile(FILE* pFile, Employee* pEmployee)
 
     if (fread(&pEmployee->id, sizeof(int), 1, pFile) != 1) return 0;
     if (pEmployee->id >= idCounter) idCounter = pEmployee->id + 1;
-    if (fread(&pEmployee->baseSalary, sizeof(int), 1, pFile) != 1) return 0;
+    if (fread(&pEmployee->salary, sizeof(int), 1, pFile) != 1) return 0;
     if (fread(&pEmployee->seniority, sizeof(int), 1, pFile) != 1) return 0;
     if (fread(&pEmployee->role, sizeof(eEmployeeRole), 1, pFile) != 1) return 0;
     if (fread(&pEmployee->isBooked, sizeof(BOOL), 1, pFile) != 1) return 0;
@@ -170,7 +177,7 @@ int writeEmployeeToTextFile(FILE* pFile, Employee* pEmployee)
 {
     if (fprintf(pFile, "%s\n", pEmployee->name) < 0) return 0;
     if (fprintf(pFile, "%d\n", pEmployee->id) < 0) return 0;
-    if (fprintf(pFile, "%d\n", pEmployee->baseSalary) < 0) return 0;
+    if (fprintf(pFile, "%d\n", pEmployee->salary) < 0) return 0;
     if (fprintf(pFile, "%d\n", pEmployee->seniority) < 0) return 0;
     if (fprintf(pFile, "%d\n", pEmployee->role) < 0) return 0;
     if (fprintf(pFile, "%d\n", pEmployee->isBooked) < 0) return 0;
@@ -187,7 +194,7 @@ int readEmployeeFromTextFile(FILE* pFile, Employee* pEmployee)
 
     if (!fscanf(pFile, "%d\n", &pEmployee->id)) return 0;
     if (pEmployee->id >= idCounter) idCounter = pEmployee->id + 1;
-    if (!fscanf(pFile, "%d\n", &pEmployee->baseSalary)) return 0;
+    if (!fscanf(pFile, "%d\n", &pEmployee->salary)) return 0;
     if (!fscanf(pFile, "%d\n", &pEmployee->seniority)) return 0;
     if (!fscanf(pFile, "%d\n", &pEmployee->role)) return 0;
     if (!fscanf(pFile, "%d\n", &pEmployee->isBooked)) return 0;

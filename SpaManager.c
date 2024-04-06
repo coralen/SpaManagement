@@ -317,17 +317,109 @@ Employee* findAvailableEmployee(EmployeeManager* pEmployeeManager, TreatmentMana
 	return NULL;
 }
 
-int deleteSpaRoom(RoomManager* pRoomManager, TreatmentManager* pTreatmentManager)
+int deleteRoomFromSpa(RoomManager* pRoomManager, TreatmentManager* pTreatmentManager)
 {
+	if (!pRoomManager->roomCount)
+	{
+		printf("No rooms are available\n");
+		return 0;
+	}
+
+	char tmpCode[TOTAL_CODE + 1];
+	int validFlag = 0;
+	Room* pRoom;
+	Treatment* pTreatment;
+
+	printf("Please choose code of an available room:\n");
+	printRoomArr(pRoomManager);
+	while (!validFlag)
+	{
+		getRoomCode(tmpCode);
+		if (!(pRoom = findRoomByCode(pRoomManager, tmpCode))) "No room with this code! try again\n";
+		else
+		{
+			if ((pTreatment = findTreatmentWithRoom(pTreatmentManager, tmpCode)))
+			{
+				printf("This room is booked by treatment with code %s.\nDelete the treatment first\n", pTreatment->code);
+				return 0;
+			}
+			else
+			{
+				deleteRoom(pRoom, pRoomManager);
+				validFlag = 1;
+			}
+		}
+	}
+
 	return 1;
 }
 
-int deleteSpaEmployee(EmployeeManager* pEmployeeManager, TreatmentManager* pTreatmentManager)
+int deleteEmployeeFromSpa(EmployeeManager* pEmployeeManager, TreatmentManager* pTreatmentManager)
 {
+	if (!pEmployeeManager->employeeCount)
+	{
+		printf("No employees are available\n");
+		return 0;
+	}
+
+	int tmpId;
+	int validFlag = 0;
+	Employee* pEmployee;
+	Treatment* pTreatment;
+
+	printf("Please choose id of an available employee:\n");
+	printEmployeeArr(pEmployeeManager);
+	while (!validFlag)
+	{
+		scanf("%d", &tmpId);
+		if (!(pEmployee = findEmployeeById(pEmployeeManager, tmpId))) printf("No employee with this id! try again\n");
+		else {
+			if ((pTreatment = findTreatmentWithEmployee(pTreatmentManager, tmpId)))
+			{
+				printf("This employee is booked by treatment with code %s.\nDelete the treatment first\n", pTreatment->code);
+				return 0;
+			}
+			else
+			{
+				deleteEmployee(pEmployeeManager, pEmployee->name);
+				validFlag = 1;
+			}
+		}
+	}
 	return 1;
 }
 
-int deleteSpaTreatment(TreatmentManager* pTreatmentManager)
+int deleteTreatmentFromSpa(TreatmentManager* pTreatmentManager)
 {
+	if (!pTreatmentManager->treatmentCount)
+	{
+		printf("No treatments are available\n");
+		return 0;
+	}
+
+	char tmpCode[TOTAL_CODE + 1];
+	int validFlag = 0;
+	Treatment* pTreatment;
+
+	printf("Please choose code of an available treatment:\n");
+	printTreatmentArr(pTreatmentManager);
+	while (!validFlag)
+	{
+		getTreatmentCode(tmpCode);
+		if (!(pTreatment = findTreatmentWithCode(pTreatmentManager, tmpCode))) "No treatment with this code! try again\n";
+		else {
+			if (pTreatment->isActive)
+			{
+				printf("This treatment is in progress! please wait for it to be done\n");
+				return 0;
+			}
+			else
+			{
+				deleteTreatment(pTreatment, pTreatmentManager);
+				validFlag = 1;
+			}
+
+		}
+	}
 	return 1;
 }

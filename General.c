@@ -9,6 +9,9 @@
 #include "Helper.h"
 #include "General.h"
 
+const char* boolString[eNoBool] = { "False", "True"};
+const char* statusString[eNoStatus] = { "Available", "Busy" };
+
 int isCodeValid(const char* code, const char* firstChars)
 {
 
@@ -43,4 +46,14 @@ void generalArrayFunction(void* array, int elementsInArray, int sizeOfElement, v
         generalFunction(ptr);
         ptr += sizeOfElement;
     }
+}
+
+const char* getBoolString(int boolNum)
+{
+    return boolString[boolNum];
+}
+
+const char* getStatusString(int statusNum)
+{
+    return statusString[statusNum];
 }
