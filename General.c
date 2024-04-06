@@ -1,3 +1,7 @@
+#pragma warning(disable : 4996)
+#pragma warning(disable : 6031)
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
@@ -14,7 +18,7 @@ int isCodeValid(const char* code, const char* firstChars)
         return 0;
     }
 
-    for (int i = TOTAL_CODE-CODE; i < TOTAL_CODE; i++)
+    for (int i = TOTAL_CODE - CODE; i < TOTAL_CODE; i++)
     {
         if (!isdigit(code[i]))
         {
@@ -29,4 +33,14 @@ int isCodeValid(const char* code, const char* firstChars)
         return 0;
     }
     return 1;
+}
+
+void generalArrayFunction(void* array, int elementsInArray, int sizeOfElement, void (generalFunction)(void*))
+{
+    char* ptr = (char*)array;
+
+    for (int i = 0; i < elementsInArray; ++i) {
+        generalFunction(ptr);
+        ptr += sizeOfElement;
+    }
 }

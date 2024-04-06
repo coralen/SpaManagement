@@ -141,3 +141,35 @@ int L_print(const LIST* pList, void(*print)(const void*))
     printf("\n");
     return c;
 }
+
+
+int L_print_by_var(const LIST* pList, void(*print)(const void*, int), int var)
+{
+
+    NODE* tmp;
+    int	funcVar = var, c = 0;
+
+    if (!pList)
+        return False;
+
+    printf("\n");
+
+    for (tmp = pList->head.next; tmp; tmp = tmp->next, c++)
+        print(tmp->key, funcVar);
+
+    printf("\n");
+    return c;
+}
+
+void L_func(const LIST* pList, void(*func)(const void*))
+{
+
+    NODE* tmp;
+
+    if (!pList)
+        return;
+
+    for (tmp = pList->head.next; tmp; tmp = tmp->next)
+        func(tmp->key);
+
+}

@@ -5,8 +5,8 @@
 #include "List.h"
 
 typedef struct {
-	LIST treatmentArr; // a struct needs to hold a linked list that holds a pointer to a struct as a void*
-	int roomCount;
+	LIST treatmentArr;
+	int treatmentCount;
 } TreatmentManager;
 
 int			initTreatmentManager(TreatmentManager* pTreatmentManager);
@@ -14,9 +14,19 @@ int			addTreatmentToList(Treatment* pTreatment, TreatmentManager* pTreatmentMana
 int			calculateTreatmentsRevenue(TreatmentManager* pTreatmentManager);
 int			compareTreatments(const void* treatment1, const void* treatment2);
 int			deleteTreatmentFromList(Treatment* pTreatment, TreatmentManager* pTreatmentManager);
-void		initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager, int option, Room* pRoom, RoomType rType);
-void		printTreatments(TreatmentManager* pTreatmentManager);
-Treatment*	getTreatmentWithCode(TreatmentManager* pTreatmentManager, char* code);
+int			writeTreatmentManagerToBFile(FILE* pFile, TreatmentManager* pTreatmentManager);
+int			readTreatmentManagerFromBFile(FILE* pFile, TreatmentManager* pTreatmentManager, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager);
+int			writeTreatmentManagerToTextFile(FILE* pFile, TreatmentManager* pTreatmentManager);
+int			readTreatmentManagerFromTextFile(FILE* pFile, TreatmentManager* pTreatmentManager, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager);
+int			findTreatmentWithRoomAndDate(TreatmentManager* pTreatmentManager, Date* pDate, char* roomCode);
+int			findTreatmentWithEmployeeAndDate(TreatmentManager* pTreatmentManager, Date* pDate, int employeeId);
+void		initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager, int option, Room* pRoom, Employee* pEmployee, Date* pDate);
+void		printTreatmentArr(const TreatmentManager* pTreatmentManager);
+void		printTreatmentArrWithData(const TreatmentManager* pTreatmentManager);
+void		printArrByTreatmentType(const TreatmentManager* pTreatmentManager, int type);
+void		updateTreatmenArrUtilitiesStatus(TreatmentManager* pTreatmentManager);
+Treatment*	getTreatmentWithCode(TreatmentManager* pTreatmentManager, Treatment* pTreatment);
+
 
 
 #endif

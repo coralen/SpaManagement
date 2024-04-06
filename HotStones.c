@@ -17,7 +17,7 @@ void getHotStonesType(HotStones* pHotStones)
 		printHotStonesType();
 		scanf("%d", &option);
 	} while (option < 1 || option > HOT_STONES_TYPE_COUNT);
-	pHotStones->sType = (StonesType)(option - 1);
+	pHotStones->type = (StonesType)(option - 1);
 }
 
 void getStonesPlacement(HotStones* pHotStones)
@@ -29,13 +29,13 @@ void getStonesPlacement(HotStones* pHotStones)
 		printHotStonesPlacement();
 		scanf("%d", &option);
 	} while (option < 1 || option > HOT_STONES_PLACEMENT_COUNT);
-	pHotStones->sType = (stonePlacement)(option - 1);
+	pHotStones->type = (stonePlacement)(option - 1);
 }
 
 void printHotStonesType()
 {
 	for (int i = 0; i < HOT_STONES_TYPE_COUNT; i++)
-		printf("%d - %s\n", i + 1, getStonesPlacementString(i));
+		printf("%d - %s\n", i + 1, getStonesTypeString(i));
 }
 
 void printHotStonesPlacement()
@@ -52,4 +52,40 @@ const char* getStonesTypeString(int typeNum)
 const char* getStonesPlacementString(int typeNum)
 {
 	return stonesPlacementString[typeNum];
+}
+
+void printHotStones(const HotStones* pHotStones)
+{
+	printf("%-10s\t%-10s\t", getStonesTypeString(pHotStones->type), getStonesPlacementString(pHotStones->placement));
+}
+
+void printHotStonesHeaders()
+{
+	printf("Type%-10s\tPlacement%-10s\t", " ", " ");
+}
+
+int writeHotStonesToBFile(FILE* pFile, HotStones* pHotStones)
+{
+	if (fwrite(pHotStones, sizeof(HotStones), 1, pFile) != 1) return 0;
+	return 1;
+}
+
+int readHotStonesFromBFile(FILE* pFile, HotStones* pHotStones)
+{
+	if (fread(pHotStones, sizeof(HotStones), 1, pFile) != 1) return 0;
+	return 1;
+}
+
+int writeHotStonesToTextFile(FILE* pFile, HotStones* pHotStones)
+{
+	if (fprintf(pFile, "%d\n", pHotStones->type) < 0) return 0;
+	if (fprintf(pFile, "%d\n", pHotStones->placement) < 0) return 0;
+	return 1;
+}
+
+int readHotStonesFromTextFile(FILE* pFile, HotStones* pHotStones)
+{
+	if (!fscanf(pFile, "%d\n", &pHotStones->type)) return 0;
+	if (!fscanf(pFile, "%d\n", &pHotStones->placement)) return 0;
+	return 1;
 }

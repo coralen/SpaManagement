@@ -8,7 +8,7 @@
 #define _LIST_H
 
 #include "Def.h"
-
+#include "General.h"
 
 /*** Definitions ***/
 
@@ -32,5 +32,9 @@ const NODE* L_find(const NODE* pNode, DATA Value, int(*compare)(const void*, con
 BOOL L_free(LIST* pList, void (*freeFunc)(void*));					// free list memory
 
 int L_print(const LIST* pList, void(*print)(const void*));					// print the list content
+
+int L_print_by_var(const LIST* pList, void(*print)(const void*, int), int var); // print the list content by an int variable
+
+void L_func(const LIST* pList, void(*func)(const void*)); // general function on the list content
 
 #endif

@@ -15,8 +15,8 @@ static const char* roomTypeString[ROOM_TYPE_COUNT] = { "Bedded", "Chaired" };
 void initRoomNoCode(Room* pRoom)
 {
     getRoomType(pRoom);
-	getSize(pRoom);
-	pRoom->isBooked = (BOOL)0;
+    getSize(pRoom);
+    pRoom->isBooked = (BOOL)0;
 }
 
 void getSize(Room* pRoom)
@@ -33,7 +33,7 @@ void getRoomType(Room* pRoom)
         printf("Choose one of the room types:\n");
         printRoomTypes();
         scanf("%d", &choice);
-    } while (choice < 0 || choice >= ROOM_TYPE_COUNT );
+    } while (choice < 0 || choice >= ROOM_TYPE_COUNT);
 
     pRoom->type = (RoomType)choice;
 }
@@ -43,7 +43,8 @@ void getRoomCode(char* code)
     char inputCode[MAX_STRING];
     do {
         printf("Enter Room code, Format is %s following %d digits\n", ROOM_START_CHAR, CODE);
-        scanf(" %[^\n]", inputCode);
+        scanf(SCANF_FORMAT, inputCode); 
+        while (getchar() != '\n'); 
     } while (!isCodeValid(inputCode, ROOM_START_CHAR));
 
     strcpy(code, inputCode);
@@ -67,5 +68,52 @@ void printRoom(const Room* pRoom)
 
 void printRoomHeaders()
 {
-    printf("Code%-10s\tSize%-10s\tType%-10s\isBooked%-10s\t", " ", " ", " ", " ");
+    printf("%-10s\t%-10s\t%-10s\t%-10s\t", "Code", "Size", "Type", "isBooked");
+}
+
+int writeRoomToBFile(FILE* pFile, Room* pRoom)
+{
+    int len = strlen(pRoom->code);
+    if (fwrite(&len, sizeof(int), 1, pFile) != 1) return 0;
+    if (fwrite(pRoom->code, sizeof(char), len, pFile) != len) return 0;
+    if (fwrite(&pRoom->type, sizeof(RoomType), 1, pFile) != 1) return 0;
+    if (fwrite(&pRoom->size, sizeof(int), 1, pFile) != 1) return 0;
+    if (fwrite(&pRoom->isBooked, sizeof(BOOL), 1, pFile) != 1) return 0;
+
+    return 1;
+}
+
+int readRoomFromBFile(FILE* pFile, Room* pRoom)
+{
+    int len;
+    if (fread(&len, sizeof(int), 1, pFile) != 1) return 0;
+    if (fread(pRoom->code, sizeof(char), len, pFile) != len) return 0;
+    pRoom->code[len] = '\0';
+
+    if (fread(&pRoom->type, sizeof(RoomType), 1, pFile) != 1) return 0;
+    if (fread(&pRoom->size, sizeof(int), 1, pFile) != 1) return 0;
+    if (fread(&pRoom->isBooked, sizeof(BOOL), 1, pFile) != 1) return 0;
+
+    return 1;
+}
+
+
+int writeRoomToTextFile(FILE* pFile, Room* pRoom)
+{
+    if (fprintf(pFile, "%s\n", pRoom->code) < 0) return 0;
+    if (fprintf(pFile, "%d\n", pRoom->type) < 0) return 0;
+    if (fprintf(pFile, "%d\n", pRoom->size) < 0) return 0;
+    if (fprintf(pFile, "%d\n", pRoom->isBooked) < 0) return 0;
+
+    return 1;
+}
+
+int readRoomFromTextFile(FILE* pFile, Room* pRoom)
+{
+    if (!fscanf(pFile, " %s\n", pRoom->code)) return 0;
+    if (!fscanf(pFile, " %d\n", &pRoom->type)) return 0;
+    if (!fscanf(pFile, " %d\n", &pRoom->size)) return 0;
+    if (!fscanf(pFile, " %d\n", &pRoom->isBooked)) return 0;
+
+    return 1;
 }

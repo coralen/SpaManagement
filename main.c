@@ -3,62 +3,66 @@
 #include <stdio.h>
 
 #include "Helper.h"
-#include "SpaManagement.h"
+#include "SpaManager.h"
+#include "EmployeeManager.h"
+
+#define BIN_FILENAME "spa.bin"
+#define TEXT_FILENAME "spa.txt"
 
 typedef enum
 {
-	eAddRoom, eAddEmployee, eAddTreatment, ePrintTreatments, ePrintSpa, ePrintRoomsStatus,
+	eAddRoom, eAddEmployee, eAddTreatment, ePrintRoomsStatus, ePrintEmployees, ePrintTreatments, ePrintSpa,
 	eCalcSpaRevenue, eSortEmployees, eFindTreatment, eNofOptions
 } eMenuOptions;
 
-// give a raise to an employee
-// add treatment, ask if to set a treatment by seniority and role
-// add a sync with clock before gettin room status
-const char* str[eNofOptions] = { "Add Room","Add Employee","Add Treatment", "Print treatments",
-								"Print Spa", "Print rooms status (up to date)",
+const char* str[eNofOptions] = { "Add Room","Add Employee","Add Treatment", "Print rooms", "Print Employees",
+								"Print treatments", "Print spa",
 								"Calc the spa's revenue" , "Sort employees", "Find treatment" };
 
 #define EXIT			-1
 
 int menu();
+void suggestLoadFromFile(SpaManager* pSpaManager);
 
 int main()
 {
 	int option, stop = 0;
-
-	TreatmentManager tManager;
-	RoomManager rManager;
+	SpaManager spaManager;
 	
-	initTreatmentManagerAndRoomManager(&tManager, &rManager);
+	suggestLoadFromFile(&spaManager);
 
 	do {
 		option = menu();
+		updateTreatmenArrUtilitiesStatus(&spaManager.treatmentManager);
 
 		switch (option)
 		{
 		case eAddRoom:
-			addRoom(&rManager);
+			addRoom(&spaManager.roomManager);
 			break;
 
 		case eAddEmployee:
-			//addEmployee(); // implement - Talya 
+			addEmployee(&spaManager.employeeManager);
 			break;
 
 		case eAddTreatment:
-			if (!addTreatment(&tManager, &rManager)) printf("Couldn't add treatment!");
-			break;
-
-		case ePrintTreatments:
-			printf("in print treatments case\n");
-			printTreatments(&tManager);
-			break;
-
-		case ePrintSpa:
-			//printSpa(&tManager, &rManager); // implement
+			addTreatment(&spaManager.treatmentManager, &spaManager.roomManager, &spaManager.employeeManager);
 			break;
 
 		case ePrintRoomsStatus:
-			printRoomsStatus(&rManager); // implement
+			printRoomArr(&spaManager.roomManager);
+			break;
+
+		case ePrintEmployees:
+			printEmployeeArr(&spaManager.employeeManager);
+			break;
+
+		case ePrintTreatments:
+			printTreatmentArrWithData(&spaManager.treatmentManager);
+			break;
+
+		case ePrintSpa:
+			printSpa(&spaManager);
 			break;
 
 		case eCalcSpaRevenue:
@@ -66,15 +70,19 @@ int main()
 			break;
 
 		case eSortEmployees:
-			//sortEmployees(); // implement - Talya 
+			//sortEmployees(); // implement - Talya
 			break;
 
 		case eFindTreatment:
-			//findTreatment();
+			//findTreatment(); // implement - Talya
 			break;
 
 		case EXIT:
+			saveSpaToBFile(&spaManager, BIN_FILENAME);
+			saveSpaToTextFile(&spaManager, TEXT_FILENAME);
 			printf("Bye bye\n");
+			getchar();
+			getchar();
 			stop = 1;
 			break;
 
@@ -103,4 +111,27 @@ int menu()
 	char tav;
 	scanf("%c", &tav);
 	return option;
+}
+
+void suggestLoadFromFile(SpaManager* pSpaManager)
+{
+	int fileOption;
+	printf("Do you want to load from file?\n0 - text\n1 - bin\n2 - No file\n");
+	scanf("%d", &fileOption);
+	while (getchar() != '\n');
+
+	switch (fileOption) 
+	{
+	case 0:
+		initManagerFromTextFile(pSpaManager, TEXT_FILENAME);
+		break;
+
+	case 1:
+		initSpaManagerFromBFile(pSpaManager, BIN_FILENAME);
+		break;
+
+	case 2:
+		initSpaManager(pSpaManager);
+		break;
+	}
 }
