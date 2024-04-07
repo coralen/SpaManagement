@@ -126,7 +126,7 @@ void printTreatmentArr(const TreatmentManager* pTreatmentManager)
 	L_print(&pTreatmentManager->treatmentArr, (void (*)(const void*)) printTreatment);
 }
 
-int writeTreatmentManagerToBFile(FILE* pFile, TreatmentManager* pTreatmentManager)
+int writeTreatmentManagerToBFile(FILE* pFile, FILE* pCFile, TreatmentManager* pTreatmentManager)
 {
 	if (!&pTreatmentManager->treatmentArr.head) return 0;
 	NODE* ptr = &pTreatmentManager->treatmentArr.head;
@@ -135,13 +135,13 @@ int writeTreatmentManagerToBFile(FILE* pFile, TreatmentManager* pTreatmentManage
 	ptr = ptr->next;
 	
 	while (ptr) {
-		if (!writeTreatmentToBFile(pFile, (Treatment*)ptr->key)) return 0;
+		if (!writeTreatmentToBFile(pFile, pCFile, (Treatment*)ptr->key)) return 0;
 		ptr = ptr->next;
 	}
 	return 1;
 }
 
-int readTreatmentManagerFromBFile(FILE* pFile, TreatmentManager* pTreatmentManager, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager)
+int readTreatmentManagerFromBFile(FILE* pFile, FILE* pCFile, TreatmentManager* pTreatmentManager, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager)
 {
 	if (!&pTreatmentManager->treatmentArr.head) return 0;
 	if (fread(&pTreatmentManager->treatmentCount, sizeof(int), 1, pFile) != 1) return 0;
@@ -153,7 +153,7 @@ int readTreatmentManagerFromBFile(FILE* pFile, TreatmentManager* pTreatmentManag
 	while (count > 0)
 	{
 		if (!(pTreatment = (Treatment*)calloc(1, sizeof(Treatment)))) return 0;
-		if (!readTreatmentFromBFile(pFile, pTreatment, pRoomManager, pEmployeeManager)) return 0;
+		if (!readTreatmentFromBFile(pFile, pCFile, pTreatment, pRoomManager, pEmployeeManager)) return 0;
 		if (!L_insert(ptr, pTreatment)) return 0;
 		ptr = ptr->next;
 		count--;
@@ -258,4 +258,11 @@ Treatment* findTreatmentWithEmployee(TreatmentManager* pTreatmentManager, int em
 		ptr = ptr->next;
 	}
 	return NULL;
+}
+
+void freeTreatmentManager(TreatmentManager* pTreatmentManager)
+{
+	if (!pTreatmentManager) return;
+	L_func(&pTreatmentManager->treatmentArr, (void (*)(const void*))freeTreatmentWrapper);
+	//L_func(&pTreatmentManager->treatmentArr, (void (*)(const void*))freeTreatment);
 }

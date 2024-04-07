@@ -17,11 +17,11 @@ void setMedicoreAndPedicore(MenicurePedicure* MediPedi)
     printf("Do you want to get medicure? \n0 - no\n1 - yes\n ");
     int choise;
     scanf("%d", &choise);
-    if (choise == 1) MediPedi->Manicure = True;
+    if (choise == 1) MediPedi->menicure = True;
 
     printf("Do you want to get pedicore? \n0 - no\n1 - yes\n ");
     scanf("%d", &choise);
-    if (choise == 1) MediPedi->Pedicure = True;
+    if (choise == 1) MediPedi->pedicure = True;
 }
 
 int setPolishColor(char** color) 
@@ -45,7 +45,7 @@ void setNailArtType(MenicurePedicure* MediPedi)
     int numType;
     scanf("%d", &numType);
     if (numType >= 0 && numType < eNoNailArtType)
-        MediPedi->NailArtType = numType;
+        MediPedi->nailArtType = numType;
     else printf("Invalid type number\n");
 }
 
@@ -62,7 +62,7 @@ const char* getNailArtTypeString(int typeNum)
 
 void printMenicurePedicure(const MenicurePedicure* pMeniPedi)
 {
-    printf("%-10s\t%-10s\t%-10s\t%-10s\t", pMeniPedi->color, getBoolString(pMeniPedi->Manicure), getBoolString(pMeniPedi->Manicure), getNailArtTypeString(pMeniPedi->NailArtType));
+    printf("%-10s\t%-10s\t%-10s\t%-10s\t", pMeniPedi->color, getBoolString(pMeniPedi->menicure), getBoolString(pMeniPedi->pedicure), getNailArtTypeString(pMeniPedi->nailArtType));
 }
 
 void printMenicurePedicureHeaders()
@@ -75,9 +75,9 @@ int writeMenicurePedicureToBFile(FILE* pFile, MenicurePedicure* pMeniPedi)
     int len = strlen(pMeniPedi->color) + 1;
     if (fwrite(&len, sizeof(int), 1, pFile) != 1) return 0;
     if (fwrite(pMeniPedi->color, sizeof(char), len, pFile) != len) return 0;
-    if (fwrite(&pMeniPedi->Manicure, sizeof(BOOL), 1, pFile) != 1) return 0;
-    if (fwrite(&pMeniPedi->Pedicure, sizeof(BOOL), 1, pFile) != 1) return 0;
-    if (fwrite(&pMeniPedi->NailArtType, sizeof(eNailArtType), 1, pFile) != 1) return 0;
+    if (fwrite(&pMeniPedi->menicure, sizeof(BOOL), 1, pFile) != 1) return 0;
+    if (fwrite(&pMeniPedi->pedicure, sizeof(BOOL), 1, pFile) != 1) return 0;
+    if (fwrite(&pMeniPedi->nailArtType, sizeof(eNailArtType), 1, pFile) != 1) return 0;
     return 1;
 }
 
@@ -88,9 +88,9 @@ int readMenicurePedicureFromBFile(FILE* pFile, MenicurePedicure* pMeniPedi)
     if (fread(&len, sizeof(int), 1, pFile) != 1) return 0;
     if (!(pMeniPedi->color = (char*)malloc(len * sizeof(char)))) return 0;
     if (fread(pMeniPedi->color, sizeof(char), len, pFile) != len) return 0;
-    if (fread(&pMeniPedi->Manicure, sizeof(BOOL), 1, pFile) != 1) return 0;
-    if (fread(&pMeniPedi->Pedicure, sizeof(BOOL), 1, pFile) != 1) return 0;
-    if (fread(&pMeniPedi->NailArtType, sizeof(eNailArtType), 1, pFile) != 1) return 0;
+    if (fread(&pMeniPedi->menicure, sizeof(BOOL), 1, pFile) != 1) return 0;
+    if (fread(&pMeniPedi->pedicure, sizeof(BOOL), 1, pFile) != 1) return 0;
+    if (fread(&pMeniPedi->nailArtType, sizeof(eNailArtType), 1, pFile) != 1) return 0;
 
     return 1;
 }
@@ -98,9 +98,9 @@ int readMenicurePedicureFromBFile(FILE* pFile, MenicurePedicure* pMeniPedi)
 int writeMenicurePedicureToTextFile(FILE* pFile, MenicurePedicure* pMeniPedi)
 {
     if (fprintf(pFile, "%s\n", pMeniPedi->color) < 0) return 0;
-    if (fprintf(pFile, "%d\n", pMeniPedi->Manicure) < 0) return 0;
-    if (fprintf(pFile, "%d\n", pMeniPedi->Pedicure) < 0) return 0;
-    if (fprintf(pFile, "%d\n", pMeniPedi->NailArtType) < 0) return 0;
+    if (fprintf(pFile, "%d\n", pMeniPedi->menicure) < 0) return 0;
+    if (fprintf(pFile, "%d\n", pMeniPedi->pedicure) < 0) return 0;
+    if (fprintf(pFile, "%d\n", pMeniPedi->nailArtType) < 0) return 0;
     return 1;
 }
 
@@ -111,8 +111,14 @@ int readMenicurePedicureFromTextFile(FILE* pFile, MenicurePedicure* pMeniPedi)
     if (!fscanf(pFile, " %[^\n]\n", tmpColor)) return 0;
     pMeniPedi->color = strdup(tmpColor);
 
-    if (!fscanf(pFile, "%d\n", &pMeniPedi->Manicure)) return 0;
-    if (!fscanf(pFile, "%d\n", &pMeniPedi->Pedicure)) return 0;
-    if (!fscanf(pFile, "%d\n", &pMeniPedi->NailArtType)) return 0;
+    if (!fscanf(pFile, "%d\n", &pMeniPedi->menicure)) return 0;
+    if (!fscanf(pFile, "%d\n", &pMeniPedi->pedicure)) return 0;
+    if (!fscanf(pFile, "%d\n", &pMeniPedi->nailArtType)) return 0;
     return 1;
+}
+
+void freeMenicurePedicure(MenicurePedicure* pMeniPedi)
+{
+    if (!pMeniPedi) return;
+    free(pMeniPedi->color);
 }

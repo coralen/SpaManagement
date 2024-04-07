@@ -145,12 +145,6 @@ void printEmployeeArr(const EmployeeManager* pEmployeeManager)
         printEmployee(pEmployeeManager->EmployeeArr[i]);
 }
 
-void freeEmployeeArr(Employee** EmployeeArr, int size)
-{
-    generalArrayFunction(*EmployeeArr, size, sizeof(Employee*), (void (*)(void*))freeEmployee);
-    free(EmployeeArr);
-}
-
 int writeEmployeeManagerToBFile(FILE* pFile, const EmployeeManager* pEmployeeManager)
 {
     if (fwrite(&pEmployeeManager->employeeCount, sizeof(int), 1, pFile) != 1) return 0;
@@ -194,4 +188,11 @@ int readEmployeeManagerFromTextFile(FILE* pFile, EmployeeManager* pEmployeeManag
         pEmployeeManager->EmployeeArr[i] = pEmployee;
     }
     return 1;
+}
+
+void freeEmployeeManager(EmployeeManager* pEmployeeManager)
+{
+    if (!pEmployeeManager) return;
+    generalArrayFunction(pEmployeeManager->EmployeeArr, pEmployeeManager->employeeCount, sizeof(Employee*), freeEmployeeWrapper);
+    free(pEmployeeManager->EmployeeArr);
 }

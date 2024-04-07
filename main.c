@@ -8,6 +8,7 @@
 
 #define BIN_FILENAME "spa.bin"
 #define TEXT_FILENAME "spa.txt"
+#define BIN_C_FILENAME "spaC.bin"
 
 typedef enum
 {
@@ -95,7 +96,7 @@ int main()
 			break;
 
 		case EXIT:
-			saveSpaToBFile(&spaManager, BIN_FILENAME);
+			saveSpaToBFile(&spaManager, BIN_FILENAME, BIN_C_FILENAME);
 			saveSpaToTextFile(&spaManager, TEXT_FILENAME);
 			printf("Bye bye\n");
 			getchar();
@@ -110,8 +111,7 @@ int main()
 
 	} while (!stop);
 
-	//free(&tManager);
-	//free(&rManager);
+	freeSpaManager(&spaManager);
 
 }
 
@@ -144,7 +144,7 @@ void suggestLoadFromFile(SpaManager* pSpaManager)
 		break;
 
 	case 1:
-		initSpaManagerFromBFile(pSpaManager, BIN_FILENAME);
+		initSpaManagerFromBFile(pSpaManager, BIN_FILENAME, BIN_C_FILENAME);
 		break;
 
 	case 2:

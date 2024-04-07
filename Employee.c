@@ -13,7 +13,7 @@ static int idCounter = 1;
 static const char* employeeRolesString[eNofRole] = { "Receptionist", "Masseuse", "NailTechnician", "HotStonesTherapist" , "Manager" };
 static const int employeeSalaryInt[eNofRole] = { 30, 70, 70, 100, 150 };
 
-// add receiving the info from user
+
 int initEmployee(Employee* pEmployee) 
 { 
     getEmployeeName(&pEmployee->name);
@@ -131,14 +131,6 @@ const char* getEmployeeRoleString(int roleNum)
     return employeeRolesString[roleNum];
 }
 
-int freeEmployee(Employee* pEmployee) 
-{
-    if (pEmployee == NULL) return 0;
-    free(pEmployee->name);
-    free(pEmployee);
-    return 1;
-}
-
 int writeEmployeeToBFile(FILE* pFile, Employee* pEmployee)
 {
     int len = strlen(pEmployee->name) + 1;
@@ -200,4 +192,17 @@ int readEmployeeFromTextFile(FILE* pFile, Employee* pEmployee)
     if (!fscanf(pFile, "%d\n", &pEmployee->isBooked)) return 0;
 
     return 1;
+}
+
+void freeEmployee(Employee* pEmployee) 
+{
+    if (!pEmployee) return; 
+    free(pEmployee->name);
+    free(pEmployee);
+}
+
+void freeEmployeeWrapper(void* pEmployee) 
+{
+    Employee** employee = (Employee**)pEmployee;
+    freeEmployee(*employee);
 }

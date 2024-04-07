@@ -14,8 +14,8 @@ int			addTreatmentToList(Treatment* pTreatment, TreatmentManager* pTreatmentMana
 int			calculateTreatmentsRevenue(TreatmentManager* pTreatmentManager);
 int			compareTreatments(const void* treatment1, const void* treatment2);
 int			deleteTreatmentFromList(Treatment* pTreatment, TreatmentManager* pTreatmentManager);
-int			writeTreatmentManagerToBFile(FILE* pFile, TreatmentManager* pTreatmentManager);
-int			readTreatmentManagerFromBFile(FILE* pFile, TreatmentManager* pTreatmentManager, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager);
+int			writeTreatmentManagerToBFile(FILE* pFile, FILE* pCFile, TreatmentManager* pTreatmentManager);
+int			readTreatmentManagerFromBFile(FILE* pFile, FILE* pCFile, TreatmentManager* pTreatmentManager, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager);
 int			writeTreatmentManagerToTextFile(FILE* pFile, TreatmentManager* pTreatmentManager);
 int			readTreatmentManagerFromTextFile(FILE* pFile, TreatmentManager* pTreatmentManager, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager);
 int			findTreatmentWithRoomAndDate(TreatmentManager* pTreatmentManager, Date* pDate, char* roomCode);
@@ -26,6 +26,7 @@ void		printTreatmentArr(const TreatmentManager* pTreatmentManager);
 void		printTreatmentArrWithData(const TreatmentManager* pTreatmentManager);
 void		printArrByTreatmentType(const TreatmentManager* pTreatmentManager, int type);
 void		updateTreatmenArrUtilitiesStatus(TreatmentManager* pTreatmentManager);
+void		freeTreatmentManager(TreatmentManager* pTreatmentManager);
 Treatment*	findTreatmentWithCode(TreatmentManager* pTreatmentManager, char* treatmentCode);
 Treatment*	findTreatmentWithRoom(TreatmentManager* pTreatmentManager, char* roomCode);
 Treatment*	findTreatmentWithEmployee(TreatmentManager* pTreatmentManager, int employeeId);

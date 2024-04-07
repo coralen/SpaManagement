@@ -64,15 +64,37 @@ void printHotStonesHeaders()
 	printf("Type%-10s\tPlacement%-10s\t", " ", " ");
 }
 
-int writeHotStonesToBFile(FILE* pFile, HotStones* pHotStones)
+int writeHotStonesToBFileOLD(FILE* pFile, HotStones* pHotStones)
 {
 	if (fwrite(pHotStones, sizeof(HotStones), 1, pFile) != 1) return 0;
 	return 1;
 }
 
-int readHotStonesFromBFile(FILE* pFile, HotStones* pHotStones)
+int readHotStonesFromBFileOLD(FILE* pFile, HotStones* pHotStones)
 {
 	if (fread(pHotStones, sizeof(HotStones), 1, pFile) != 1) return 0;
+	return 1;
+}
+
+int writeHotStonesToBFile(FILE* pCFile, HotStones* pHotStones)
+{
+	unsigned char data = 0;
+
+	data |= pHotStones->type << 2; 
+	data |= pHotStones->placement;
+	fwrite(&data, sizeof(unsigned char), 1, pCFile);
+
+	return 1;
+}
+
+int readHotStonesFromBFile(FILE* pCFile, HotStones* pHotStones)
+{
+	unsigned char data = 0;
+
+	fread(&data, sizeof(unsigned char), 1, pCFile);
+	pHotStones->type = (data >> 2) & 0x03;
+	pHotStones->placement = data & 0x03;
+
 	return 1;
 }
 

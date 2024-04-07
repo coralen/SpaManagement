@@ -82,16 +82,6 @@ void describeTreatment(Treatment* pTreatment)
     //implement in each treatment type
 }
 
-void freeTreatment(Treatment* pTreatment)
-{
-    free(pTreatment);
-}
-
-void freeTreatmentWrapper(void* treatment)
-{
-    freeTreatment((Treatment*)treatment);
-}
-
 void printTreatmentTypes()
 {
     for (int i = 0; i < TREATMENT_TYPE_COUNT; i++)
@@ -148,7 +138,7 @@ void printTreatmentHeaders()
     printf("%-5s\t%-10s\t%-10s\t%-10s\t%-5s\t%-5s\t%-10s\t%-10s\t%-10s\t", "Code", "Type", "Is Active", "Duration", "Price", "Room", "Employee", "Date", "Hour");
 }
 
-int writeTreatmentToBFile(FILE* pFile, Treatment* pTreatment)
+int writeTreatmentToBFile(FILE* pFile, FILE* pCFile, Treatment* pTreatment)
 {
     int len = strlen(pTreatment->code);
     if (fwrite(&len, sizeof(int), 1, pFile) != 1) return 0;
@@ -172,7 +162,7 @@ int writeTreatmentToBFile(FILE* pFile, Treatment* pTreatment)
         writeMassageToBFile(pFile, &pTreatment->data.massage);
         break;
     case eHotStones:
-        writeHotStonesToBFile(pFile, &pTreatment->data.hotStones);
+        writeHotStonesToBFile(pCFile, &pTreatment->data.hotStones);
         break;
     case eMeniPedi:
         writeMenicurePedicureToBFile(pFile, &pTreatment->data.meniPedi);
@@ -182,7 +172,7 @@ int writeTreatmentToBFile(FILE* pFile, Treatment* pTreatment)
     return 1;
 }
 
-int readTreatmentFromBFile(FILE* pFile, Treatment* pTreatment, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager)
+int readTreatmentFromBFile(FILE* pFile, FILE* pCFile, Treatment* pTreatment, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager)
 {
     char roomCode[TOTAL_CODE + 1];
     int employeeId, len;
@@ -212,7 +202,7 @@ int readTreatmentFromBFile(FILE* pFile, Treatment* pTreatment, RoomManager* pRoo
         readMassageFromBFile(pFile, &pTreatment->data.massage);
         break;
     case eHotStones:
-        readHotStonesFromBFile(pFile, &pTreatment->data.hotStones);
+        readHotStonesFromBFile(pCFile, &pTreatment->data.hotStones);
         break;
     case eMeniPedi:
         readMenicurePedicureFromBFile(pFile, &pTreatment->data.meniPedi);
@@ -305,4 +295,25 @@ void updateTreatmentUtilitiesStatus(Treatment* pTreatment)
     if (pTreatment->pTreatmentRoom) pTreatment->pTreatmentRoom->isBooked = currentlyActive;
     if (pTreatment->pTreatmentEmployee) pTreatment->pTreatmentEmployee->isBooked = currentlyActive;
     pTreatment->isActive = currentlyActive;
+}
+
+void freeTreatmentWrapper(void* treatment)
+{
+    freeTreatment((Treatment*)treatment);
+}
+
+/* No need to free HotStones, has only eNums. */
+void freeTreatment(Treatment* pTreatment)
+{
+    if (!pTreatment) return;
+    switch (pTreatment->type) 
+    {
+    case eMassage:
+        freeMassage(&pTreatment->data.massage);
+        break;
+    case eMeniPedi:
+        freeMenicurePedicure(&pTreatment->data.meniPedi);
+        break;
+    }
+    free(pTreatment);
 }

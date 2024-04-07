@@ -3,12 +3,6 @@
 
 #include "Helper.h"
 #include "Date.h"
-/*
-#include "Room.h"
-#include "Employee.h"
-*/
-
-
 #include "RoomManager.h"
 #include "EmployeeManager.h"
 
@@ -43,8 +37,8 @@ typedef struct {
 int         initTreatmentNoCode(Treatment* pTreatment, int option, Room* pRoom, Employee* pEmployee, Date* pDate);
 int         initMassage(Treatment* pTreatment);
 int         initMenicurePedicure(Treatment* pTreatment);
-int         writeTreatmentToBFile(FILE* pFile, Treatment* pTreatment);
-int         readTreatmentFromBFile(FILE* pFile, Treatment* pTreatment, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager);
+int         writeTreatmentToBFile(FILE* pFile, FILE* pCFile, Treatment* pTreatment);
+int         readTreatmentFromBFile(FILE* pFile, FILE* pCFile, Treatment* pTreatment, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager);
 int         writeTreatmentToTextFile(FILE* pFile, Treatment* pTreatment);
 int         readTreatmentFromTextFile(FILE* pFile, Treatment* pTreatment, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager);
 void        getTreatmentCode(char* code);

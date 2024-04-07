@@ -15,8 +15,10 @@ typedef struct {
 	stonePlacement placement;
 } HotStones;
 
-int			writeHotStonesToBFile(FILE* pFile, HotStones* pHotStones);
-int			readHotStonesFromBFile(FILE* pFile, HotStones* pHotStones);
+int			writeHotStonesToBFileOLD(FILE* pFile, HotStones* pHotStones);
+int			readHotStonesFromBFileOLD(FILE* pFile, HotStones* pHotStones);
+int			writeHotStonesToBFile(FILE* pCFile, HotStones* pHotStones);
+int			readHotStonesFromBFile(FILE* pCFile, HotStones* pHotStones);
 int			writeHotStonesToTextFile(FILE* pFile, HotStones* pHotStones);
 int			readHotStonesFromTextFile(FILE* pFile, HotStones* pHotStones);
 void		getHotStonesType(HotStones* pHotStones);

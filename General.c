@@ -42,7 +42,8 @@ void generalArrayFunction(void* array, int elementsInArray, int sizeOfElement, v
 {
     char* ptr = (char*)array;
 
-    for (int i = 0; i < elementsInArray; ++i) {
+    for (int i = 0; i < elementsInArray; ++i) 
+    {
         generalFunction(ptr);
         ptr += sizeOfElement;
     }

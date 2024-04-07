@@ -18,20 +18,23 @@ int initManagers(TreatmentManager* pTreatmentManager, RoomManager* pRoomManager,
 
 int initSpaManager(SpaManager* pSpa)
 {
-	if (!getSpaName(&pSpa->name)) return 0;
-	if (!getSpaLocation(&pSpa->location)) return 0;
-	getSpaBudget(pSpa);
+	if (!setSpaName(&pSpa->name)) return 0;
+	if (!setSpaLocation(&pSpa->location)) return 0;
+	setSpaBudget(pSpa);
 	initManagers(&pSpa->treatmentManager, &pSpa->roomManager, &pSpa->employeeManager);
 	return 1;
 }
 
-int initSpaManagerFromBFile(SpaManager* pSpaManager, const char* fileName)
+int initSpaManagerFromBFile(SpaManager* pSpaManager, const char* fileName, const char* cFileName)
 {
 	setSpaDefaults(pSpaManager);
 	FILE* pFile = fopen(fileName, "rb");
+	FILE* cFile = fopen(cFileName, "rb");
 	if (!pFile) return 0;
-	if (!readSpaFromBFile(pFile, pSpaManager)) return 0;
+	if (!cFile) return 0;
+	if (!readSpaFromBFile(pFile, cFile, pSpaManager)) return 0;
 	fclose(pFile);
+	fclose(cFile);
 	return 1;
 }
 
@@ -53,7 +56,7 @@ void setSpaDefaults(SpaManager* pSpaManager)
 	initTreatmentManager(&pSpaManager->treatmentManager);
 }
 
-int getSpaName(char** name)
+int setSpaName(char** name)
 {
 	char inputName[MAX_STRING];
 
@@ -66,7 +69,7 @@ int getSpaName(char** name)
 	return 1;
 }
 
-int getSpaLocation(char** location)
+int setSpaLocation(char** location)
 {
 	char inputLocation[MAX_STRING];
 
@@ -80,7 +83,7 @@ int getSpaLocation(char** location)
 	return 1;
 }
 
-void getSpaBudget(SpaManager* pSpa)
+void setSpaBudget(SpaManager* pSpa)
 {
 	printf("Enter the budget for the spa: ");
 	scanf("%d", &pSpa->budget);
@@ -200,18 +203,22 @@ void printSpa(const SpaManager* pSpaManager)
 
 }
 
-int saveSpaToBFile(const SpaManager* pSpaManager, const char* fileName)
+int saveSpaToBFile(const SpaManager* pSpaManager, const char* fileName, const char* cFileName)
 {
 	FILE* pFile;
+	FILE* pCFile;
 	pFile = fopen(fileName, "wb");
+	pCFile = fopen(cFileName, "wb");
 	if (!pFile) return 0;
-	if (!writeSpaToBFile(pFile, pSpaManager)) return 0;
+	if (!pCFile) return 0;
+	if (!writeSpaToBFile(pFile, pCFile, pSpaManager)) return 0;
 	fclose(pFile);
+	fclose(pCFile);
 
 	return 1;
 }
 
-int writeSpaToBFile(FILE* pFile, const SpaManager* pSpaManager)
+int writeSpaToBFile(FILE* pFile, FILE* pCFile, const SpaManager* pSpaManager)
 {
 	int len;
 	TreatmentManager treatmentManager = pSpaManager->treatmentManager;
@@ -228,13 +235,13 @@ int writeSpaToBFile(FILE* pFile, const SpaManager* pSpaManager)
 
 	if (!writeRoomManagerToBFile(pFile, &pSpaManager->roomManager)) return 0;
 	if (!writeEmployeeManagerToBFile(pFile, &pSpaManager->employeeManager)) return 0;
-	if (!writeTreatmentManagerToBFile(pFile, &treatmentManager)) return 0;
+	if (!writeTreatmentManagerToBFile(pFile, pCFile , &treatmentManager)) return 0;
 
 	return 1;
 
 }
 
-int readSpaFromBFile(FILE* pFile, SpaManager* pSpaManager)
+int readSpaFromBFile(FILE* pFile, FILE* pCFile, SpaManager* pSpaManager)
 {
 	int len;
 
@@ -250,7 +257,7 @@ int readSpaFromBFile(FILE* pFile, SpaManager* pSpaManager)
 
 	if (!readRoomManagerFromBFile(pFile, &pSpaManager->roomManager)) return 0;
 	if (!readEmployeeManagerFromBFile(pFile, &pSpaManager->employeeManager)) return 0;
-	if (!readTreatmentManagerFromBFile(pFile, &pSpaManager->treatmentManager, &pSpaManager->roomManager, &pSpaManager->employeeManager)) return 0;
+	if (!readTreatmentManagerFromBFile(pFile, pCFile, &pSpaManager->treatmentManager, &pSpaManager->roomManager, &pSpaManager->employeeManager)) return 0;
 
 	return 1;
 }
@@ -422,4 +429,15 @@ int deleteTreatmentFromSpa(TreatmentManager* pTreatmentManager)
 		}
 	}
 	return 1;
+}
+
+void freeSpaManager(SpaManager* pSpaManager)
+{
+	if (!pSpaManager) return;
+	free(pSpaManager->name);
+	free(pSpaManager->location);
+
+	freeRoomManager(&pSpaManager->roomManager);
+	freeEmployeeManager(&pSpaManager->employeeManager);
+	freeTreatmentManager(&pSpaManager->treatmentManager);
 }

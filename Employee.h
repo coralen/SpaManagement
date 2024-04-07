@@ -25,7 +25,6 @@ int         initEmployee(Employee* pEmployee);
 int         getEmployeeId();
 int         getEmployeeName(char** name);
 int         getEmployeeSalaryInt(int roleNum);
-int         freeEmployee(Employee* employee);
 int         writeEmployeeToBFile(FILE* pFile, Employee* pEmployee);
 int         readEmployeeFromBFile(FILE* pFile, Employee* pEmployee);
 int         writeEmployeeToTextFile(FILE* pFile, Employee* pEmployee);
@@ -39,6 +38,8 @@ void        changeRole(Employee* pEmployee);
 void        printEmployee(const Employee* pEmployee);
 void        printEmployeeRoles();
 void        printEmployeeHeaders();
+void        freeEmployee(Employee* employee);
+void        freeEmployeeWrapper(void* pEmployee);
 BOOL        isEmployeeAvailable(Employee* pEmployee);
 const char* getEmployeeRoleString(int roleNum);
 

@@ -150,3 +150,10 @@ int readRoomManagerFromTextFile(FILE* pFile, RoomManager* pRoomManager)
 	}
 	return 1;
 }
+
+
+void freeRoomManager(RoomManager* pRoomManager)
+{
+	if (!pRoomManager) return;
+	free(pRoomManager->roomArr);
+}

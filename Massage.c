@@ -96,3 +96,9 @@ int readMassageFromTextFile(FILE* pFile, Massage* pMassage)
 	pMassage->notesFromClient = strdup(tmpName);
 	return 1;
 }
+
+void freeMassage(Massage* pMassage)
+{
+	if (!pMassage) return;
+	free(pMassage->notesFromClient);
+}

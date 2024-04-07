@@ -23,7 +23,7 @@ int         readEmployeeManagerFromTextFile(FILE* pFile, EmployeeManager* pEmplo
 int         deleteEmployee(EmployeeManager* pEmployeeManager, char* name);
 void        initEmployeeManager(EmployeeManager* pEmployeeManager);
 void        printEmployeeArr(const EmployeeManager* pEmployeeManager);
-void	    freeEmployeeArr(Employee** EmployeeArr, int size);
+void        freeEmployeeManager(EmployeeManager* pEmployeeManager);
 void        giveEmployeeARaise(EmployeeManager* pEmployeeManager);
 Employee*   findEmployeeByRole(EmployeeManager* pEmployeeManager, eEmployeeRole role);
 Employee*   findEmployeeBySeniorityAndRole(EmployeeManager* pEmployeeManager, int seniority, int role);

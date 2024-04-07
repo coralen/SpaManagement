@@ -16,9 +16,9 @@ typedef enum {
 typedef struct
 {
     char* color;
-    BOOL Manicure;
-    BOOL Pedicure;
-    eNailArtType NailArtType;
+    BOOL menicure;
+    BOOL pedicure;
+    eNailArtType nailArtType;
 } MenicurePedicure;
 
 int         setPolishColor(char** color);
@@ -31,6 +31,7 @@ void        setMedicoreAndPedicore(MenicurePedicure* MediPedi);
 void        setNailArtType(MenicurePedicure* MediPedi);
 void        printMenicurePedicure(const MenicurePedicure* pMeniPedi);
 void        printMenicurePedicureHeaders();
+void        freeMenicurePedicure(MenicurePedicure* pMeniPedi);
 const char* getNailArtTypeString(int typeNum);
 
 #endif

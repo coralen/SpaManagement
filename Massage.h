@@ -22,6 +22,7 @@ void        printMassageType();
 void        printMassageHeaders();
 void        getMassageType(MassageType* type);
 void        printMassage(const Massage* pMassage);
+void        freeMassage(Massage* pMassage);
 const char* getMassageTypeString(int typeNum);
 
 #endif
