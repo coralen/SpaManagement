@@ -40,6 +40,7 @@ int setEmployeeName(char** name)
     while (getchar() != '\n');
     if (!(*name = (char*)malloc((strlen(inputName) + 1) * sizeof(char)))) return 0;
     strcpy(*name, inputName);
+    capitalFirst(*name);
 
     return 1;
 }

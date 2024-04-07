@@ -54,6 +54,8 @@ int setPolishColor(char** color)
     while (getchar() != '\n');
     if (!(*color = (char*)malloc((strlen(colorInput) + 1) * sizeof(char)))) return 0;
     strcpy(*color, colorInput);
+    capitalFirst(*color);
+
     return 1;
 }
 

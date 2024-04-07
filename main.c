@@ -147,7 +147,7 @@ void suggestLoadFromFile(SpaManager* pSpaManager)
 	switch (fileOption) 
 	{
 	case 0:
-		initManagerFromTextFile(pSpaManager, TEXT_FILENAME);
+		initSpaManagerFromTextFile(pSpaManager, TEXT_FILENAME);
 		break;
 
 	case 1:

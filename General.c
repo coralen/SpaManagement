@@ -64,3 +64,10 @@ void printBoolType()
     for (int i = 0; i < eNofBool; i++)
         printf("%d - %s\n", i, getBoolString(i));
 }
+
+void capitalFirst(char* name)
+{
+    if (name[START] >= START_CHAR && name[START] <= END_CHAR) name[START] = toupper(name[START]);
+    for (int i = 1; i < strlen(name); i++)
+        if (name[i] >= START_CHAR && name[i] <= END_CHAR && name[i - 1] == ' ') name[i] = toupper(name[i]);
+}

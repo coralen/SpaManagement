@@ -40,7 +40,7 @@ int initSpaManagerFromBFile(SpaManager* pSpaManager, const char* fileName, const
 	return 1;
 }
 
-int initManagerFromTextFile(SpaManager* pSpaManager, const char* fileName)
+int initSpaManagerFromTextFile(SpaManager* pSpaManager, const char* fileName)
 {
 	setSpaDefaults(pSpaManager);
 	FILE* pFile = fopen(fileName, "r");
@@ -67,6 +67,7 @@ int setSpaName(char** name)
 	while (getchar() != '\n');
 	if (!(*name = (char*)malloc((strlen(inputName) + 1) * sizeof(char)))) return 0;
 	strcpy(*name, inputName);
+	capitalFirst(*name);
 
 	return 1;
 }
@@ -81,6 +82,7 @@ int setSpaLocation(char** location)
 
 	if (!(*location = (char*)malloc((strlen(inputLocation) + 1) * sizeof(char)))) return 0;
 	strcpy(*location, inputLocation);
+	capitalFirst(*location);
 
 	return 1;
 }

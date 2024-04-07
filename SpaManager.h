@@ -29,7 +29,7 @@ int         saveSpaToBFile(const SpaManager* pSpaManager, const char* fileName, 
 int         saveSpaToTextFile(const SpaManager* pSpaManager, const char* fileName);
 int         writeSpaToBFile(FILE* pFile, FILE* pCFile, const SpaManager* pSpaManager);
 int         initSpaManagerFromBFile(SpaManager* pSpaManager, const char* fileName, const char* cFileName);
-int         initManagerFromTextFile(SpaManager* pSpaManager, const char* fileName);
+int         initSpaManagerFromTextFile(SpaManager* pSpaManager, const char* fileName);
 int         readSpaFromBFile(FILE* pFile, FILE* pCFile, SpaManager* pSpaManager);
 int         writeSpaToTextFile(FILE* pFile, const SpaManager* pSpaManager);
 int         readSpaFromTextFile(FILE* pFile, SpaManager* pSpaManager);
