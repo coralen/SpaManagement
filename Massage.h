@@ -12,12 +12,12 @@ typedef struct {
 } Massage;
 
 int         getNotesFromClient(char** notes);
-int         writeMassageToBFile(FILE* pFile, Massage* pMassage);
+int         writeMassageToBFile(FILE* pFile, const Massage* pMassage);
 int         readMassageFromBFile(FILE* pFile, Massage* pMassage);
-int         writeMassageToTextFile(FILE* pFile, Massage* pMassage);
+int         writeMassageToTextFile(FILE* pFile, const Massage* pMassage);
 int         readMassageFromTextFile(FILE* pFile, Massage* pMassage);
 void        printMassageType();
-void        printMassageHeaders();
+void        printMassageHeaders(void* input);
 void        getMassageType(MassageType* type);
 void        printMassage(const Massage* pMassage);
 void        freeMassage(Massage* pMassage);

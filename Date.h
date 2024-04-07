@@ -23,9 +23,9 @@ void	getCorrectDate(Date* pDate);
 void	getCorrentHour(Date* pDate);
 void	printDate(const Date* pdate);
 int		validateDate(const int day, const int month, const int year);
-int		writeDateToTextFile(FILE* pFile, Date* pDate);
+int		writeDateToTextFile(FILE* pFile, const Date* pDate);
 int		readDateFromTextFile(FILE* pFile, Date* pDate);
-int		compareDates(Date* pDate1, Date* pDate2);
+int		compareDates(const Date* pDate1, const Date* pDate2);
 int		isDateRelevant(const Date* pDate);
 time_t	convertToTimeT(const Date* pDate);
 

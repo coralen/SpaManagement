@@ -14,18 +14,18 @@ static const char* roomTypeString[eNoOfRoomType] = { "Bedded", "Chaired" };
 
 void initRoomNoCode(Room* pRoom)
 {
-    getRoomType(pRoom);
-    getSize(pRoom);
+    setRoomType(pRoom);
+    setRoomSize(pRoom);
     pRoom->isBooked = (BOOL)0;
 }
 
-void getSize(Room* pRoom)
+void setRoomSize(Room* pRoom)
 {
     printf("Enter the room size:\n");
     scanf("%d", &pRoom->size);
 }
 
-void getRoomType(Room* pRoom)
+void setRoomType(Room* pRoom)
 {
     int choice = -1;
 
@@ -38,7 +38,7 @@ void getRoomType(Room* pRoom)
     pRoom->type = (RoomType)choice;
 }
 
-void getRoomCode(char* code)
+void setRoomCode(char* code)
 {
     char inputCode[MAX_STRING];
     do {
@@ -71,7 +71,7 @@ void printRoomHeaders()
     printf("%-10s\t%-10s\t%-10s\t%-10s\t", "Code", "Size", "Type", "isBooked");
 }
 
-int writeRoomToBFile(FILE* pFile, Room* pRoom)
+int writeRoomToBFile(FILE* pFile, const Room* pRoom)
 {
     int len = (int)(strlen(pRoom->code));
     if (fwrite(&len, sizeof(int), 1, pFile) != 1) return 0;
@@ -98,7 +98,7 @@ int readRoomFromBFile(FILE* pFile, Room* pRoom)
 }
 
 
-int writeRoomToTextFile(FILE* pFile, Room* pRoom)
+int writeRoomToTextFile(FILE* pFile, const Room* pRoom)
 {
     if (fprintf(pFile, "%s\n", pRoom->code) < 0) return 0;
     if (fprintf(pFile, "%d\n", pRoom->type) < 0) return 0;

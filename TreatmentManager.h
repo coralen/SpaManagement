@@ -5,7 +5,7 @@
 #include "List.h"
 
 typedef struct {
-	LIST treatmentArr;
+	LIST treatmentList;
 	int treatmentCount;
 } TreatmentManager;
 
@@ -19,17 +19,17 @@ int			writeTreatmentManagerToBFile(FILE* pFile, FILE* pCFile, TreatmentManager* 
 int			readTreatmentManagerFromBFile(FILE* pFile, FILE* pCFile, TreatmentManager* pTreatmentManager, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager);
 int			writeTreatmentManagerToTextFile(FILE* pFile, TreatmentManager* pTreatmentManager);
 int			readTreatmentManagerFromTextFile(FILE* pFile, TreatmentManager* pTreatmentManager, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager);
-int			findTreatmentWithRoomAndDate(TreatmentManager* pTreatmentManager, Date* pDate, char* roomCode);
-int			findTreatmentWithEmployeeAndDate(TreatmentManager* pTreatmentManager, Date* pDate, int employeeId);
+int			findTreatmentWithRoomAndDate(const TreatmentManager* pTreatmentManager, const Date* pDate, const char* roomCode);
+int			findTreatmentWithEmployeeAndDate(const TreatmentManager* pTreatmentManager, const Date* pDate, const int employeeId);
 int			deleteTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager);
 void		initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager, int option, Room* pRoom, Employee* pEmployee, Date* pDate);
-void		printTreatmentArr(const TreatmentManager* pTreatmentManager);
-void		printTreatmentArrWithData(const TreatmentManager* pTreatmentManager);
+void		printTreatmentList(const TreatmentManager* pTreatmentManager);
+void		printTreatmentListWithData(const TreatmentManager* pTreatmentManager);
 void		printArrByTreatmentType(const TreatmentManager* pTreatmentManager, int type);
 void		updateTreatmenArrUtilitiesStatus(TreatmentManager* pTreatmentManager);
 void		freeTreatmentManager(TreatmentManager* pTreatmentManager);
-Treatment*	findTreatmentWithCode(TreatmentManager* pTreatmentManager, char* treatmentCode);
-Treatment*	findTreatmentWithRoom(TreatmentManager* pTreatmentManager, char* roomCode);
-Treatment*	findTreatmentWithEmployee(TreatmentManager* pTreatmentManager, int employeeId);
+Treatment*	findTreatmentWithCode(const TreatmentManager* pTreatmentManager, const char* treatmentCode);
+Treatment*	findTreatmentWithRoom(const TreatmentManager* pTreatmentManager, const char* roomCode);
+Treatment*	findTreatmentWithEmployee(const TreatmentManager* pTreatmentManager, const int employeeId);
 
 #endif

@@ -10,46 +10,50 @@ static const char* stonesPlacementString[eNofPlacements] = { "Back", "Neck" ,"Ha
 
 void getHotStonesType(HotStones* pHotStones)
 {
-	int option;
+	int option, validFlag = 0;
 
 	do {
 		printf("Please choose one of the following stone types:\n");
 		printHotStonesType();
 		scanf("%d", &option);
-	} while (option < 1 || option > eNofStoneType);
-	pHotStones->type = (StonesType)(option - 1);
+		if (option > -1 && option < eNofStoneType) validFlag = 1;
+		else printf("Invalid choice, try again\n");
+	} while (!validFlag);
+	pHotStones->type = (StonesType)(option);
 }
 
 void getStonesPlacement(HotStones* pHotStones)
 {
-	int option;
+	int option, validFlag = 0;
 
 	do {
 		printf("Please choose one of the following placement types:\n");
 		printHotStonesPlacement();
 		scanf("%d", &option);
-	} while (option < 1 || option > eNofPlacements);
-	pHotStones->type = (stonePlacement)(option - 1);
+		if (option > -1 && option < eNofPlacements) validFlag = 1;
+		else printf("Invalid choice, try again\n");
+	} while (!validFlag);
+	pHotStones->type = (StonePlacement)(option);
 }
 
 void printHotStonesType()
 {
 	for (int i = 0; i < eNofStoneType; i++)
-		printf("%d - %s\n", i + 1, getStonesTypeString(i));
+		printf("%d - %s\n", i, getStonesTypeString(i));
 }
 
 void printHotStonesPlacement()
 {
 	for (int i = 0; i < eNofPlacements; i++)
-		printf("%d - %s\n", i + 1, getStonesPlacementString(i));
+		printf("%d - %s\n", i, getStonesPlacementString(i));
 }
 
-const char* getStonesTypeString(int typeNum)
+const char* getStonesTypeString(const int typeNum)
 {
 	return stonesTypeString[typeNum];
 }
 
-const char* getStonesPlacementString(int typeNum)
+const char* getStonesPlacementString(const int typeNum)
 {
 	return stonesPlacementString[typeNum];
 }
@@ -59,24 +63,12 @@ void printHotStones(const HotStones* pHotStones)
 	printf("%-10s\t%-10s\t", getStonesTypeString(pHotStones->type), getStonesPlacementString(pHotStones->placement));
 }
 
-void printHotStonesHeaders()
+void printHotStonesHeaders(void* input)
 {
 	printf("Type%-10s\tPlacement%-10s\t", " ", " ");
 }
 
-int writeHotStonesToBFileOLD(FILE* pFile, HotStones* pHotStones)
-{
-	if (fwrite(pHotStones, sizeof(HotStones), 1, pFile) != 1) return 0;
-	return 1;
-}
-
-int readHotStonesFromBFileOLD(FILE* pFile, HotStones* pHotStones)
-{
-	if (fread(pHotStones, sizeof(HotStones), 1, pFile) != 1) return 0;
-	return 1;
-}
-
-int writeHotStonesToBFile(FILE* pCFile, HotStones* pHotStones)
+int writeHotStonesToBFile(FILE* pCFile, const HotStones* pHotStones)
 {
 	unsigned char data = 0;
 
@@ -98,7 +90,7 @@ int readHotStonesFromBFile(FILE* pCFile, HotStones* pHotStones)
 	return 1;
 }
 
-int writeHotStonesToTextFile(FILE* pFile, HotStones* pHotStones)
+int writeHotStonesToTextFile(FILE* pFile, const HotStones* pHotStones)
 {
 	if (fprintf(pFile, "%d\n", pHotStones->type) < 0) return 0;
 	if (fprintf(pFile, "%d\n", pHotStones->placement) < 0) return 0;

@@ -7,7 +7,7 @@
 #include "helper.h"
 
 typedef enum {
-    eReceptionist, eMasseuse, eNailTechnician, eHotStonesTherapist, eMnager, eNofRole
+    eReceptionist, eMasseuse, eNailTechnician, eHotStonesTherapist, eManager, eNofRole
 } eEmployeeRole;
 
 typedef struct
@@ -23,16 +23,16 @@ typedef struct
 
 int         initEmployee(Employee* pEmployee);
 int         getEmployeeId();
-int         getEmployeeName(char** name);
+int         setEmployeeName(char** name);
 int         getEmployeeSalaryInt(int roleNum);
-int         writeEmployeeToBFile(FILE* pFile, Employee* pEmployee);
+int         writeEmployeeToBFile(FILE* pFile, const Employee* pEmployee);
 int         readEmployeeFromBFile(FILE* pFile, Employee* pEmployee);
-int         writeEmployeeToTextFile(FILE* pFile, Employee* pEmployee);
+int         writeEmployeeToTextFile(FILE* pFile, const Employee* pEmployee);
 int         readEmployeeFromTextFile(FILE* pFile, Employee* pEmployee);
-void        getEmployeeSeniority(Employee* pEmployee);
-void        getEmployeeRole(Employee* pEmployee);
+void        setEmployeeSeniority(Employee* pEmployee);
+void        setEmployeeRole(Employee* pEmployee);
 void        changeStatus(Employee* pEmployee);
-void        setSalary(Employee* pEmployee, int salary);
+void        setEmployeeSalary(Employee* pEmployee, int salary);
 void        giveARaise(Employee* pEmployee, int newSalary);
 void        changeRole(Employee* pEmployee);
 void        printEmployee(const Employee* pEmployee);
@@ -40,8 +40,8 @@ void        printEmployeeRoles();
 void        printEmployeeHeaders();
 void        freeEmployee(Employee* employee);
 void        freeEmployeeWrapper(void* pEmployee);
-BOOL        isEmployeeAvailable(Employee* pEmployee);
-const char* getEmployeeRoleString(int roleNum);
+BOOL        isEmployeeAvailable(const Employee* pEmployee);
+const char* getEmployeeRoleString(const int roleNum);
 
 
 #endif

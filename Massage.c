@@ -54,12 +54,12 @@ void printMassage(const Massage* pMassage)
 	printf("%-10s\t%-10s\t", getMassageTypeString(pMassage->type), pMassage->notesFromClient);
 }
 
-void printMassageHeaders()
+void printMassageHeaders(void* input)
 {
 	printf("Type%-10s\tClient notes%-10s\t", " ", " ");
 }
 
-int writeMassageToBFile(FILE* pFile, Massage* pMassage)
+int writeMassageToBFile(FILE* pFile, const Massage* pMassage)
 {
 	if (fwrite(&pMassage->type, sizeof(MassageType), 1, pFile) != 1) return 0;
 	int len = (int)(strlen(pMassage->notesFromClient) + 1);
@@ -80,7 +80,7 @@ int readMassageFromBFile(FILE* pFile, Massage* pMassage)
 	return 1;
 }
 
-int writeMassageToTextFile(FILE* pFile, Massage* pMassage)
+int writeMassageToTextFile(FILE* pFile, const Massage* pMassage)
 {
 	if (fprintf(pFile, "%d\n", pMassage->type) < 0) return 0;
 	if (fprintf(pFile, "%s\n", pMassage->notesFromClient) < 0) return 0;
@@ -99,6 +99,6 @@ int readMassageFromTextFile(FILE* pFile, Massage* pMassage)
 
 void freeMassage(Massage* pMassage)
 {
-	if (!pMassage) return;
+	CHECK_NULL(pMassage);
 	free(pMassage->notesFromClient);
 }

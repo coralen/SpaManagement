@@ -49,12 +49,18 @@ void generalArrayFunction(void* array, int elementsInArray, int sizeOfElement, v
     }
 }
 
-const char* getBoolString(int boolNum)
+const char* getBoolString(const int boolNum)
 {
     return boolString[boolNum];
 }
 
-const char* getStatusString(int statusNum)
+const char* getStatusString(const int statusNum)
 {
     return statusString[statusNum];
+}
+
+void printBoolType()
+{
+    for (int i = 0; i < eNofBool; i++)
+        printf("%d - %s\n", i, getBoolString(i));
 }

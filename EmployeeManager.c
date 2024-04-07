@@ -54,7 +54,7 @@ void giveEmployeeARaise(EmployeeManager* pEmployeeManager)
         }
     }
 }
-Employee* findEmployeeById(EmployeeManager* pEmployeeManager, int id)
+Employee* findEmployeeById(const EmployeeManager* pEmployeeManager, const int id)
 {
     for (int i = 0; i < pEmployeeManager->employeeCount; i++) 
     {
@@ -64,7 +64,7 @@ Employee* findEmployeeById(EmployeeManager* pEmployeeManager, int id)
     return NULL;
 }
 
-Employee* findEmployeeByRole(EmployeeManager* pEmployeeManager, eEmployeeRole role) 
+Employee* findEmployeeByRole(const EmployeeManager* pEmployeeManager, const eEmployeeRole role) 
 {
     for (int i = 0; i < pEmployeeManager->employeeCount; i++) {
         if (!isEmployeeAvailable(pEmployeeManager->EmployeeArr[i]) && pEmployeeManager->EmployeeArr[i]->role == role)
@@ -74,7 +74,7 @@ Employee* findEmployeeByRole(EmployeeManager* pEmployeeManager, eEmployeeRole ro
 }
 
 
-Employee* findEmployeeBySeniorityAndRole(EmployeeManager* pEmployeeManager, int seniority, int role) 
+Employee* findEmployeeBySeniorityAndRole(const EmployeeManager* pEmployeeManager, const int seniority, int role) 
 {
     for (int i = 0; i < pEmployeeManager->employeeCount; i++) 
     {
@@ -87,7 +87,7 @@ Employee* findEmployeeBySeniorityAndRole(EmployeeManager* pEmployeeManager, int 
     return NULL;
 }
 
-int findEmployeeByName(EmployeeManager* pEmployeeManager, char* name) 
+int findEmployeeByName(const EmployeeManager* pEmployeeManager, const char* name) 
 {
     for (int i = 0; i < pEmployeeManager->employeeCount; i++) 
         if (pEmployeeManager->EmployeeArr[i]->name == name) return i;
@@ -95,7 +95,7 @@ int findEmployeeByName(EmployeeManager* pEmployeeManager, char* name)
     return -1;
 }
 
-int deleteEmployee(EmployeeManager* pEmployeeManager, char* name) 
+int deleteEmployee(EmployeeManager* pEmployeeManager, const char* name) 
 {
     int employeeIndex = findEmployeeByName(pEmployeeManager, name);
     if (employeeIndex == -1) return 0;
@@ -118,23 +118,6 @@ int deleteEmployee(EmployeeManager* pEmployeeManager, char* name)
     else return 0;
 
     return 1;
-}
-
-int getEmployee(EmployeeManager* eManager, int role) 
-{
-    printf("Do you want to choose an employee by seniority? \n0- no \n1- yes\n");
-    int choise;
-    scanf("%d", &choise);
-    if (choise == 0) findEmployeeByRole(eManager, role);
-    else if (choise == 1) 
-    {
-        printf("What seniority do you want?\n");
-        int seniority;
-        scanf("%d", &seniority);
-        findEmployeeBySeniorityAndRole(eManager, seniority, role);
-    }
-    else printf("choise is invalid");
-    return 0;
 }
 
 void printEmployeeArr(const EmployeeManager* pEmployeeManager)
@@ -192,7 +175,7 @@ int readEmployeeManagerFromTextFile(FILE* pFile, EmployeeManager* pEmployeeManag
 
 void freeEmployeeManager(EmployeeManager* pEmployeeManager)
 {
-    if (!pEmployeeManager) return;
+    CHECK_NULL(pEmployeeManager);
     generalArrayFunction(pEmployeeManager->EmployeeArr, pEmployeeManager->employeeCount, sizeof(Employee*), freeEmployeeWrapper);
     free(pEmployeeManager->EmployeeArr);
 }

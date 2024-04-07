@@ -20,8 +20,8 @@ typedef struct
 
 
 int         initSpaManager(SpaManager* pSpa);
-int	        checkRequirments(TreatmentManager* pTreatmentManager, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager);
-int         addTreatment(TreatmentManager* pTreatmentManager, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager);
+int	        checkRequirments(const TreatmentManager* pTreatmentManager, const RoomManager* pRoomManager, const EmployeeManager* pEmployeeManager);
+int         addTreatment(TreatmentManager* pTreatmentManager, const RoomManager* pRoomManager, const EmployeeManager* pEmployeeManager);
 int         initManagers(TreatmentManager* pTreatmentManager, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager);
 int         setSpaName(char** name);
 int         setSpaLocation(char** location);
@@ -33,8 +33,8 @@ int         initManagerFromTextFile(SpaManager* pSpaManager, const char* fileNam
 int         readSpaFromBFile(FILE* pFile, FILE* pCFile, SpaManager* pSpaManager);
 int         writeSpaToTextFile(FILE* pFile, const SpaManager* pSpaManager);
 int         readSpaFromTextFile(FILE* pFile, SpaManager* pSpaManager);
-int         deleteRoomFromSpa(RoomManager* pRoomManager, TreatmentManager* pTreatmentManager);
-int         deleteEmployeeFromSpa(EmployeeManager* pEmployeeManager, TreatmentManager* pTreatmentManager);
+int         deleteRoomFromSpa(RoomManager* pRoomManager, const TreatmentManager* pTreatmentManager);
+int         deleteEmployeeFromSpa(EmployeeManager* pEmployeeManager, const TreatmentManager* pTreatmentManager);
 int         deleteTreatmentFromSpa(TreatmentManager* pTreatmentManager);
 void        increaseSpaBudget(SpaManager* pSpaManager);
 void        freeSpaManager(SpaManager* pSpaManager);
@@ -43,8 +43,8 @@ void        printSpa(const SpaManager* pSpaManager);
 void        setSpaDefaults(SpaManager* pSpaManager);
 void        calcSpaRevenue(SpaManager* pSpaManager);
 void        printOverdraftOptions();
-Room*       findAvailableRoom(RoomManager* pRoomManager, TreatmentManager* pTreatmentManager, RoomType type, Date* pDate);
-Employee*   findAvailableEmployee(EmployeeManager* pEmployeeManager, TreatmentManager* pTreatmentManager, eEmployeeRole role, Date* pDate);
-const char* getOverdraftOptionsString(int optionNum);
+Room*       findAvailableRoom(const RoomManager* pRoomManager, const TreatmentManager* pTreatmentManager, const RoomType type, const Date* pDate);
+Employee*   findAvailableEmployee(const EmployeeManager* pEmployeeManager, const TreatmentManager* pTreatmentManager, const eEmployeeRole role, const Date* pDate);
+const char* getOverdraftOptionsString(const int optionNum);
 
 #endif

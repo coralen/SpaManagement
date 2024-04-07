@@ -6,26 +6,24 @@
 
 
 typedef enum { eBasalt, eMarble, eHimalayanSalt, eNofStoneType } StonesType;
-typedef enum { eBack, eNeck, eHands, eLegs, eNofPlacements } stonePlacement;
+typedef enum { eBack, eNeck, eHands, eLegs, eNofPlacements } StonePlacement;
 
 typedef struct {
 	StonesType type;
-	stonePlacement placement;
+	StonePlacement placement;
 } HotStones;
 
-int			writeHotStonesToBFileOLD(FILE* pFile, HotStones* pHotStones);
-int			readHotStonesFromBFileOLD(FILE* pFile, HotStones* pHotStones);
-int			writeHotStonesToBFile(FILE* pCFile, HotStones* pHotStones);
+int			writeHotStonesToBFile(FILE* pCFile, const HotStones* pHotStones);
 int			readHotStonesFromBFile(FILE* pCFile, HotStones* pHotStones);
-int			writeHotStonesToTextFile(FILE* pFile, HotStones* pHotStones);
+int			writeHotStonesToTextFile(FILE* pFile, const HotStones* pHotStones);
 int			readHotStonesFromTextFile(FILE* pFile, HotStones* pHotStones);
 void		getHotStonesType(HotStones* pHotStones);
 void		getStonesPlacement(HotStones* pHotStones);
 void		printHotStonesType();
 void		printHotStonesPlacement();
 void		printHotStones(const HotStones* pHotStones);
-void		printHotStonesHeaders();
-const char* getStonesTypeString(int typeNum);
-const char* getStonesPlacementString(int typeNum);
+void		printHotStonesHeaders(void* input);
+const char* getStonesTypeString(const int typeNum);
+const char* getStonesPlacementString(const int typeNum);
 
 #endif

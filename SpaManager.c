@@ -62,7 +62,7 @@ int setSpaName(char** name)
 {
 	char inputName[MAX_STRING];
 
-	printf("Hello and welcome to the Spa Management program!\nPlease enter your Spa's name: \n");
+	printf("Please enter your Spa's name: \n");
 	scanf(SCANF_FORMAT, inputName);
 	while (getchar() != '\n');
 	if (!(*name = (char*)malloc((strlen(inputName) + 1) * sizeof(char)))) return 0;
@@ -99,11 +99,11 @@ void increaseSpaBudget(SpaManager* pSpaManager)
 	pSpaManager->budget = pSpaManager->budget + addBudget;
 }
 
-int addTreatment(TreatmentManager* pTreatmentManager, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager)
+int addTreatment(TreatmentManager* pTreatmentManager, const RoomManager* pRoomManager, const EmployeeManager* pEmployeeManager)
 {
 	if (!checkRequirments(pTreatmentManager, pRoomManager, pEmployeeManager)) return 0;
 
-	int option;
+	int option, validFlag = 0;
 	RoomType rType = (RoomType)0;
 	eEmployeeRole eRole = (eEmployeeRole)0;
 	Room* pRoom;
@@ -124,7 +124,9 @@ int addTreatment(TreatmentManager* pTreatmentManager, RoomManager* pRoomManager,
 		printTreatmentTypes();
 		scanf("%d", &option);
 		while (getchar() != '\n');
-	} while (option < 0 || option >= eNofTreatmentType);
+		if (option > -1 && option < eNofTreatmentType) validFlag = 1;
+		else printf("Invalid choice, try again\n");
+	} while (!validFlag);
 
 	switch (option)
 	{
@@ -168,7 +170,7 @@ int addTreatment(TreatmentManager* pTreatmentManager, RoomManager* pRoomManager,
 
 }
 
-int	checkRequirments(TreatmentManager* pTreatmentManager, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager)
+int	checkRequirments(const TreatmentManager* pTreatmentManager, const RoomManager* pRoomManager, const EmployeeManager* pEmployeeManager)
 {
 	if (!pRoomManager->roomCount)
 	{
@@ -185,7 +187,7 @@ int	checkRequirments(TreatmentManager* pTreatmentManager, RoomManager* pRoomMana
 	return 1;
 }
 
-const char* getOverdraftOptionsString(int optionNum)
+const char* getOverdraftOptionsString(const int optionNum)
 {
 	return overdraftOptionsString[optionNum];
 }
@@ -218,7 +220,7 @@ void printSpa(const SpaManager* pSpaManager)
 	if (!pSpaManager->treatmentManager.treatmentCount) printf("The spa has no treatments\n");
 	else {
 		printf("There are %d treatments: \n", pSpaManager->treatmentManager.treatmentCount);
-		printTreatmentArr(&pSpaManager->treatmentManager);
+		printTreatmentList(&pSpaManager->treatmentManager);
 		printf("\n");
 	}
 
@@ -239,7 +241,7 @@ void calcSpaRevenue(SpaManager* pSpaManager)
 
 	if (revenue < 0)
 	{
-		printf("You are in overdraft in the bank!\nChoose one of the next options:\n");
+		printf("You are in OVERDRAFT in the bank!\nChoose one of the next options:\n");
 		printOverdraftOptions();
 		scanf("%d", &option);
 		while (getchar() != '\n');
@@ -364,7 +366,7 @@ int readSpaFromTextFile(FILE* pFile, SpaManager* pSpaManager)
 }
 
 
-Room* findAvailableRoom(RoomManager* pRoomManager, TreatmentManager* pTreatmentManager, RoomType type, Date* pDate)
+Room* findAvailableRoom(const RoomManager* pRoomManager, const TreatmentManager* pTreatmentManager, const RoomType type, const Date* pDate)
 {
 	for (int i = 0; i < pRoomManager->roomCount; i++)
 		if (pRoomManager->roomArr[i].type == type && !findTreatmentWithRoomAndDate(pTreatmentManager, pDate, pRoomManager->roomArr[i].code))
@@ -373,7 +375,7 @@ Room* findAvailableRoom(RoomManager* pRoomManager, TreatmentManager* pTreatmentM
 	return NULL;
 }
 
-Employee* findAvailableEmployee(EmployeeManager* pEmployeeManager, TreatmentManager* pTreatmentManager, eEmployeeRole role, Date* pDate)
+Employee* findAvailableEmployee(const EmployeeManager* pEmployeeManager, const TreatmentManager* pTreatmentManager, const eEmployeeRole role, const Date* pDate)
 {
 	for (int i = 0; i < pEmployeeManager->employeeCount; i++)
 		if (pEmployeeManager->EmployeeArr[i]->role == role && !findTreatmentWithEmployeeAndDate(pTreatmentManager, pDate, pEmployeeManager->EmployeeArr[i]->id))
@@ -382,7 +384,7 @@ Employee* findAvailableEmployee(EmployeeManager* pEmployeeManager, TreatmentMana
 	return NULL;
 }
 
-int deleteRoomFromSpa(RoomManager* pRoomManager, TreatmentManager* pTreatmentManager)
+int deleteRoomFromSpa(RoomManager* pRoomManager, const TreatmentManager* pTreatmentManager)
 {
 	if (!pRoomManager->roomCount)
 	{
@@ -399,7 +401,7 @@ int deleteRoomFromSpa(RoomManager* pRoomManager, TreatmentManager* pTreatmentMan
 	printRoomArr(pRoomManager);
 	while (!validFlag)
 	{
-		getRoomCode(tmpCode);
+		setRoomCode(tmpCode);
 		if (!(pRoom = findRoomByCode(pRoomManager, tmpCode))) "No room with this code! try again\n";
 		else
 		{
@@ -419,7 +421,7 @@ int deleteRoomFromSpa(RoomManager* pRoomManager, TreatmentManager* pTreatmentMan
 	return 1;
 }
 
-int deleteEmployeeFromSpa(EmployeeManager* pEmployeeManager, TreatmentManager* pTreatmentManager)
+int deleteEmployeeFromSpa(EmployeeManager* pEmployeeManager, const TreatmentManager* pTreatmentManager)
 {
 	if (!pEmployeeManager->employeeCount)
 	{
@@ -467,7 +469,7 @@ int deleteTreatmentFromSpa(TreatmentManager* pTreatmentManager)
 	Treatment* pTreatment;
 
 	printf("Please choose code of an available treatment:\n");
-	printTreatmentArr(pTreatmentManager);
+	printTreatmentList(pTreatmentManager);
 	while (!validFlag)
 	{
 		getTreatmentCode(tmpCode);
@@ -475,7 +477,7 @@ int deleteTreatmentFromSpa(TreatmentManager* pTreatmentManager)
 		else {
 			if (pTreatment->isActive)
 			{
-				printf("This treatment is in progress! please wait for it to be done\n");
+				printf("This treatment is in active! please wait for it to be done\n");
 				return 0;
 			}
 			else
@@ -491,7 +493,7 @@ int deleteTreatmentFromSpa(TreatmentManager* pTreatmentManager)
 
 void freeSpaManager(SpaManager* pSpaManager)
 {
-	if (!pSpaManager) return;
+	CHECK_NULL(pSpaManager);
 	free(pSpaManager->name);
 	free(pSpaManager->location);
 

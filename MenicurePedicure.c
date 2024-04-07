@@ -7,6 +7,7 @@
 #include <string.h>
 #include <ctype.h>
 
+#include "Helper.h"
 #include "General.h"
 #include "MenicurePedicure.h"
 
@@ -14,21 +15,40 @@ static const char* NailTypeString[eNoNailArtType] = { "ChromePowder", "Sticker",
 
 void setMedicoreAndPedicore(MenicurePedicure* MediPedi) 
 {
-    printf("Do you want to get medicure? \n0 - no\n1 - yes\n ");
-    int choise;
-    scanf("%d", &choise);
-    if (choise == 1) MediPedi->menicure = True;
+    int choice, validFlag = 0;
+    
+    do {
+        printf("Do you want to get medicure?\n");
+        printBoolType();
+        scanf("%d", &choice);
+        if (choice > -1 && choice < eNofBool)
+        {
+            MediPedi->menicure = (BOOL)choice;
+            validFlag = 1;
+        }
+        else printf("Invalid choice, try again\n");
+    } while (!validFlag);
+    
+    validFlag = 0;
 
-    printf("Do you want to get pedicore? \n0 - no\n1 - yes\n ");
-    scanf("%d", &choise);
-    if (choise == 1) MediPedi->pedicure = True;
+    do {
+        printf("Do you want to get pedicure?\n");
+        printBoolType();
+        scanf("%d", &choice);
+        if (choice > -1 && choice < 2)
+        {
+            MediPedi->pedicure = (BOOL)choice;
+            validFlag = 1;
+        }
+        else printf("Invalid choice, try again\n");
+    } while (!validFlag);
 }
 
 int setPolishColor(char** color) 
 {
     char colorInput[MAX_STRING];
 
-    printf("Enter the nail polish color you want: \n");
+    printf("Enter the nail polish color you want:\n");
     while (getchar() != '\n');
     scanf(SCANF_FORMAT, colorInput);
     while (getchar() != '\n');
@@ -40,13 +60,20 @@ int setPolishColor(char** color)
 
 void setNailArtType(MenicurePedicure* MediPedi) 
 {
-    printf("Enter the type of your nail art, the options are:\n");
-    printNailArtType();
-    int numType;
-    scanf("%d", &numType);
-    if (numType >= 0 && numType < eNoNailArtType)
-        MediPedi->nailArtType = numType;
-    else printf("Invalid type number\n");
+    int numType, validFlag = 0;
+
+    do
+    {
+        printf("Enter the type of your nail art, the options are:\n");
+        printNailArtType();
+        scanf("%d", &numType);
+        if (numType >= 0 && numType < eNoNailArtType)
+        {
+            MediPedi->nailArtType = numType;
+            validFlag = 1;
+        }
+        else printf("Invalid choice, try again\n");
+    } while (!validFlag);
 }
 
 void printNailArtType()
@@ -55,7 +82,7 @@ void printNailArtType()
         printf("%d - %s\n", i, getNailArtTypeString(i));
 }
 
-const char* getNailArtTypeString(int typeNum)
+const char* getNailArtTypeString(const int typeNum)
 {
     return NailTypeString[typeNum];
 }
@@ -65,12 +92,12 @@ void printMenicurePedicure(const MenicurePedicure* pMeniPedi)
     printf("%-10s\t%-10s\t%-10s\t%-10s\t", pMeniPedi->color, getBoolString(pMeniPedi->menicure), getBoolString(pMeniPedi->pedicure), getNailArtTypeString(pMeniPedi->nailArtType));
 }
 
-void printMenicurePedicureHeaders()
+void printMenicurePedicureHeaders(void* input)
 {
     printf("%-10s\t%-10s\t%-10s\t%-10s\t", "Color", "Menicure", "Pedicure", "Nail art");
 }
 
-int writeMenicurePedicureToBFile(FILE* pFile, MenicurePedicure* pMeniPedi)
+int writeMenicurePedicureToBFile(FILE* pFile, const MenicurePedicure* pMeniPedi)
 {
     int len = (int)(strlen(pMeniPedi->color) + 1);
     if (fwrite(&len, sizeof(int), 1, pFile) != 1) return 0;
@@ -95,7 +122,7 @@ int readMenicurePedicureFromBFile(FILE* pFile, MenicurePedicure* pMeniPedi)
     return 1;
 }
 
-int writeMenicurePedicureToTextFile(FILE* pFile, MenicurePedicure* pMeniPedi)
+int writeMenicurePedicureToTextFile(FILE* pFile, const MenicurePedicure* pMeniPedi)
 {
     if (fprintf(pFile, "%s\n", pMeniPedi->color) < 0) return 0;
     if (fprintf(pFile, "%d\n", pMeniPedi->menicure) < 0) return 0;
@@ -119,6 +146,6 @@ int readMenicurePedicureFromTextFile(FILE* pFile, MenicurePedicure* pMeniPedi)
 
 void freeMenicurePedicure(MenicurePedicure* pMeniPedi)
 {
-    if (!pMeniPedi) return;
+    CHECK_NULL(pMeniPedi);
     free(pMeniPedi->color);
 }

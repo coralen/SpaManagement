@@ -22,15 +22,15 @@ typedef struct
 } MenicurePedicure;
 
 int         setPolishColor(char** color);
-int         writeMenicurePedicureToBFile(FILE* pFile, MenicurePedicure* pMeniPedi);
+int         writeMenicurePedicureToBFile(FILE* pFile, const MenicurePedicure* pMeniPedi);
 int         readMenicurePedicureFromBFile(FILE* pFile, MenicurePedicure* pMeniPedi);
-int         writeMenicurePedicureToTextFile(FILE* pFile, MenicurePedicure* pMeniPedi);
+int         writeMenicurePedicureToTextFile(FILE* pFile, const MenicurePedicure* pMeniPedi);
 int         readMenicurePedicureFromTextFile(FILE* pFile, MenicurePedicure* pMeniPedi);
 void        printNailArtType();
 void        setMedicoreAndPedicore(MenicurePedicure* MediPedi);
 void        setNailArtType(MenicurePedicure* MediPedi);
 void        printMenicurePedicure(const MenicurePedicure* pMeniPedi);
-void        printMenicurePedicureHeaders();
+void        printMenicurePedicureHeaders(void* input);
 void        freeMenicurePedicure(MenicurePedicure* pMeniPedi);
 const char* getNailArtTypeString(int typeNum);
 

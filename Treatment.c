@@ -10,6 +10,7 @@
 
 #include "Treatment.h"
 #include "General.h"
+#include "Helper.h"
 
 static const char* treatmentTypeString[eNofTreatmentType] = { "Massage", "Hot Stones" ,"Meni Pedi" };
 static const int treatmentDurationInt[eNofTreatmentType] = { 45, 30 , 60 };
@@ -88,12 +89,12 @@ void printTreatmentTypes()
         printf("%d - %s\n", i, getTreatmentTypeString(i));
 }
 
-const char* getTreatmentTypeString(int typeNum)
+const char* getTreatmentTypeString(const int typeNum)
 {
     return treatmentTypeString[typeNum];
 }
 
-const int getTreatmentDurationInt(int typeNum)
+const int getTreatmentDurationInt(const int typeNum)
 {
     return treatmentDurationInt[typeNum];
 }
@@ -119,17 +120,7 @@ void printTreatmentWithData(const Treatment* pTreatment, int type)
     if (!pTreatment->date.day) printf("%-10s\t", "None");
     else printDate(&pTreatment->date);
     printf("%-10d\t", pTreatment->date.hour);
-    switch (pTreatment->type)
-    {
-    case eMassage:
-        printMassage(&pTreatment->data.massage);
-        break;
-    case eHotStones:
-        printHotStones(&pTreatment->data.hotStones);
-        break;
-    case eMeniPedi:
-        printMenicurePedicure(&pTreatment->data.meniPedi);
-    }
+    MASSAGE_TYPE_SWITCH_CASE(pTreatment->type, printMassage, &pTreatment->data.massage, printHotStones, &pTreatment->data.hotStones, printMenicurePedicure, &pTreatment->data.meniPedi)
     printf("\n");
 }
 
@@ -138,7 +129,7 @@ void printTreatmentHeaders()
     printf("%-5s\t%-10s\t%-10s\t%-10s\t%-5s\t%-5s\t%-10s\t%-10s\t%-10s\t", "Code", "Type", "Is Active", "Duration", "Price", "Room", "Employee", "Date", "Hour");
 }
 
-int writeTreatmentToBFile(FILE* pFile, FILE* pCFile, Treatment* pTreatment)
+int writeTreatmentToBFile(FILE* pFile, FILE* pCFile, const Treatment* pTreatment)
 {
     int len = (int)strlen(pTreatment->code);
     if (fwrite(&len, sizeof(int), 1, pFile) != 1) return 0;
@@ -213,7 +204,7 @@ int readTreatmentFromBFile(FILE* pFile, FILE* pCFile, Treatment* pTreatment, Roo
 }
 
 
-int writeTreatmentToTextFile(FILE* pFile, Treatment* pTreatment)
+int writeTreatmentToTextFile(FILE* pFile, const Treatment* pTreatment)
 {
     if (fprintf(pFile, "%s\n", pTreatment->code) < 0) return 0;
     writeDateToTextFile(pFile, &pTreatment->date);
@@ -305,7 +296,7 @@ void freeTreatmentWrapper(void* treatment)
 /* No need to free HotStones, has only eNums. */
 void freeTreatment(Treatment* pTreatment)
 {
-    if (!pTreatment) return;
+    CHECK_NULL(pTreatment);
     switch (pTreatment->type) 
     {
     case eMassage:

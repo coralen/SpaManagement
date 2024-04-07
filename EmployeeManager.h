@@ -12,22 +12,23 @@ typedef struct
     int employeeCount;
 } EmployeeManager;
 
-int         getEmployee(EmployeeManager* eManager, int role);
+/* No use */
+int         getEmployee(const EmployeeManager* eManager, int role); 
+
 int         addEmployee(EmployeeManager* pEmployeeManager);
-int         addEmployee(EmployeeManager* pEmployeeManager);
-int         findEmployeeByName(EmployeeManager* pEmployeeManager, char* name);
+int         findEmployeeByName(const EmployeeManager* pEmployeeManager, const char* name);
 int         writeEmployeeManagerToBFile(FILE* pFile, const EmployeeManager* pEmployeeManager);
 int         readEmployeeManagerFromBFile(FILE* pFile, EmployeeManager* pEmployeeManager);
 int         writeEmployeeManagerToTextFile(FILE* pFile, const EmployeeManager* pEmployeeManager);
 int         readEmployeeManagerFromTextFile(FILE* pFile, EmployeeManager* pEmployeeManager);
-int         deleteEmployee(EmployeeManager* pEmployeeManager, char* name);
+int         deleteEmployee(EmployeeManager* pEmployeeManager, const char* name);
 void        initEmployeeManager(EmployeeManager* pEmployeeManager);
 void        printEmployeeArr(const EmployeeManager* pEmployeeManager);
 void        freeEmployeeManager(EmployeeManager* pEmployeeManager);
 void        giveEmployeeARaise(EmployeeManager* pEmployeeManager);
-Employee*   findEmployeeByRole(EmployeeManager* pEmployeeManager, eEmployeeRole role);
-Employee*   findEmployeeBySeniorityAndRole(EmployeeManager* pEmployeeManager, int seniority, int role);
-Employee*   findEmployeeById(EmployeeManager* pEmployeeManager, int id);
+Employee*   findEmployeeByRole(const EmployeeManager* pEmployeeManager, const eEmployeeRole role);
+Employee*   findEmployeeBySeniorityAndRole(const EmployeeManager* pEmployeeManager, const int seniority, int role);
+Employee*   findEmployeeById(const EmployeeManager* pEmployeeManager, const int id);
 
 
 #endif

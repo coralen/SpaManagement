@@ -11,21 +11,21 @@
 
 int initTreatmentManager(TreatmentManager* pTreatmentManager)
 {
-	if (!L_init(&pTreatmentManager->treatmentArr)) return 0;
+	if (!L_init(&pTreatmentManager->treatmentList)) return 0;
 	pTreatmentManager->treatmentCount = 0;
 	return 1;
 }
 
 int addTreatmentToList(Treatment* pTreatment, TreatmentManager* pTreatmentManager)
 {
-	if (!&pTreatmentManager->treatmentArr.head)
+	if (!&pTreatmentManager->treatmentList.head)
 	{
 		freeTreatment(pTreatment);
 		free(pTreatment);
 		return 0;
 	}
 
-	NODE* ptr = &pTreatmentManager->treatmentArr.head;
+	NODE* ptr = &pTreatmentManager->treatmentList.head;
 	L_insert(ptr, pTreatment);
 
 	return 1;
@@ -33,11 +33,11 @@ int addTreatmentToList(Treatment* pTreatment, TreatmentManager* pTreatmentManage
 
 int deleteTreatmentFromList(Treatment* pTreatment, TreatmentManager* pTreatmentManager)
 {
-	const NODE* found = L_find(&pTreatmentManager->treatmentArr.head, pTreatment, compareTreatments);
+	const NODE* found = L_find(&pTreatmentManager->treatmentList.head, pTreatment, compareTreatments);
 	if (found)
 	{
 		NODE* nonConstFound = (NODE*)found;
-		if (!L_delete_current(&pTreatmentManager->treatmentArr.head, nonConstFound, freeTreatmentWrapper)) return 0;
+		if (!L_delete_current(&pTreatmentManager->treatmentList.head, nonConstFound, freeTreatmentWrapper)) return 0;
 		return 1;
 	}
 	return 0;
@@ -64,9 +64,10 @@ void initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager, i
 	initTreatmentNoCode(pTreatment, option, pRoom, pEmployee, pDate);
 }
 
-Treatment* findTreatmentWithCode(TreatmentManager* pTreatmentManager, char* treatmentCode)
+Treatment* findTreatmentWithCode(const TreatmentManager* pTreatmentManager, const char* treatmentCode)
 {
-	NODE* ptr = &pTreatmentManager->treatmentArr.head;
+	TreatmentManager tmpTreatmentManager = *pTreatmentManager;
+	NODE* ptr = &tmpTreatmentManager.treatmentList.head;
 	ptr = ptr->next;
 	while (ptr != NULL)
 	{
@@ -85,7 +86,7 @@ int revenueFromTreatments(TreatmentManager* pTreatmentManager)
 	if (!pTreatmentManager->treatmentCount) return 0;
 	int revenu = 0;
 
-	NODE* ptr = &pTreatmentManager->treatmentArr.head;
+	NODE* ptr = &pTreatmentManager->treatmentList.head;
 	ptr = ptr->next;
 	while (ptr != NULL)
 	{
@@ -100,7 +101,7 @@ int paymentForEmployees(TreatmentManager* pTreatmentManager)
 	if (!pTreatmentManager->treatmentCount) return 0;
 	int payment = 0;
 
-	NODE* ptr = &pTreatmentManager->treatmentArr.head;
+	NODE* ptr = &pTreatmentManager->treatmentList.head;
 	ptr = ptr->next;
 	while (ptr != NULL)
 	{
@@ -117,8 +118,13 @@ int compareTreatments(const void* treatment1, const void* treatment2)
 	return !(treatmentA == treatmentB);
 }
 
-void printTreatmentArrWithData(const TreatmentManager* pTreatmentManager)
+void printTreatmentListWithData(const TreatmentManager* pTreatmentManager)
 {
+	if (!pTreatmentManager->treatmentCount)
+	{
+		printf("The spa has no treatments\n");
+		return;
+	}
 	for (int i = 0; i < eNofTreatmentType; i++)
 	{
 		printf("Treatment from type %s:\n", getTreatmentTypeString(i));
@@ -129,31 +135,20 @@ void printTreatmentArrWithData(const TreatmentManager* pTreatmentManager)
 
 void printArrByTreatmentType(const TreatmentManager* pTreatmentManager, int type)
 {
-	switch (type)
-	{
-	case eMassage:
-		printMassageHeaders();
-		break;
-	case eHotStones:
-		printHotStonesHeaders();
-		break;
-	case eMeniPedi:
-		printMenicurePedicureHeaders();
-		break;
-	}
-	L_print_by_var(&pTreatmentManager->treatmentArr, (void (*)(const void*, int)) printTreatmentWithData, type);
+	MASSAGE_TYPE_SWITCH_CASE(type, printMassageHeaders, NULL, printHotStonesHeaders, NULL, printMenicurePedicureHeaders, NULL);
+	L_print_by_var(&pTreatmentManager->treatmentList, (void (*)(const void*, int)) printTreatmentWithData, type);
 }
 
-void printTreatmentArr(const TreatmentManager* pTreatmentManager)
+void printTreatmentList(const TreatmentManager* pTreatmentManager)
 {
 	printTreatmentHeaders();
-	L_print(&pTreatmentManager->treatmentArr, (void (*)(const void*)) printTreatment);
+	L_print(&pTreatmentManager->treatmentList, (void (*)(const void*)) printTreatment);
 }
 
 int writeTreatmentManagerToBFile(FILE* pFile, FILE* pCFile, TreatmentManager* pTreatmentManager)
 {
-	if (!&pTreatmentManager->treatmentArr.head) return 0;
-	NODE* ptr = &pTreatmentManager->treatmentArr.head;
+	if (!&pTreatmentManager->treatmentList.head) return 0;
+	NODE* ptr = &pTreatmentManager->treatmentList.head;
 
 	if (fwrite(&pTreatmentManager->treatmentCount, sizeof(int), 1, pFile) != 1) return 0;
 	ptr = ptr->next;
@@ -167,10 +162,10 @@ int writeTreatmentManagerToBFile(FILE* pFile, FILE* pCFile, TreatmentManager* pT
 
 int readTreatmentManagerFromBFile(FILE* pFile, FILE* pCFile, TreatmentManager* pTreatmentManager, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager)
 {
-	if (!&pTreatmentManager->treatmentArr.head) return 0;
+	if (!&pTreatmentManager->treatmentList.head) return 0;
 	if (fread(&pTreatmentManager->treatmentCount, sizeof(int), 1, pFile) != 1) return 0;
 
-	NODE* ptr = &pTreatmentManager->treatmentArr.head;
+	NODE* ptr = &pTreatmentManager->treatmentList.head;
 	Treatment* pTreatment = NULL;
 	int count = pTreatmentManager->treatmentCount;
 
@@ -187,8 +182,8 @@ int readTreatmentManagerFromBFile(FILE* pFile, FILE* pCFile, TreatmentManager* p
 
 int writeTreatmentManagerToTextFile(FILE* pFile, TreatmentManager* pTreatmentManager)
 {
-	if (!&pTreatmentManager->treatmentArr.head) return 0;
-	NODE* ptr = &pTreatmentManager->treatmentArr.head;
+	if (!&pTreatmentManager->treatmentList.head) return 0;
+	NODE* ptr = &pTreatmentManager->treatmentList.head;
 
 	if (fprintf(pFile, "%d\n", pTreatmentManager->treatmentCount) < 0) return 0;
 	ptr = ptr->next;
@@ -201,10 +196,10 @@ int writeTreatmentManagerToTextFile(FILE* pFile, TreatmentManager* pTreatmentMan
 
 int readTreatmentManagerFromTextFile(FILE* pFile, TreatmentManager* pTreatmentManager, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager)
 {
-	if (!&pTreatmentManager->treatmentArr.head) return 0;
+	if (!&pTreatmentManager->treatmentList.head) return 0;
 	if (!fscanf(pFile, "%d\n", &pTreatmentManager->treatmentCount)) return 0;
 
-	NODE* ptr = &pTreatmentManager->treatmentArr.head;
+	NODE* ptr = &pTreatmentManager->treatmentList.head;
 	Treatment* pTreatment = NULL;
 	int count = pTreatmentManager->treatmentCount;
 
@@ -221,15 +216,16 @@ int readTreatmentManagerFromTextFile(FILE* pFile, TreatmentManager* pTreatmentMa
 
 void updateTreatmenArrUtilitiesStatus(TreatmentManager* pTreatmentManager)
 {
-	L_func(&pTreatmentManager->treatmentArr, (void (*)(const void*)) updateTreatmentUtilitiesStatus);
+	L_func(&pTreatmentManager->treatmentList, (void (*)(const void*)) updateTreatmentUtilitiesStatus);
 }
 
-int findTreatmentWithRoomAndDate(TreatmentManager* pTreatmentManager, Date* pDate, char* roomCode)
+int findTreatmentWithRoomAndDate(const TreatmentManager* pTreatmentManager, const Date* pDate, const char* roomCode)
 {
+	TreatmentManager tmpTreatmentManager = *pTreatmentManager;
 	if (!pTreatmentManager->treatmentCount) return 0;
-	if (!&pTreatmentManager->treatmentArr.head) return 0;
+	if (!&pTreatmentManager->treatmentList.head) return 0;
 
-	NODE* ptr = &pTreatmentManager->treatmentArr.head;
+	NODE* ptr = &tmpTreatmentManager.treatmentList.head;
 
 	ptr = ptr->next;
 	while (ptr) {
@@ -239,12 +235,13 @@ int findTreatmentWithRoomAndDate(TreatmentManager* pTreatmentManager, Date* pDat
 	return 0;
 }
 
-Treatment* findTreatmentWithRoom(TreatmentManager* pTreatmentManager, char* roomCode)
+Treatment* findTreatmentWithRoom(const TreatmentManager* pTreatmentManager, const char* roomCode)
 {
 	if (!pTreatmentManager->treatmentCount) return 0;
-	if (!&pTreatmentManager->treatmentArr.head) return 0;
+	if (!&pTreatmentManager->treatmentList.head) return 0;
 
-	NODE* ptr = &pTreatmentManager->treatmentArr.head;
+	TreatmentManager tmpTreatmentManager = *pTreatmentManager;
+	NODE* ptr = &tmpTreatmentManager.treatmentList.head;
 
 	ptr = ptr->next;
 	while (ptr) {
@@ -254,12 +251,13 @@ Treatment* findTreatmentWithRoom(TreatmentManager* pTreatmentManager, char* room
 	return NULL;
 }
 
-int findTreatmentWithEmployeeAndDate(TreatmentManager* pTreatmentManager, Date* pDate, int employeeId)
+int findTreatmentWithEmployeeAndDate(const TreatmentManager* pTreatmentManager, const Date* pDate, const int employeeId)
 {
 	if (!pTreatmentManager->treatmentCount) return 0;
-	if (!&pTreatmentManager->treatmentArr.head) return 0;
+	if (!&pTreatmentManager->treatmentList.head) return 0;
 
-	NODE* ptr = &pTreatmentManager->treatmentArr.head;
+	TreatmentManager tmpTreatmentManager = *pTreatmentManager;
+	NODE* ptr = &tmpTreatmentManager.treatmentList.head;
 
 	ptr = ptr->next;
 	while (ptr) {
@@ -269,12 +267,13 @@ int findTreatmentWithEmployeeAndDate(TreatmentManager* pTreatmentManager, Date* 
 	return 0;
 }
 
-Treatment* findTreatmentWithEmployee(TreatmentManager* pTreatmentManager, int employeeId)
+Treatment* findTreatmentWithEmployee(const TreatmentManager* pTreatmentManager, const int employeeId)
 {
 	if (!pTreatmentManager->treatmentCount) return 0;
-	if (!&pTreatmentManager->treatmentArr.head) return 0;
+	if (!&pTreatmentManager->treatmentList.head) return 0;
 
-	NODE* ptr = &pTreatmentManager->treatmentArr.head;
+	TreatmentManager tmpTreatmentManager = *pTreatmentManager;
+	NODE* ptr = &tmpTreatmentManager.treatmentList.head;
 
 	ptr = ptr->next;
 	while (ptr) {
@@ -286,7 +285,6 @@ Treatment* findTreatmentWithEmployee(TreatmentManager* pTreatmentManager, int em
 
 void freeTreatmentManager(TreatmentManager* pTreatmentManager)
 {
-	if (!pTreatmentManager) return;
-	L_func(&pTreatmentManager->treatmentArr, (void (*)(const void*))freeTreatmentWrapper);
-	//L_func(&pTreatmentManager->treatmentArr, (void (*)(const void*))freeTreatment);
+	CHECK_NULL(pTreatmentManager);
+	L_func(&pTreatmentManager->treatmentList, (void (*)(const void*))freeTreatmentWrapper);
 }

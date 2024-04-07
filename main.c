@@ -17,20 +17,26 @@ typedef enum
 	eGiveEmployeeARaise, eCalcSpaRevenue, eSortEmployees, eFindTreatment, eNofOptions
 } eMenuOptions;
 
+typedef enum { eTextFile, eBinFile, eManual, eNofLoadOptions } eLoadOptions;
+
 const char* str[eNofOptions] = { "Add Room","Add Employee","Add Treatment", "Print rooms", "Print Employees",
 								"Print treatments", "Print spa", "Delete room", "Delete employee", "Delete treatment",
 								"Give employee a raise", "Calc the spa's revenue" , "Sort employees", "Find treatment" };
+
+const char* loadOptions[eNofLoadOptions] = { "From text file", "From binary file", "Enter manually" };
 
 #define EXIT			-1
 
 int menu();
 void suggestLoadFromFile(SpaManager* pSpaManager);
+void printLoadOptions();
 
 int main()
 {
 	int option, stop = 0;
 	SpaManager spaManager;
 	
+	printf("Hello and welcome to the Spa Management program!\n");
 	suggestLoadFromFile(&spaManager);
 
 	do {
@@ -60,7 +66,7 @@ int main()
 			break;
 
 		case ePrintTreatments:
-			printTreatmentArrWithData(&spaManager.treatmentManager);
+			printTreatmentListWithData(&spaManager.treatmentManager);
 			break;
 
 		case ePrintSpa:
@@ -133,7 +139,8 @@ int menu()
 void suggestLoadFromFile(SpaManager* pSpaManager)
 {
 	int fileOption;
-	printf("Do you want to load from file?\n0 - text\n1 - bin\n2 - No file\n");
+	printf("Choose how to start the spa:\n");
+	printLoadOptions();
 	scanf("%d", &fileOption);
 	while (getchar() != '\n');
 
@@ -151,4 +158,10 @@ void suggestLoadFromFile(SpaManager* pSpaManager)
 		initSpaManager(pSpaManager);
 		break;
 	}
+}
+
+void printLoadOptions()
+{
+	for (int i = 0; i < eNofLoadOptions; i++)
+		printf("%d - %s\n", i, loadOptions[i]);
 }

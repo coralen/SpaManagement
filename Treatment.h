@@ -36,9 +36,9 @@ typedef struct {
 int         initTreatmentNoCode(Treatment* pTreatment, int option, Room* pRoom, Employee* pEmployee, Date* pDate);
 int         initMassage(Treatment* pTreatment);
 int         initMenicurePedicure(Treatment* pTreatment);
-int         writeTreatmentToBFile(FILE* pFile, FILE* pCFile, Treatment* pTreatment);
+int         writeTreatmentToBFile(FILE* pFile, FILE* pCFile, const Treatment* pTreatment);
 int         readTreatmentFromBFile(FILE* pFile, FILE* pCFile, Treatment* pTreatment, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager);
-int         writeTreatmentToTextFile(FILE* pFile, Treatment* pTreatment);
+int         writeTreatmentToTextFile(FILE* pFile, const Treatment* pTreatment);
 int         readTreatmentFromTextFile(FILE* pFile, Treatment* pTreatment, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager);
 void        getTreatmentCode(char* code);
 void        initHotStones(Treatment* pTreatment);
@@ -50,8 +50,8 @@ void        printTreatment(const Treatment* pTreatment);
 void        printTreatmentHeaders();
 void        printTreatmentWithData(const Treatment* pTreatment, int type);
 void        updateTreatmentUtilitiesStatus(Treatment* pTreatment);
-const char* getTreatmentTypeString(int typeNum);
-const int   getTreatmentDurationInt(int typeNum);
-const int   getTreatmentPriceInt(int typeNum);
+const char* getTreatmentTypeString(const int typeNum);
+const int   getTreatmentDurationInt(const int typeNum);
+const int   getTreatmentPriceInt(const int typeNum);
 
 #endif

@@ -16,10 +16,10 @@ static const int employeeSalaryInt[eNofRole] = { 30, 70, 70, 100, 150 };
 
 int initEmployee(Employee* pEmployee) 
 { 
-    getEmployeeName(&pEmployee->name);
+    setEmployeeName(&pEmployee->name);
     pEmployee->id = getEmployeeId();
-    getEmployeeRole(pEmployee);
-    getEmployeeSeniority(pEmployee);
+    setEmployeeRole(pEmployee);
+    setEmployeeSeniority(pEmployee);
     pEmployee->salary = getEmployeeSalaryInt(pEmployee->role);
     BOOL isBooked = 0;
 
@@ -31,7 +31,7 @@ int getEmployeeId()
     return idCounter++;
 }
 
-int getEmployeeName(char** name)
+int setEmployeeName(char** name)
 {
     char inputName[MAX_STRING];
 
@@ -44,7 +44,7 @@ int getEmployeeName(char** name)
     return 1;
 }
 
-void getEmployeeRole(Employee* pEmployee)
+void setEmployeeRole(Employee* pEmployee)
 {
     printf("Enter the role of the new employee, the options are: \n");
     printEmployeeRoles();
@@ -59,7 +59,7 @@ void getEmployeeRole(Employee* pEmployee)
     else printf("Invalid role number\n");
 }
 
-void getEmployeeSeniority(Employee* pEmployee)
+void setEmployeeSeniority(Employee* pEmployee)
 {
     printf("Enter the years of experience: \n");
     scanf("%d", &pEmployee->seniority);
@@ -75,12 +75,12 @@ void giveARaise(Employee* pEmployee, int newSalary)
     pEmployee->salary = pEmployee->salary + newSalary;
 }
 
-BOOL isEmployeeAvailable(Employee* pEmployee)
+BOOL isEmployeeAvailable(const Employee* pEmployee)
 {
     return pEmployee->isBooked;
 }
 
-void setSalary(Employee* pEmployee, int salary) 
+void setEmployeeSalary(Employee* pEmployee, int salary) 
 {
     printf("Currently, the salary is %d enter the new salary of the employee: \n", salary);
     scanf("%d", &salary);
@@ -126,12 +126,12 @@ void printEmployeeRoles()
         printf("%d - %s\n", i, getEmployeeRoleString(i));
 }
 
-const char* getEmployeeRoleString(int roleNum)
+const char* getEmployeeRoleString(const int roleNum)
 {
     return employeeRolesString[roleNum];
 }
 
-int writeEmployeeToBFile(FILE* pFile, Employee* pEmployee)
+int writeEmployeeToBFile(FILE* pFile, const Employee* pEmployee)
 {
     int len = (int)(strlen(pEmployee->name) + 1);
     if (fwrite(&len, sizeof(int), 1, pFile) != 1) return 0;
@@ -165,7 +165,7 @@ int readEmployeeFromBFile(FILE* pFile, Employee* pEmployee)
 }
 
 
-int writeEmployeeToTextFile(FILE* pFile, Employee* pEmployee)
+int writeEmployeeToTextFile(FILE* pFile, const Employee* pEmployee)
 {
     if (fprintf(pFile, "%s\n", pEmployee->name) < 0) return 0;
     if (fprintf(pFile, "%d\n", pEmployee->id) < 0) return 0;
@@ -196,7 +196,7 @@ int readEmployeeFromTextFile(FILE* pFile, Employee* pEmployee)
 
 void freeEmployee(Employee* pEmployee) 
 {
-    if (!pEmployee) return; 
+    CHECK_NULL(pEmployee);
     free(pEmployee->name);
     free(pEmployee);
 }

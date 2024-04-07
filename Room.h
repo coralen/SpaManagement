@@ -16,14 +16,14 @@ typedef struct {
     BOOL isBooked;
 } Room;
 
-int         writeRoomToBFile(FILE* pFile, Room* pRoom);
+int         writeRoomToBFile(FILE* pFile, const Room* pRoom);
 int         readRoomFromBFile(FILE* pFile, Room* pRoom);
-int         writeRoomToTextFile(FILE* pFile, Room* pRoom);
+int         writeRoomToTextFile(FILE* pFile, const Room* pRoom);
 int         readRoomFromTextFile(FILE* pFile, Room* pRoom);
 void        initRoomNoCode(Room* pRoom);
-void        getSize(Room* pRoom);
-void        getRoomType(Room* pRoom);
-void        getRoomCode(char* code);
+void        setRoomSize(Room* pRoom);
+void        setRoomType(Room* pRoom);
+void        setRoomCode(char* code);
 void        printRoomTypes();
 void        printRoom(const Room* pRoom);
 void        printRoomHeaders();

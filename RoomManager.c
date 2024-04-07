@@ -10,6 +10,7 @@
 #include "RoomManager.h"
 #include "General.h"
 #include "Date.h"
+#include "Helper.h"
 
 void initRoomManager(RoomManager* pRoomManager)
 {
@@ -28,11 +29,11 @@ int addRoom(RoomManager* pRoomManager)
 
 }
 
-void initRoom(Room* pRoom, RoomManager* pRoomManager)
+void initRoom(Room* pRoom, const RoomManager* pRoomManager)
 {
 	while (1)
 	{
-		getRoomCode(pRoom->code);
+		setRoomCode(pRoom->code);
 		if (checkUniqueRoomCode(pRoom->code, pRoomManager))
 			break;
 
@@ -41,7 +42,7 @@ void initRoom(Room* pRoom, RoomManager* pRoomManager)
 	initRoomNoCode(pRoom);
 }
 
-int checkUniqueRoomCode(const char* code, RoomManager* pRoomManager)
+int checkUniqueRoomCode(const char* code, const RoomManager* pRoomManager)
 {
 	for (int i = 0; i < pRoomManager->roomCount; i++)
 		if (!strcmp(code, pRoomManager->roomArr[i].code)) return 0;
@@ -81,7 +82,7 @@ int findRoomIndexInArray(const Room* pRoom, const RoomManager* pRoomManager)
 	return -1;
 }
 
-Room* findRoomByCode(RoomManager* pRoomManager, char* code)
+Room* findRoomByCode(const RoomManager* pRoomManager, char* code)
 {
 	for (int i = 0; i < pRoomManager->roomCount; i++)
 	{
@@ -115,7 +116,6 @@ int readRoomManagerFromBFile(FILE* pFile, RoomManager* pRoomManager)
 	if (!pRoomManager->roomCount) return 1;
 	if (!(pRoomManager->roomArr = (Room*)realloc(pRoomManager->roomArr, (pRoomManager->roomCount) * sizeof(Room)))) return 0;
 	
-	// create a readRoomArr function
 	for (int i = 0; i < pRoomManager->roomCount; i++)
 	{
 		Room* pRoom = (Room*)calloc(1, sizeof(Room));
@@ -154,6 +154,6 @@ int readRoomManagerFromTextFile(FILE* pFile, RoomManager* pRoomManager)
 
 void freeRoomManager(RoomManager* pRoomManager)
 {
-	if (!pRoomManager) return;
+	CHECK_NULL(pRoomManager);
 	free(pRoomManager->roomArr);
 }
