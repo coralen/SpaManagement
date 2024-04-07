@@ -5,6 +5,8 @@
 #include "TreatmentManager.h"
 #include "RoomManager.h"
 
+typedef enum { eIncreaseBudget, eFireEmployee, eDeleteTreatmant, eStayInOverdraft, eNoOfOverdraftOptions } overdraftOptions;
+
 
 typedef struct
 {
@@ -34,11 +36,15 @@ int         readSpaFromTextFile(FILE* pFile, SpaManager* pSpaManager);
 int         deleteRoomFromSpa(RoomManager* pRoomManager, TreatmentManager* pTreatmentManager);
 int         deleteEmployeeFromSpa(EmployeeManager* pEmployeeManager, TreatmentManager* pTreatmentManager);
 int         deleteTreatmentFromSpa(TreatmentManager* pTreatmentManager);
+void        increaseSpaBudget(SpaManager* pSpaManager);
 void        freeSpaManager(SpaManager* pSpaManager);
 void        setSpaBudget(SpaManager* pSpa);
 void        printSpa(const SpaManager* pSpaManager);
 void        setSpaDefaults(SpaManager* pSpaManager);
+void        calcSpaRevenue(SpaManager* pSpaManager);
+void        printOverdraftOptions();
 Room*       findAvailableRoom(RoomManager* pRoomManager, TreatmentManager* pTreatmentManager, RoomType type, Date* pDate);
 Employee*   findAvailableEmployee(EmployeeManager* pEmployeeManager, TreatmentManager* pTreatmentManager, eEmployeeRole role, Date* pDate);
+const char* getOverdraftOptionsString(int optionNum);
 
 #endif

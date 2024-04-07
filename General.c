@@ -9,8 +9,8 @@
 #include "Helper.h"
 #include "General.h"
 
-const char* boolString[eNoBool] = { "False", "True"};
-const char* statusString[eNoStatus] = { "Available", "Busy" };
+const char* boolString[eNofBool] = { "False", "True"};
+const char* statusString[eNofStatus] = { "Available", "Busy" };
 
 int isCodeValid(const char* code, const char* firstChars)
 {

@@ -10,7 +10,7 @@
 #include "Massage.h"
 #include "Helper.h"
 
-static const char* massageTypeString[MASSAGE_TYPE_COUNT] = { "Swedish", "Deep Tissue" ,"Reflexology", "Shiatsu" };
+static const char* massageTypeString[eNoOfMassageType] = { "Swedish", "Deep Tissue" ,"Reflexology", "Shiatsu" };
 
 void getMassageType(MassageType* type)
 {
@@ -20,7 +20,7 @@ void getMassageType(MassageType* type)
 		printf("Please choose one of the following massage types:\n");
 		printMassageType();
 		scanf("%d", &option);
-	} while (option < 0 || option >= MASSAGE_TYPE_COUNT);
+	} while (option < 0 || option >= eNoOfMassageType);
 	*type = (MassageType)option;
 }
 
@@ -40,7 +40,7 @@ int getNotesFromClient(char** notes)
 
 void printMassageType()
 {
-	for (int i = 0; i < MASSAGE_TYPE_COUNT; i++)
+	for (int i = 0; i < eNoOfMassageType; i++)
 		printf("%d - %s\n", i, getMassageTypeString(i));
 }
 
@@ -62,7 +62,7 @@ void printMassageHeaders()
 int writeMassageToBFile(FILE* pFile, Massage* pMassage)
 {
 	if (fwrite(&pMassage->type, sizeof(MassageType), 1, pFile) != 1) return 0;
-	int len = strlen(pMassage->notesFromClient) + 1;
+	int len = (int)(strlen(pMassage->notesFromClient) + 1);
 	if (fwrite(&len, sizeof(int), 1, pFile) != 1) return 0;
 	if (fwrite(pMassage->notesFromClient, sizeof(char), len, pFile) != len) return 0;
 

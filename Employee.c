@@ -133,7 +133,7 @@ const char* getEmployeeRoleString(int roleNum)
 
 int writeEmployeeToBFile(FILE* pFile, Employee* pEmployee)
 {
-    int len = strlen(pEmployee->name) + 1;
+    int len = (int)(strlen(pEmployee->name) + 1);
     if (fwrite(&len, sizeof(int), 1, pFile) != 1) return 0;
     if (fwrite(pEmployee->name, sizeof(char), len, pFile) != len) return 0;
 

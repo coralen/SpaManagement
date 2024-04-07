@@ -11,7 +11,8 @@ typedef struct {
 
 int			initTreatmentManager(TreatmentManager* pTreatmentManager);
 int			addTreatmentToList(Treatment* pTreatment, TreatmentManager* pTreatmentManager);
-int			calculateTreatmentsRevenue(TreatmentManager* pTreatmentManager);
+int			revenueFromTreatments(TreatmentManager* pTreatmentManager);
+int			paymentForEmployees(TreatmentManager* pTreatmentManager);
 int			compareTreatments(const void* treatment1, const void* treatment2);
 int			deleteTreatmentFromList(Treatment* pTreatment, TreatmentManager* pTreatmentManager);
 int			writeTreatmentManagerToBFile(FILE* pFile, FILE* pCFile, TreatmentManager* pTreatmentManager);

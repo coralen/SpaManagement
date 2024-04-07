@@ -80,9 +80,34 @@ Treatment* findTreatmentWithCode(TreatmentManager* pTreatmentManager, char* trea
 }
 
 
-int calculateTreatmentsRevenue(TreatmentManager* pTreatmentManager)
+int revenueFromTreatments(TreatmentManager* pTreatmentManager)
 {
-	return 1;
+	if (!pTreatmentManager->treatmentCount) return 0;
+	int revenu = 0;
+
+	NODE* ptr = &pTreatmentManager->treatmentArr.head;
+	ptr = ptr->next;
+	while (ptr != NULL)
+	{
+		revenu += ((Treatment*)ptr->key)->price;
+		ptr = ptr->next;
+	}
+	return revenu;
+}
+
+int paymentForEmployees(TreatmentManager* pTreatmentManager)
+{
+	if (!pTreatmentManager->treatmentCount) return 0;
+	int payment = 0;
+
+	NODE* ptr = &pTreatmentManager->treatmentArr.head;
+	ptr = ptr->next;
+	while (ptr != NULL)
+	{
+		payment += ((Treatment*)ptr->key)->pTreatmentEmployee->salary;
+		ptr = ptr->next;
+	}
+	return payment;
 }
 
 int compareTreatments(const void* treatment1, const void* treatment2)
@@ -94,7 +119,7 @@ int compareTreatments(const void* treatment1, const void* treatment2)
 
 void printTreatmentArrWithData(const TreatmentManager* pTreatmentManager)
 {
-	for (int i = 0; i < TREATMENT_TYPE_COUNT; i++)
+	for (int i = 0; i < eNofTreatmentType; i++)
 	{
 		printf("Treatment from type %s:\n", getTreatmentTypeString(i));
 		printTreatmentHeaders();
@@ -116,7 +141,6 @@ void printArrByTreatmentType(const TreatmentManager* pTreatmentManager, int type
 		printMenicurePedicureHeaders();
 		break;
 	}
-	printf("\n");
 	L_print_by_var(&pTreatmentManager->treatmentArr, (void (*)(const void*, int)) printTreatmentWithData, type);
 }
 

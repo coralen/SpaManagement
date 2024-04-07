@@ -11,9 +11,9 @@
 #include "Treatment.h"
 #include "General.h"
 
-static const char* treatmentTypeString[TREATMENT_TYPE_COUNT] = { "Massage", "Hot Stones" ,"Meni Pedi" };
-static const int treatmentDurationInt[TREATMENT_TYPE_COUNT] = { 45, 30 , 60 };
-static const int treatmentPriceInt[TREATMENT_TYPE_COUNT] = { 300, 250, 100 };
+static const char* treatmentTypeString[eNofTreatmentType] = { "Massage", "Hot Stones" ,"Meni Pedi" };
+static const int treatmentDurationInt[eNofTreatmentType] = { 45, 30 , 60 };
+static const int treatmentPriceInt[eNofTreatmentType] = { 300, 250, 100 };
 
 int initTreatmentNoCode(Treatment* pTreatment, int option, Room* pRoom, Employee* pEmployee, Date *pDate)
 {
@@ -84,7 +84,7 @@ void describeTreatment(Treatment* pTreatment)
 
 void printTreatmentTypes()
 {
-    for (int i = 0; i < TREATMENT_TYPE_COUNT; i++)
+    for (int i = 0; i < eNofTreatmentType; i++)
         printf("%d - %s\n", i, getTreatmentTypeString(i));
 }
 
@@ -140,7 +140,7 @@ void printTreatmentHeaders()
 
 int writeTreatmentToBFile(FILE* pFile, FILE* pCFile, Treatment* pTreatment)
 {
-    int len = strlen(pTreatment->code);
+    int len = (int)strlen(pTreatment->code);
     if (fwrite(&len, sizeof(int), 1, pFile) != 1) return 0;
     if (fwrite(pTreatment->code, sizeof(char), len, pFile) != len) return 0;
 
@@ -149,7 +149,7 @@ int writeTreatmentToBFile(FILE* pFile, FILE* pCFile, Treatment* pTreatment)
     if (fwrite(&pTreatment->price, sizeof(int), 1, pFile) != 1) return 0;
     if (fwrite(&pTreatment->isActive, sizeof(int), 1, pFile) != 1) return 0;
 
-    len = strlen(pTreatment->pTreatmentRoom->code);
+    len = (int)strlen(pTreatment->pTreatmentRoom->code);
     if (fwrite(&len, sizeof(int), 1, pFile) != 1) return 0;
     if (fwrite(pTreatment->pTreatmentRoom->code, sizeof(char), len, pFile) != len) return 0;
 

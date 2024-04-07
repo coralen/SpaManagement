@@ -11,10 +11,9 @@
 #include "MenicurePedicure.h"
 
 #define TREATMENT_START_CHARS "T-"
-#define TREATMENT_TYPE_COUNT 3
 
 
-typedef enum { eMassage, eHotStones, eMeniPedi } TreatmentType;
+typedef enum { eMassage, eHotStones, eMeniPedi, eNofTreatmentType } TreatmentType;
 
 typedef union {
     Massage massage;

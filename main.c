@@ -84,7 +84,7 @@ int main()
 			break;
 		
 		case eCalcSpaRevenue:
-			//calcSpaRevenue(); // implement
+			calcSpaRevenue(&spaManager);
 			break;
 
 		case eSortEmployees:

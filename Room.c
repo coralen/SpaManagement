@@ -10,7 +10,7 @@
 #include "Room.h"
 #include "General.h"
 
-static const char* roomTypeString[ROOM_TYPE_COUNT] = { "Bedded", "Chaired" };
+static const char* roomTypeString[eNoOfRoomType] = { "Bedded", "Chaired" };
 
 void initRoomNoCode(Room* pRoom)
 {
@@ -33,7 +33,7 @@ void getRoomType(Room* pRoom)
         printf("Choose one of the room types:\n");
         printRoomTypes();
         scanf("%d", &choice);
-    } while (choice < 0 || choice >= ROOM_TYPE_COUNT);
+    } while (choice < 0 || choice >= eNoOfRoomType);
 
     pRoom->type = (RoomType)choice;
 }
@@ -52,7 +52,7 @@ void getRoomCode(char* code)
 
 void printRoomTypes()
 {
-    for (int i = 0; i < ROOM_TYPE_COUNT; i++)
+    for (int i = 0; i < eNoOfRoomType; i++)
         printf("%d - %s\n", i, getRoomTypeString(i));
 }
 
@@ -73,7 +73,7 @@ void printRoomHeaders()
 
 int writeRoomToBFile(FILE* pFile, Room* pRoom)
 {
-    int len = strlen(pRoom->code);
+    int len = (int)(strlen(pRoom->code));
     if (fwrite(&len, sizeof(int), 1, pFile) != 1) return 0;
     if (fwrite(pRoom->code, sizeof(char), len, pFile) != len) return 0;
     if (fwrite(&pRoom->type, sizeof(RoomType), 1, pFile) != 1) return 0;

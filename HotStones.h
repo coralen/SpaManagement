@@ -2,13 +2,11 @@
 #define _HOT_STONES_H
 
 #define HOT_STONES_ROOM_TYPE 0
-#define HOT_STONES_TYPE_COUNT 3
 #define HOT_STONES_EMPLOYEE_ROLE 3
-#define HOT_STONES_PLACEMENT_COUNT 4
 
 
-typedef enum { BASALT, MARBLE, HIMALAYAN_SALT } StonesType;
-typedef enum { BACK, NECK, HANDS, LEGS } stonePlacement;
+typedef enum { eBasalt, eMarble, eHimalayanSalt, eNofStoneType } StonesType;
+typedef enum { eBack, eNeck, eHands, eLegs, eNofPlacements } stonePlacement;
 
 typedef struct {
 	StonesType type;

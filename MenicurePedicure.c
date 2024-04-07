@@ -72,7 +72,7 @@ void printMenicurePedicureHeaders()
 
 int writeMenicurePedicureToBFile(FILE* pFile, MenicurePedicure* pMeniPedi)
 {
-    int len = strlen(pMeniPedi->color) + 1;
+    int len = (int)(strlen(pMeniPedi->color) + 1);
     if (fwrite(&len, sizeof(int), 1, pFile) != 1) return 0;
     if (fwrite(pMeniPedi->color, sizeof(char), len, pFile) != len) return 0;
     if (fwrite(&pMeniPedi->menicure, sizeof(BOOL), 1, pFile) != 1) return 0;

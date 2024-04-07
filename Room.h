@@ -6,9 +6,8 @@
 #include "General.h"
 
 #define ROOM_START_CHAR "R-"
-#define ROOM_TYPE_COUNT 2
 
-typedef enum { BEDDED, CHAIRED } RoomType;
+typedef enum { eBedded, eChaired, eNoOfRoomType } RoomType;
 
 typedef struct {
     char code[TOTAL_CODE + 1];

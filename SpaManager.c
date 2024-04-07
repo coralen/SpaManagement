@@ -8,6 +8,8 @@
 
 #include "SpaManager.h"
 
+const char* overdraftOptionsString[eNoOfOverdraftOptions] = { "Increase budget", "Fire an employee", "Delete treatment", "Stay in overdraft" };
+
 int initManagers(TreatmentManager* pTreatmentManager, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager)
 {
 	if (!initTreatmentManager(pTreatmentManager)) return 0;
@@ -83,10 +85,18 @@ int setSpaLocation(char** location)
 	return 1;
 }
 
-void setSpaBudget(SpaManager* pSpa)
+void setSpaBudget(SpaManager* pSpaManager)
 {
 	printf("Enter the budget for the spa: ");
-	scanf("%d", &pSpa->budget);
+	scanf("%d", &pSpaManager->budget);
+}
+
+void increaseSpaBudget(SpaManager* pSpaManager)
+{
+	int addBudget;
+	printf("Enter the amount to add to the budget: \n");
+	scanf("%d", &addBudget);
+	pSpaManager->budget = pSpaManager->budget + addBudget;
 }
 
 int addTreatment(TreatmentManager* pTreatmentManager, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager)
@@ -114,7 +124,7 @@ int addTreatment(TreatmentManager* pTreatmentManager, RoomManager* pRoomManager,
 		printTreatmentTypes();
 		scanf("%d", &option);
 		while (getchar() != '\n');
-	} while (option < 0 || option >= TREATMENT_TYPE_COUNT);
+	} while (option < 0 || option >= eNofTreatmentType);
 
 	switch (option)
 	{
@@ -175,6 +185,17 @@ int	checkRequirments(TreatmentManager* pTreatmentManager, RoomManager* pRoomMana
 	return 1;
 }
 
+const char* getOverdraftOptionsString(int optionNum)
+{
+	return overdraftOptionsString[optionNum];
+}
+
+void printOverdraftOptions()
+{
+	for (int i = 0; i < eNoOfOverdraftOptions; i++)
+		printf("%d - %s\n", i, getOverdraftOptionsString(i));
+}
+
 void printSpa(const SpaManager* pSpaManager)
 {
 	printf("Spa information:\n================\n");
@@ -203,6 +224,43 @@ void printSpa(const SpaManager* pSpaManager)
 
 }
 
+void calcSpaRevenue(SpaManager* pSpaManager)
+{
+	int revenue, tRevenue, tPayment, option;
+
+	tRevenue = revenueFromTreatments(&pSpaManager->treatmentManager);
+	tPayment = paymentForEmployees(&pSpaManager->treatmentManager);
+	revenue = (pSpaManager->budget + tRevenue) - tPayment;
+
+	printf("Total revenue of the spa is: %d\n", revenue);
+	printf("Revenue from treatments: %d\n", tRevenue);
+	printf("Payments for employees (for treatments): %d\n", tPayment);
+	printf("\n");
+
+	if (revenue < 0)
+	{
+		printf("You are in overdraft in the bank!\nChoose one of the next options:\n");
+		printOverdraftOptions();
+		scanf("%d", &option);
+		while (getchar() != '\n');
+		switch (option)
+		{
+		case eIncreaseBudget:
+			increaseSpaBudget(pSpaManager);
+			break;
+		case eFireEmployee:
+			deleteEmployeeFromSpa(&pSpaManager->employeeManager, &pSpaManager->treatmentManager);
+			break;
+		case eDeleteTreatmant:
+			deleteTreatmentFromSpa(&pSpaManager->treatmentManager);
+			break;
+		case eStayInOverdraft:
+			break;
+		}
+	}
+}
+
+
 int saveSpaToBFile(const SpaManager* pSpaManager, const char* fileName, const char* cFileName)
 {
 	FILE* pFile;
@@ -223,11 +281,11 @@ int writeSpaToBFile(FILE* pFile, FILE* pCFile, const SpaManager* pSpaManager)
 	int len;
 	TreatmentManager treatmentManager = pSpaManager->treatmentManager;
 
-	len = strlen(pSpaManager->name) + 1;
+	len = (int)(strlen(pSpaManager->name) + 1);
 	if (fwrite(&len, sizeof(int), 1, pFile) != 1) return 0;
 	if (fwrite(pSpaManager->name, sizeof(char), len, pFile) != len) return 0;
 
-	len = strlen(pSpaManager->location) + 1;
+	len = (int)(strlen(pSpaManager->location) + 1);
 	if (fwrite(&len, sizeof(int), 1, pFile) != 1) return 0;
 	if (fwrite(pSpaManager->location, sizeof(char), len, pFile) != len) return 0;
 
