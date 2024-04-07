@@ -116,6 +116,12 @@ void printEmployee(const Employee* pEmployee)
     printf("%-10d\t%-10s\t%-10d\t%-10d\t%-20s\t%-10s\t\n", pEmployee->id, pEmployee->name, pEmployee->salary, pEmployee->seniority, getEmployeeRoleString(pEmployee->role), getStatusString(pEmployee->isBooked));
 }
 
+void printEmployeeWrapper(void* pEmployee)
+{
+    Employee** employee = (Employee**)pEmployee;
+    printEmployee(*employee);
+}
+
 void printEmployeeHeaders()
 {
     printf("%-10s\t%-10s\t%-10s\t%-10s\t%-20s\t%-10s\t", "ID", "Name", "Salary", "Seniority", "Role", "Status");

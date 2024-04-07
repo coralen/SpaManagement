@@ -124,8 +124,7 @@ void printEmployeeArr(const EmployeeManager* pEmployeeManager)
 {
     printEmployeeHeaders();
     printf("\n");
-    for (int i = 0; i < pEmployeeManager->employeeCount; i++)
-        printEmployee(pEmployeeManager->EmployeeArr[i]);
+    generalArrayFunction(pEmployeeManager->EmployeeArr, pEmployeeManager->employeeCount, sizeof(Employee*), printEmployeeWrapper);
 }
 
 int writeEmployeeManagerToBFile(FILE* pFile, const EmployeeManager* pEmployeeManager)

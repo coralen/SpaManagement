@@ -96,8 +96,7 @@ void printRoomArr(const RoomManager* pRoomManager)
 {
 	printRoomHeaders();
 	printf("\n");
-	for (int i = 0; i < pRoomManager->roomCount; i++)
-		printRoom(&pRoomManager->roomArr[i]);
+	generalArrayFunction(pRoomManager->roomArr, pRoomManager->roomCount, sizeof(Room), printRoom);
 }
 
 

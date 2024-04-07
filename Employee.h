@@ -40,6 +40,7 @@ void        printEmployeeRoles();
 void        printEmployeeHeaders();
 void        freeEmployee(Employee* employee);
 void        freeEmployeeWrapper(void* pEmployee);
+void        printEmployeeWrapper(void* pEmployee);
 BOOL        isEmployeeAvailable(const Employee* pEmployee);
 const char* getEmployeeRoleString(const int roleNum);
 
