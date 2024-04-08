@@ -75,6 +75,7 @@ void printRoomWrapper(void* pRoom)
 void printRoomHeaders()
 {
     printf("%-10s\t%-10s\t%-10s\t%-10s\t", "Code", "Size", "Type", "isBooked");
+
 }
 
 int writeRoomToBFile(FILE* pFile, const Room* pRoom)

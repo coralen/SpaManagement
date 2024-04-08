@@ -35,6 +35,7 @@ void        giveEmployeeARaise(Employee* pEmployee, EmployeeManager* pEmployeeMa
 void        findEmployee(const EmployeeManager* pEmployeeManager);
 void        printEmployeeSorts();
 void        printAwardOptions();
+void        printSearchEmployeeAwardOptions();
 void        sortEmployees(EmployeeManager* emmployeeManager);
 void        giveEmployeeAward(Employee* pEmployee, EmployeeManager* pEmployeeManager);
 Employee*   findEmployeeByName(const EmployeeManager* pEmployeeManager, const char* name);

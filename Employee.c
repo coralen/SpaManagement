@@ -93,6 +93,7 @@ void printEmployeeWrapper(void* pEmployee)
 void printEmployeeHeaders()
 {
     printf("%-10s\t%-10s\t%-10s\t%-10s\t%-20s\t%-10s\t", "ID", "Name", "Salary", "Seniority", "Role", "Status");
+
 }
 
 void printEmployeeRoles()

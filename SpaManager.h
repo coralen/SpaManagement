@@ -47,8 +47,6 @@ void        printSpa(const SpaManager* pSpaManager);
 void        setSpaDefaults(SpaManager* pSpaManager);
 void        calcSpaRevenue(SpaManager* pSpaManager);
 void        printOverdraftOptions();
-void        printSearchEmployeeAwardOptions();
-void        printAwardOptions();
 void        emplyeeAwardSystem(EmployeeManager* employeeManager, TreatmentManager* treatmentManager);
 Room*       findAvailableRoom(const RoomManager* pRoomManager, const TreatmentManager* pTreatmentManager, const RoomType type, const Date* pDate);
 Employee*   findAvailableEmployee(const EmployeeManager* pEmployeeManager, const TreatmentManager* pTreatmentManager, const eEmployeeRole role, const Date* pDate);
