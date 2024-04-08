@@ -13,7 +13,6 @@ static int idCounter = 1;
 static const char* employeeRolesString[eNofRole] = { "Receptionist", "Masseuse", "NailTechnician", "HotStonesTherapist" , "Manager" };
 static const int employeeSalaryInt[eNofRole] = { 30, 70, 70, 100, 150 };
 
-
 int initEmployee(Employee* pEmployee) 
 { 
     setEmployeeName(&pEmployee->name);
@@ -55,7 +54,7 @@ void setEmployeeRole(Employee* pEmployee)
     if (numRole >= 0 && numRole < eNofRole)
     {
         pEmployee->role = numRole;
-        printf("Role set to: %s\n", employeeRolesString[pEmployee->role]);
+        //printf("Role set to: %s\n", employeeRolesString[pEmployee->role]); // consider deleting cause we are using this in sort function
     }
     else printf("Invalid role number\n");
 }
@@ -199,6 +198,27 @@ int readEmployeeFromTextFile(FILE* pFile, Employee* pEmployee)
     if (!fscanf(pFile, "%d\n", &pEmployee->isBooked)) return 0;
 
     return 1;
+}
+
+int compareByRole(const void* employeeA, const void* employeeB)
+{
+    const Employee* empA = *(const Employee**)employeeA;
+    const Employee* empB = *(const Employee**)employeeB;
+    return (empA->role - empB->role);
+}
+
+int compareByName(const void* employeeA, const void* employeeB)
+{
+    const Employee* empA = *(const Employee**)employeeA;
+    const Employee* empB = *(const Employee**)employeeB;
+    return strcmp(empA->name, empB->name);
+}
+
+int compareById(const void* employeeA, const void* employeeB)
+{
+    const Employee* empA = *(const Employee**)employeeA;
+    const Employee* empB = *(const Employee**)employeeB;
+    return (empA->id - empB->id);
 }
 
 void freeEmployee(Employee* pEmployee) 

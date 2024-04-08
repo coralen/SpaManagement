@@ -14,14 +14,14 @@ typedef enum
 {
 	eAddRoom, eAddEmployee, eAddTreatment, ePrintRooms, ePrintEmployees, ePrintTreatments, ePrintSpa,
 	eDeleteRoom, eDeleteEmployee, eDeleteTreatment,
-	eGiveEmployeeARaise, eCalcSpaRevenue, eSortEmployees, eFindTreatment, eNofOptions
+	eGiveEmployeeARaise, eCalcSpaRevenue, eSortEmployees, eFindEmployee, eNofOptions
 } eMenuOptions;
 
 typedef enum { eTextFile, eBinFile, eManual, eNofLoadOptions } eLoadOptions;
 
 const char* str[eNofOptions] = { "Add Room","Add Employee","Add Treatment", "Print rooms", "Print Employees",
 								"Print treatments", "Print spa", "Delete room", "Delete employee", "Delete treatment",
-								"Give employee a raise", "Calc the spa's revenue" , "Sort employees", "Find treatment" };
+								"Give employee a raise", "Calc the spa's revenue" , "Sort employees", "Find employee" };
 
 const char* loadOptions[eNofLoadOptions] = { "From text file", "From binary file", "Enter manually" };
 
@@ -94,19 +94,17 @@ int main()
 			break;
 
 		case eSortEmployees:
-			//sortEmployees(); // implement - Talya
+			sortEmployees(&spaManager.employeeManager);
 			break;
 
-		case eFindTreatment:
-			//findTreatment(); // implement - Talya
+		case eFindEmployee:
+			findEmployee(&spaManager.employeeManager);
 			break;
 
 		case EXIT:
 			saveSpaToBFile(&spaManager, BIN_FILENAME, BIN_C_FILENAME);
 			saveSpaToTextFile(&spaManager, TEXT_FILENAME);
 			printf("Bye bye\n");
-			getchar();
-			getchar();
 			stop = 1;
 			break;
 

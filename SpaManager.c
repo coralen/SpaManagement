@@ -452,7 +452,7 @@ int deleteEmployeeFromSpa(EmployeeManager* pEmployeeManager, const TreatmentMana
 			}
 			else
 			{
-				deleteEmployee(pEmployeeManager, pEmployee->name);
+				deleteEmployee(pEmployeeManager, pEmployee->id);
 				validFlag = 1;
 			}
 		}
