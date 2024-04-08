@@ -20,7 +20,9 @@ void initRoomManager(RoomManager* pRoomManager)
 
 int addRoom(RoomManager* pRoomManager)
 {
-	pRoomManager->roomArr = (Room*)realloc(pRoomManager->roomArr, (pRoomManager->roomCount + 1) * sizeof(Room));
+	Room* tmpRoomArr = (Room*)realloc(pRoomManager->roomArr, (pRoomManager->roomCount + 1) * sizeof(Room));
+	if (!tmpRoomArr) return 0;
+	pRoomManager->roomArr = tmpRoomArr;
 	if (!pRoomManager->roomArr) return 0;
 
 	initRoom(&pRoomManager->roomArr[pRoomManager->roomCount], pRoomManager);
@@ -103,6 +105,7 @@ void printRoomArr(const RoomManager* pRoomManager)
 int writeRoomManagerToBFile(FILE* pFile, const RoomManager* pRoomManager)
 {
 	if (fwrite(&pRoomManager->roomCount, sizeof(int), 1, pFile) != 1) return 0;
+	if (!pRoomManager->roomCount) return 1;
 	for (int i = 0; i < pRoomManager->roomCount; i++)
 		if (!writeRoomToBFile(pFile, &pRoomManager->roomArr[i])) return 0;
 
@@ -113,12 +116,20 @@ int readRoomManagerFromBFile(FILE* pFile, RoomManager* pRoomManager)
 {
 	if (fread(&pRoomManager->roomCount, sizeof(int), 1, pFile) != 1) return 0;
 	if (!pRoomManager->roomCount) return 1;
-	if (!(pRoomManager->roomArr = (Room*)realloc(pRoomManager->roomArr, (pRoomManager->roomCount) * sizeof(Room)))) return 0;
-	
+
+	Room* tmpRoomArr = (Room*)realloc(pRoomManager->roomArr, (pRoomManager->roomCount) * sizeof(Room));
+	if (!tmpRoomArr) return 0;
+	pRoomManager->roomArr = tmpRoomArr;
+
 	for (int i = 0; i < pRoomManager->roomCount; i++)
 	{
 		Room* pRoom = (Room*)calloc(1, sizeof(Room));
-		if (!readRoomFromBFile(pFile, pRoom)) return 0;
+		if (!pRoom) return 0;
+		if (!readRoomFromBFile(pFile, pRoom))
+		{
+			free(pRoom);
+			return 0;
+		}
 		pRoomManager->roomArr[i] = *pRoom;
 
 	}
@@ -128,6 +139,7 @@ int readRoomManagerFromBFile(FILE* pFile, RoomManager* pRoomManager)
 int writeRoomManagerToTextFile(FILE* pFile, const RoomManager* pRoomManager)
 {
 	if (fprintf(pFile, "%d\n", pRoomManager->roomCount) < 0) return 0;
+	if (!pRoomManager->roomCount) return 1;
 	for (int i = 0; i < pRoomManager->roomCount; i++)
 		if (!writeRoomToTextFile(pFile, &pRoomManager->roomArr[i])) return 0;
 
@@ -138,12 +150,21 @@ int readRoomManagerFromTextFile(FILE* pFile, RoomManager* pRoomManager)
 {
 	if (!fscanf(pFile, "%d\n", &pRoomManager->roomCount)) return 0;
 	if (!pRoomManager->roomCount) return 1;
-	if (!(pRoomManager->roomArr = (Room*)realloc(pRoomManager->roomArr, (pRoomManager->roomCount) * sizeof(Room)))) return 0;
 	
+	Room* tmpRoomArr = (Room*)realloc(pRoomManager->roomArr, (pRoomManager->roomCount) * sizeof(Room));
+	if (!tmpRoomArr) return 0;
+	pRoomManager->roomArr = tmpRoomArr;
+
 	for (int i = 0; i < pRoomManager->roomCount; i++)
 	{
 		Room* pRoom = (Room*)calloc(1, sizeof(Room));
-		if (!readRoomFromTextFile(pFile, pRoom)) return 0;
+		if (!readRoomFromTextFile(pFile, pRoom))
+		{
+			free(pRoom);
+			return 0;
+		}
+		if (!pRoom) 
+			return 0;
 		pRoomManager->roomArr[i] = *pRoom;
 
 	}

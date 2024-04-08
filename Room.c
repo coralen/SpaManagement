@@ -92,9 +92,11 @@ int writeRoomToBFile(FILE* pFile, const Room* pRoom)
 int readRoomFromBFile(FILE* pFile, Room* pRoom)
 {
     int len;
+
     if (fread(&len, sizeof(int), 1, pFile) != 1) return 0;
+    if (len >= MAX_STRING ) return 0;
     if (fread(pRoom->code, sizeof(char), len, pFile) != len) return 0;
-    pRoom->code[len] = '\0';
+    pRoom->code[CODE + 1] = '\0';
 
     if (fread(&pRoom->type, sizeof(RoomType), 1, pFile) != 1) return 0;
     if (fread(&pRoom->size, sizeof(int), 1, pFile) != 1) return 0;

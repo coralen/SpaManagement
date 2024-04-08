@@ -52,8 +52,9 @@ int setPolishColor(char** color)
     while (getchar() != '\n');
     scanf(SCANF_FORMAT, colorInput);
     while (getchar() != '\n');
-    if (!(*color = (char*)malloc((strlen(colorInput) + 1) * sizeof(char)))) return 0;
-    strcpy(*color, colorInput);
+    colorInput[MAX_STRING - 1] = '\0';
+    
+    if (!(*color = strdup(colorInput))) return 0;
     capitalFirst(*color);
 
     return 1;

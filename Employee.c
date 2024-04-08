@@ -52,10 +52,7 @@ void setEmployeeRole(Employee* pEmployee)
     scanf("%d", &numRole);
 
     if (numRole >= 0 && numRole < eNofRole)
-    {
         pEmployee->role = numRole;
-        //printf("Role set to: %s\n", employeeRolesString[pEmployee->role]); // consider deleting cause we are using this in sort function
-    }
     else printf("Invalid role number\n");
 }
 
@@ -78,36 +75,6 @@ void giveARaise(Employee* pEmployee, int addition)
 BOOL isEmployeeAvailable(const Employee* pEmployee)
 {
     return pEmployee->isBooked;
-}
-
-void setEmployeeSalary(Employee* pEmployee, int salary) 
-{
-    printf("Currently, the salary is %d enter the new salary of the employee: \n", salary);
-    scanf("%d", &salary);
-    pEmployee->salary = salary;
-}
-
-void changeStatus(Employee* pEmployee) 
-{
-    if (!pEmployee->isBooked) pEmployee->isBooked = 1;
-    else pEmployee->isBooked = 0;
-}
-
-void changeRole(Employee* pEmployee) 
-{
-    printf("Role set to: %s\n", getEmployeeRoleString(pEmployee->role));
-    printf("Enter the new role of the employee, the options are: \n");
-    printEmployeeRoles();
-
-    int numRole;
-    scanf("%d", &numRole);
-    if (numRole >= 0 && numRole < eNofRole) {
-        pEmployee->role = numRole;
-        printf("Role set to: %s\n", getEmployeeRoleString(pEmployee->role));
-    }
-    else {
-        printf("Invalid role number\n");
-    }
 }
 
 void printEmployee(const Employee* pEmployee) 

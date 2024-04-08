@@ -1,4 +1,7 @@
+#pragma warning(disable : 4996)
+#pragma warning(disable : 6031)
 #define _CRT_SECURE_NO_WARNINGS
+
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -105,6 +108,8 @@ int main()
 			saveSpaToBFile(&spaManager, BIN_FILENAME, BIN_C_FILENAME);
 			saveSpaToTextFile(&spaManager, TEXT_FILENAME);
 			printf("Bye bye\n");
+			getchar();
+			getchar();
 			stop = 1;
 			break;
 

@@ -65,8 +65,9 @@ int setSpaName(char** name)
 	printf("Please enter your Spa's name: \n");
 	scanf(SCANF_FORMAT, inputName);
 	while (getchar() != '\n');
-	if (!(*name = (char*)malloc((strlen(inputName) + 1) * sizeof(char)))) return 0;
-	strcpy(*name, inputName);
+	inputName[MAX_STRING - 1] = '\0';
+
+	if (!(*name = strdup(inputName))) return 0;
 	capitalFirst(*name);
 
 	return 1;
@@ -79,9 +80,9 @@ int setSpaLocation(char** location)
 	printf("And what is the location of your Spa? \n");
 	scanf(SCANF_FORMAT, inputLocation);
 	while (getchar() != '\n');
+	inputLocation[MAX_STRING - 1] = '\0';
 
-	if (!(*location = (char*)malloc((strlen(inputLocation) + 1) * sizeof(char)))) return 0;
-	strcpy(*location, inputLocation);
+	if (!(*location = strdup(inputLocation))) return 0;
 	capitalFirst(*location);
 
 	return 1;

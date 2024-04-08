@@ -164,8 +164,9 @@ int readTreatmentFromBFile(FILE* pFile, FILE* pCFile, Treatment* pTreatment, Roo
     int employeeId, len;
 
     if (fread(&len, sizeof(int), 1, pFile) != 1) return 0;
+    if (len >= MAX_STRING) return 0;
     if (fread(pTreatment->code, sizeof(char), len, pFile) != len) return 0;
-    pTreatment->code[len] = '\0';
+    pTreatment->code[CODE + 1] = '\0';
 
     if (fread(&pTreatment->date, sizeof(Date), 1, pFile) != 1) return 0;
     if (fread(&pTreatment->duration, sizeof(int), 1, pFile) != 1) return 0;
@@ -173,8 +174,9 @@ int readTreatmentFromBFile(FILE* pFile, FILE* pCFile, Treatment* pTreatment, Roo
     if (fread(&pTreatment->isActive, sizeof(int), 1, pFile) != 1) return 0;
 
     if (fread(&len, sizeof(int), 1, pFile) != 1) return 0;
+    if (len >= MAX_STRING) return 0;
     if (fread(roomCode, sizeof(char), len, pFile) != len) return 0;
-    roomCode[len] = '\0';
+    roomCode[CODE + 1] = '\0';
 
     if (fread(&employeeId, sizeof(int), 1, pFile) != 1) return 0;
     if (fread(&pTreatment->type, sizeof(TreatmentType), 1, pFile) != 1) return 0;

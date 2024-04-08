@@ -24,7 +24,10 @@ int addEmployee(EmployeeManager* pEmployeeManager)
     if (!pEmployee) return 0;
 
     initEmployee(pEmployee);
-    pEmployeeManager->EmployeeArr = (Employee**)realloc(pEmployeeManager->EmployeeArr, (pEmployeeManager->employeeCount+ 1) * sizeof(Employee*));
+    //pEmployeeManager->EmployeeArr = (Employee**)realloc(pEmployeeManager->EmployeeArr, (pEmployeeManager->employeeCount+ 1) * sizeof(Employee*));
+    Employee** tempPtr = (Employee**)realloc(pEmployeeManager->EmployeeArr, (pEmployeeManager->employeeCount + 1) * sizeof(Employee*));
+    if (tempPtr == NULL) return 0;
+    else pEmployeeManager->EmployeeArr = tempPtr;
 
     if (!pEmployeeManager->EmployeeArr)
     {
@@ -50,6 +53,7 @@ void giveEmployeeARaise(EmployeeManager* pEmployeeManager)
 {
     int raise;
     Employee* pEmployee;
+    Employee* foundEmployee = NULL;
     int validFlag = 0;
 
     pEmployee = (Employee*)calloc(1, sizeof(Employee));
@@ -59,7 +63,10 @@ void giveEmployeeARaise(EmployeeManager* pEmployeeManager)
         printf("Please choose id of an available employee:\n");
         printEmployeeArr(pEmployeeManager);
         chooseEmployeeId(pEmployee, pEmployeeManager);
-        if (!(pEmployee = findEmployeeById(pEmployeeManager, pEmployee->id))) printf("No employee with this id! try again\n");
+        if (!pEmployee) return;
+        foundEmployee = findEmployeeById(pEmployeeManager, pEmployee->id);
+        if (!foundEmployee)
+            printf("No employee with this id! try again\n");
         else {
             printf("Enter the raise:\n");
             scanf("%d", &raise);
@@ -113,6 +120,7 @@ int deleteEmployee(EmployeeManager* pEmployeeManager, const int id)
 {
     int employeeIndex = findEmployeeById(pEmployeeManager, id)->id;
     if (employeeIndex == -1) return 0;
+  
     freeEmployee(pEmployeeManager->EmployeeArr[employeeIndex]);
 
     if (!(pEmployeeManager->employeeCount - 1))
@@ -155,6 +163,7 @@ void printEmployeeArr(const EmployeeManager* pEmployeeManager)
 int writeEmployeeManagerToBFile(FILE* pFile, const EmployeeManager* pEmployeeManager)
 {
     if (fwrite(&pEmployeeManager->employeeCount, sizeof(int), 1, pFile) != 1) return 0;
+    if (!pEmployeeManager->employeeCount) return 1;
     if (fwrite(&pEmployeeManager->sortField, sizeof(eSort), 1, pFile) != 1) return 0;
     for (int i = 0; i < pEmployeeManager->employeeCount; i++)
         if (!writeEmployeeToBFile(pFile, pEmployeeManager->EmployeeArr[i])) return 0;
@@ -165,7 +174,10 @@ int readEmployeeManagerFromBFile(FILE* pFile, EmployeeManager* pEmployeeManager)
 {
     if (fread(&pEmployeeManager->employeeCount, sizeof(int), 1, pFile) != 1) return 0;
     if (!pEmployeeManager->employeeCount) return 1;
-    if (!(pEmployeeManager->EmployeeArr = (Employee**)realloc(pEmployeeManager->EmployeeArr, (pEmployeeManager->employeeCount) * sizeof(Employee*)))) return 0;
+
+    Employee** tempPtr = (Employee**)realloc(pEmployeeManager->EmployeeArr, (pEmployeeManager->employeeCount) * sizeof(Employee*));
+    if (!tempPtr) return 0;
+    else pEmployeeManager->EmployeeArr = tempPtr;
     
     if (fread(&pEmployeeManager->sortField, sizeof(eSort), 1, pFile) != 1) return 0;
     for (int i = 0; i < pEmployeeManager->employeeCount; i++)
@@ -180,6 +192,7 @@ int readEmployeeManagerFromBFile(FILE* pFile, EmployeeManager* pEmployeeManager)
 int writeEmployeeManagerToTextFile(FILE* pFile, const EmployeeManager* pEmployeeManager)
 {
     if (fprintf(pFile, "%d\n", pEmployeeManager->employeeCount) < 0) return 0;
+    if (!pEmployeeManager->employeeCount) return 1;
     if (fprintf(pFile, "%d\n", pEmployeeManager->sortField) < 0) return 0;
     for (int i = 0; i < pEmployeeManager->employeeCount; i++)
         if (!writeEmployeeToTextFile(pFile, pEmployeeManager->EmployeeArr[i])) return 0;
@@ -189,9 +202,14 @@ int writeEmployeeManagerToTextFile(FILE* pFile, const EmployeeManager* pEmployee
 int readEmployeeManagerFromTextFile(FILE* pFile, EmployeeManager* pEmployeeManager)
 {
     if (!fscanf(pFile, "%d\n", &pEmployeeManager->employeeCount)) return 0;
+    if (!pEmployeeManager->employeeCount) return 1;
     if (!fscanf(pFile, "%d\n", (int*)&pEmployeeManager->sortField)) return 0;
     if (!pEmployeeManager->employeeCount) return 1;
-    if (!(pEmployeeManager->EmployeeArr = (Employee**)realloc(pEmployeeManager->EmployeeArr, (pEmployeeManager->employeeCount) * sizeof(Employee*)))) return 0;
+
+    Employee** tempPtr = (Employee**)realloc(pEmployeeManager->EmployeeArr, (pEmployeeManager->employeeCount) * sizeof(Employee*));
+    if (!tempPtr) return 0;
+    else pEmployeeManager->EmployeeArr = tempPtr;
+    
     for (int i = 0; i < pEmployeeManager->employeeCount; i++)
     {
         Employee* pEmployee = (Employee*)calloc(1, sizeof(Employee));

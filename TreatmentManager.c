@@ -177,8 +177,9 @@ int writeTreatmentManagerToBFile(FILE* pFile, FILE* pCFile, TreatmentManager* pT
 {
 	if (!&pTreatmentManager->treatmentList.head) return 0;
 	NODE* ptr = &pTreatmentManager->treatmentList.head;
-
 	if (fwrite(&pTreatmentManager->treatmentCount, sizeof(int), 1, pFile) != 1) return 0;
+	if (!pTreatmentManager->treatmentCount) return 1;
+
 	ptr = ptr->next;
 	
 	while (ptr) {
@@ -192,6 +193,7 @@ int readTreatmentManagerFromBFile(FILE* pFile, FILE* pCFile, TreatmentManager* p
 {
 	if (!&pTreatmentManager->treatmentList.head) return 0;
 	if (fread(&pTreatmentManager->treatmentCount, sizeof(int), 1, pFile) != 1) return 0;
+	if (!pTreatmentManager->treatmentCount) return 1;
 
 	Treatment* pTreatment = NULL;
 	int count = pTreatmentManager->treatmentCount;
@@ -212,6 +214,7 @@ int writeTreatmentManagerToTextFile(FILE* pFile, TreatmentManager* pTreatmentMan
 	NODE* ptr = &pTreatmentManager->treatmentList.head;
 
 	if (fprintf(pFile, "%d\n", pTreatmentManager->treatmentCount) < 0) return 0;
+	if (!pTreatmentManager->treatmentCount) return 1;
 	ptr = ptr->next;
 	while (ptr) {
 		if (!writeTreatmentToTextFile(pFile, (Treatment*)ptr->key)) return 0;
@@ -224,6 +227,7 @@ int readTreatmentManagerFromTextFile(FILE* pFile, TreatmentManager* pTreatmentMa
 {
 	if (!&pTreatmentManager->treatmentList.head) return 0;
 	if (!fscanf(pFile, "%d\n", &pTreatmentManager->treatmentCount)) return 0;
+	if (!pTreatmentManager->treatmentCount) return 1;
 
 	Treatment* pTreatment = NULL;
 	int count = pTreatmentManager->treatmentCount;
