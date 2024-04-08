@@ -140,9 +140,9 @@ int readMenicurePedicureFromTextFile(FILE* pFile, MenicurePedicure* pMeniPedi)
     if (!fscanf(pFile, " %[^\n]\n", tmpColor)) return 0;
     pMeniPedi->color = strdup(tmpColor);
 
-    if (!fscanf(pFile, "%d\n", &pMeniPedi->menicure)) return 0;
-    if (!fscanf(pFile, "%d\n", &pMeniPedi->pedicure)) return 0;
-    if (!fscanf(pFile, "%d\n", &pMeniPedi->nailArtType)) return 0;
+    if (!fscanf(pFile, "%d\n", (int*)&pMeniPedi->menicure)) return 0;
+    if (!fscanf(pFile, "%d\n", (int*)&pMeniPedi->pedicure)) return 0;
+    if (!fscanf(pFile, "%d\n", (int*)&pMeniPedi->nailArtType)) return 0;
     return 1;
 }
 

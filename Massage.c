@@ -6,7 +6,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-
 #include "Massage.h"
 #include "Helper.h"
 
@@ -91,7 +90,7 @@ int readMassageFromTextFile(FILE* pFile, Massage* pMassage)
 {
 	char tmpName[MAX_STRING] = { 0 };
 
-	if (fscanf(pFile, "%d\n", &pMassage->type) < 0) return 0;
+	if (fscanf(pFile, "%d\n", (int*)&pMassage->type) < 0) return 0;
 	if (!fscanf(pFile, " %[^\n]\n", tmpName)) return 0;
 	pMassage->notesFromClient = strdup(tmpName);
 	return 1;

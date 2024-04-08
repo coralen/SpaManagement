@@ -49,7 +49,7 @@ void getTreatmentCode(char* code)
     char inputCode[MAX_STRING + 1];
 
     do {
-        printf("Enter treatment code, Format is T- following %d digits\n", CODE);
+        printf("Enter treatment code, Format is %s%s following %d digits\n", TREATMENT_START_CHARS, CODE_EXPECTED, CODE);
         scanf(SCANF_FORMAT, inputCode);
         while (getchar() != '\n');
     } while (!isCodeValid(inputCode, TREATMENT_START_CHARS));
@@ -76,11 +76,6 @@ int initMenicurePedicure(Treatment* pTreatment)
     if (!setPolishColor(&pTreatment->data.meniPedi.color)) return 0;
     setNailArtType(&pTreatment->data.meniPedi);
     return 1;
-}
-
-void describeTreatment(Treatment* pTreatment)
-{
-    //implement in each treatment type
 }
 
 void printTreatmentTypes()
@@ -120,7 +115,7 @@ void printTreatmentWithData(const Treatment* pTreatment, int type)
     if (!pTreatment->date.day) printf("%-10s\t", "None");
     else printDate(&pTreatment->date);
     printf("%-10d\t", pTreatment->date.hour);
-    MASSAGE_TYPE_SWITCH_CASE(pTreatment->type, printMassage, &pTreatment->data.massage, printHotStones, &pTreatment->data.hotStones, printMenicurePedicure, &pTreatment->data.meniPedi)
+    TREATMENT_TYPE_SWITCH_CASE((int)pTreatment->type, printMassage, &pTreatment->data.massage, printHotStones, &pTreatment->data.hotStones, printMenicurePedicure, &pTreatment->data.meniPedi)
     printf("\n");
 }
 
@@ -215,7 +210,7 @@ int writeTreatmentToTextFile(FILE* pFile, const Treatment* pTreatment)
     if (fprintf(pFile, "%d\n", pTreatment->pTreatmentEmployee->id) < 0) return 0;
     if (fprintf(pFile, "%d\n", pTreatment->type) < 0) return 0;
 
-    switch (pTreatment->type)
+    switch ((int)pTreatment->type)
     {
     case eMassage:
         writeMassageToTextFile(pFile, &pTreatment->data.massage);
@@ -242,14 +237,14 @@ int readTreatmentFromTextFile(FILE* pFile, Treatment* pTreatment, RoomManager* p
 
     if (fscanf(pFile, "%d\n", &pTreatment->duration) < 0) return 0;
     if (fscanf(pFile, "%d\n", &pTreatment->price) < 0) return 0;
-    if (fscanf(pFile, "%d\n", &pTreatment->isActive) < 0) return 0;
+    if (fscanf(pFile, "%d\n", (int*)&pTreatment->isActive) < 0) return 0;
     if (fscanf(pFile, "%s\n", roomCode) < 0) return 0;
     pTreatment->pTreatmentRoom = findRoomByCode(pRoomManager, roomCode);
     if (fscanf(pFile, "%d\n", &employeeId) < 0) return 0;
     pTreatment->pTreatmentEmployee = findEmployeeById(pEmployeeManager, employeeId);
-    if (fscanf(pFile, "%d\n", &pTreatment->type) < 0) return 0;
+    if (fscanf(pFile, "%d\n", (int*)&pTreatment->type) < 0) return 0;
 
-    switch (pTreatment->type)
+    switch ((int)pTreatment->type)
     {
     case eMassage:
         readMassageFromTextFile(pFile, &pTreatment->data.massage);
@@ -283,8 +278,12 @@ void updateTreatmentUtilitiesStatus(Treatment* pTreatment)
         currentlyActive = 0;
     }
 
-    if (pTreatment->pTreatmentRoom) pTreatment->pTreatmentRoom->isBooked = currentlyActive;
-    if (pTreatment->pTreatmentEmployee) pTreatment->pTreatmentEmployee->isBooked = currentlyActive;
+    if (pTreatment->pTreatmentRoom)
+        pTreatment->pTreatmentRoom->isBooked = currentlyActive;
+
+    if (pTreatment->pTreatmentEmployee)
+        pTreatment->pTreatmentEmployee->isBooked = currentlyActive;
+
     pTreatment->isActive = currentlyActive;
 }
 
@@ -297,7 +296,7 @@ void freeTreatmentWrapper(void* treatment)
 void freeTreatment(Treatment* pTreatment)
 {
     CHECK_NULL(pTreatment);
-    switch (pTreatment->type) 
+    switch ((int)pTreatment->type) 
     {
     case eMassage:
         freeMassage(&pTreatment->data.massage);

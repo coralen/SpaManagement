@@ -1,7 +1,7 @@
 #ifndef _EMPLOYEEMANAGMENT_H
 #define _EMPLOYEEMANAGMENT_H
 
-#pragma once
+#include <stdio.h>
 
 #include "General.h"
 #include "Employee.h"
@@ -11,9 +11,6 @@ typedef struct
     Employee** EmployeeArr;
     int employeeCount;
 } EmployeeManager;
-
-/* No use */
-int         getEmployee(const EmployeeManager* eManager, int role); 
 
 int         addEmployee(EmployeeManager* pEmployeeManager);
 int         findEmployeeByName(const EmployeeManager* pEmployeeManager, const char* name);

@@ -1,6 +1,8 @@
 #ifndef _ROOM_H
 #define _ROOM_H
 
+#include <stdio.h>
+
 #include "Date.h"
 #include "Def.h"
 #include "General.h"
@@ -26,6 +28,7 @@ void        setRoomType(Room* pRoom);
 void        setRoomCode(char* code);
 void        printRoomTypes();
 void        printRoom(const Room* pRoom);
+void        printRoomWrapper(void* pRoom);
 void        printRoomHeaders();
 const char* getRoomTypeString(int typeNum);
 

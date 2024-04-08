@@ -1,6 +1,8 @@
 #ifndef _ROOM_MANAGER_H
 #define _ROOM_MANAGER_H
 
+#include <stdio.h>
+
 #include "Room.h"
 
 typedef struct {

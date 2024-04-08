@@ -99,7 +99,7 @@ int writeHotStonesToTextFile(FILE* pFile, const HotStones* pHotStones)
 
 int readHotStonesFromTextFile(FILE* pFile, HotStones* pHotStones)
 {
-	if (!fscanf(pFile, "%d\n", &pHotStones->type)) return 0;
-	if (!fscanf(pFile, "%d\n", &pHotStones->placement)) return 0;
+	if (!fscanf(pFile, "%d\n", (int*)&pHotStones->type)) return 0;
+	if (!fscanf(pFile, "%d\n", (int*)&pHotStones->placement)) return 0;
 	return 1;
 }

@@ -1,7 +1,7 @@
 #ifndef _EMPLOYEE_H
 #define _EMPLOYEE_H
 
-#pragma once
+#include <stdio.h>
 
 #include "General.h"
 #include "helper.h"
@@ -33,7 +33,7 @@ void        setEmployeeSeniority(Employee* pEmployee);
 void        setEmployeeRole(Employee* pEmployee);
 void        changeStatus(Employee* pEmployee);
 void        setEmployeeSalary(Employee* pEmployee, int salary);
-void        giveARaise(Employee* pEmployee, int newSalary);
+void        giveARaise(Employee* pEmployee, int addition);
 void        changeRole(Employee* pEmployee);
 void        printEmployee(const Employee* pEmployee);
 void        printEmployeeRoles();

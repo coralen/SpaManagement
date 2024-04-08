@@ -1,6 +1,8 @@
 #ifndef _SPA_MANAGER_H
 #define _SPA_MANAGER_H
 
+#include <stdio.h>
+
 #include "EmployeeManager.h"
 #include "TreatmentManager.h"
 #include "RoomManager.h"

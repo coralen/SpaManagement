@@ -24,11 +24,39 @@ int addTreatmentToList(Treatment* pTreatment, TreatmentManager* pTreatmentManage
 		free(pTreatment);
 		return 0;
 	}
+	NODE* ptr;
 
-	NODE* ptr = &pTreatmentManager->treatmentList.head;
-	L_insert(ptr, pTreatment);
+	if (!pTreatmentManager->treatmentCount) 
+		ptr = &pTreatmentManager->treatmentList.head;
+	else 
+		ptr = findInsertionPoint(pTreatmentManager, pTreatment);
+	if (!L_insert(ptr, pTreatment)) 
+	{
+		freeTreatment(pTreatment);
+		return 0;
+	}
 
 	return 1;
+}
+
+NODE* findInsertionPoint(TreatmentManager* pTreatmentManager, Treatment* pNewTreatment) 
+{
+	NODE* current = &pTreatmentManager->treatmentList.head;
+	current = current->next;
+	NODE* previous = &pTreatmentManager->treatmentList.head;
+
+	while (current != NULL) 
+	{
+		Treatment* currentTreatment = (Treatment*)(current->key);
+		if (compareDates(&pNewTreatment->date, &currentTreatment->date) < 0) {
+			break;
+		}
+		previous = current;
+		current = current->next;
+	}
+
+	return previous;
+
 }
 
 int deleteTreatmentFromList(Treatment* pTreatment, TreatmentManager* pTreatmentManager)
@@ -135,7 +163,7 @@ void printTreatmentListWithData(const TreatmentManager* pTreatmentManager)
 
 void printArrByTreatmentType(const TreatmentManager* pTreatmentManager, int type)
 {
-	MASSAGE_TYPE_SWITCH_CASE(type, printMassageHeaders, NULL, printHotStonesHeaders, NULL, printMenicurePedicureHeaders, NULL);
+	TREATMENT_TYPE_SWITCH_CASE(type, printMassageHeaders, NULL, printHotStonesHeaders, NULL, printMenicurePedicureHeaders, NULL);
 	L_print_by_var(&pTreatmentManager->treatmentList, (void (*)(const void*, int)) printTreatmentWithData, type);
 }
 
@@ -165,7 +193,6 @@ int readTreatmentManagerFromBFile(FILE* pFile, FILE* pCFile, TreatmentManager* p
 	if (!&pTreatmentManager->treatmentList.head) return 0;
 	if (fread(&pTreatmentManager->treatmentCount, sizeof(int), 1, pFile) != 1) return 0;
 
-	NODE* ptr = &pTreatmentManager->treatmentList.head;
 	Treatment* pTreatment = NULL;
 	int count = pTreatmentManager->treatmentCount;
 
@@ -173,8 +200,7 @@ int readTreatmentManagerFromBFile(FILE* pFile, FILE* pCFile, TreatmentManager* p
 	{
 		if (!(pTreatment = (Treatment*)calloc(1, sizeof(Treatment)))) return 0;
 		if (!readTreatmentFromBFile(pFile, pCFile, pTreatment, pRoomManager, pEmployeeManager)) return 0;
-		if (!L_insert(ptr, pTreatment)) return 0;
-		ptr = ptr->next;
+		if (!addTreatmentToList(pTreatment, pTreatmentManager)) return 0;
 		count--;
 	}
 	return 1;
@@ -199,7 +225,6 @@ int readTreatmentManagerFromTextFile(FILE* pFile, TreatmentManager* pTreatmentMa
 	if (!&pTreatmentManager->treatmentList.head) return 0;
 	if (!fscanf(pFile, "%d\n", &pTreatmentManager->treatmentCount)) return 0;
 
-	NODE* ptr = &pTreatmentManager->treatmentList.head;
 	Treatment* pTreatment = NULL;
 	int count = pTreatmentManager->treatmentCount;
 
@@ -207,8 +232,7 @@ int readTreatmentManagerFromTextFile(FILE* pFile, TreatmentManager* pTreatmentMa
 	{
 		if (!(pTreatment = (Treatment*)calloc(1, sizeof(Treatment)))) return 0;
 		if (!readTreatmentFromTextFile(pFile, pTreatment, pRoomManager, pEmployeeManager)) return 0;
-		if (!L_insert(ptr, pTreatment)) return 0;
-		ptr = ptr->next;
+		if (!addTreatmentToList(pTreatment, pTreatmentManager)) return 0;
 		count--;
 	}
 	return 1;
@@ -229,7 +253,7 @@ int findTreatmentWithRoomAndDate(const TreatmentManager* pTreatmentManager, cons
 
 	ptr = ptr->next;
 	while (ptr) {
-		if ((!strcmp(((Treatment*)ptr->key)->pTreatmentRoom->code, roomCode) && compareDates(&((Treatment*)ptr->key)->date, pDate))) return 1;
+		if ((!strcmp(((Treatment*)ptr->key)->pTreatmentRoom->code, roomCode) && !compareDates(&((Treatment*)ptr->key)->date, pDate))) return 1;
 		ptr = ptr->next;
 	}
 	return 0;
@@ -261,7 +285,7 @@ int findTreatmentWithEmployeeAndDate(const TreatmentManager* pTreatmentManager, 
 
 	ptr = ptr->next;
 	while (ptr) {
-		if (((((Treatment*)ptr->key)->pTreatmentEmployee->id == employeeId) && compareDates(&((Treatment*)ptr->key)->date, pDate))) return 1;
+		if (((((Treatment*)ptr->key)->pTreatmentEmployee->id == employeeId) && !compareDates(&((Treatment*)ptr->key)->date, pDate))) return 1;
 		ptr = ptr->next;
 	}
 	return 0;

@@ -1,6 +1,8 @@
 #ifndef _TREATMENT_MANAGER_H
 #define _TREATMENT_MANAGER_H
 
+#include <stdio.h>
+
 #include "Treatment.h"
 #include "List.h"
 
@@ -28,6 +30,7 @@ void		printTreatmentListWithData(const TreatmentManager* pTreatmentManager);
 void		printArrByTreatmentType(const TreatmentManager* pTreatmentManager, int type);
 void		updateTreatmenArrUtilitiesStatus(TreatmentManager* pTreatmentManager);
 void		freeTreatmentManager(TreatmentManager* pTreatmentManager);
+NODE*		findInsertionPoint(TreatmentManager* pTreatmentManager, Treatment* pNewTreatment);
 Treatment*	findTreatmentWithCode(const TreatmentManager* pTreatmentManager, const char* treatmentCode);
 Treatment*	findTreatmentWithRoom(const TreatmentManager* pTreatmentManager, const char* roomCode);
 Treatment*	findTreatmentWithEmployee(const TreatmentManager* pTreatmentManager, const int employeeId);

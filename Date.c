@@ -91,14 +91,15 @@ time_t convertToTimeT(const Date* pDate)
 }
 
 
-int compareDates(const Date* pDate1, const Date* pDate2)
+int compareDates(const Date* pDate1, const Date* pDate2) 
 {
-	if (pDate1->day != pDate2->day) return 0;
-	if (pDate1->month != pDate2->month) return 0;
-	if (pDate1->year != pDate2->year) return 0;
-	if (pDate1->hour != pDate2->hour) return 0;
-
-	return 1;
+	if (pDate1->year != pDate2->year)
+		return pDate1->year - pDate2->year;
+	if (pDate1->month != pDate2->month)
+		return pDate1->month - pDate2->month;
+	if (pDate1->day != pDate2->day)
+		return pDate1->day - pDate2->day;
+	return pDate1->hour - pDate2->hour;
 }
 
 int isDateRelevant(const Date* pDate)

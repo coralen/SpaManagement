@@ -71,9 +71,9 @@ int getEmployeeSalaryInt(int roleNum)
     return employeeSalaryInt[roleNum];
 }
 
-void giveARaise(Employee* pEmployee, int newSalary)
+void giveARaise(Employee* pEmployee, int addition)
 {
-    pEmployee->salary = pEmployee->salary + newSalary;
+    pEmployee->salary = pEmployee->salary + addition;
 }
 
 BOOL isEmployeeAvailable(const Employee* pEmployee)
@@ -118,7 +118,7 @@ void printEmployee(const Employee* pEmployee)
 
 void printEmployeeWrapper(void* pEmployee)
 {
-    Employee** employee = (Employee**)pEmployee;
+    const Employee** employee = (const Employee**)pEmployee;
     printEmployee(*employee);
 }
 

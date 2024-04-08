@@ -1,7 +1,7 @@
 #ifndef _MEDICUREPEDICURE_H
 #define _MEDICUREPEDICURE_H
 
-#pragma once
+#include <stdio.h>
 
 #include "General.h"
 #include "helper.h"

@@ -76,7 +76,7 @@ int setSpaLocation(char** location)
 {
 	char inputLocation[MAX_STRING];
 
-	printf("And what is the location of ypur Spa? \n");
+	printf("And what is the location of your Spa? \n");
 	scanf(SCANF_FORMAT, inputLocation);
 	while (getchar() != '\n');
 
@@ -404,7 +404,8 @@ int deleteRoomFromSpa(RoomManager* pRoomManager, const TreatmentManager* pTreatm
 	while (!validFlag)
 	{
 		setRoomCode(tmpCode);
-		if (!(pRoom = findRoomByCode(pRoomManager, tmpCode))) "No room with this code! try again\n";
+		if (!(pRoom = findRoomByCode(pRoomManager, tmpCode))) 
+			printf("No room with this code! try again\n");
 		else
 		{
 			if ((pTreatment = findTreatmentWithRoom(pTreatmentManager, tmpCode)))
@@ -441,7 +442,8 @@ int deleteEmployeeFromSpa(EmployeeManager* pEmployeeManager, const TreatmentMana
 	while (!validFlag)
 	{
 		scanf("%d", &tmpId);
-		if (!(pEmployee = findEmployeeById(pEmployeeManager, tmpId))) printf("No employee with this id! try again\n");
+		if (!(pEmployee = findEmployeeById(pEmployeeManager, tmpId))) 
+			printf("No employee with this id! try again\n");
 		else {
 			if ((pTreatment = findTreatmentWithEmployee(pTreatmentManager, tmpId)))
 			{
@@ -475,7 +477,8 @@ int deleteTreatmentFromSpa(TreatmentManager* pTreatmentManager)
 	while (!validFlag)
 	{
 		getTreatmentCode(tmpCode);
-		if (!(pTreatment = findTreatmentWithCode(pTreatmentManager, tmpCode))) "No treatment with this code! try again\n";
+		if (!(pTreatment = findTreatmentWithCode(pTreatmentManager, tmpCode))) 
+			printf("No treatment with this code! try again\n");
 		else {
 			if (pTreatment->isActive)
 			{

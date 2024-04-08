@@ -42,7 +42,7 @@ void setRoomCode(char* code)
 {
     char inputCode[MAX_STRING];
     do {
-        printf("Enter Room code, Format is %s following %d digits\n", ROOM_START_CHAR, CODE);
+        printf("Enter Room code, Format is %s%s following %d digits\n", ROOM_START_CHAR, CODE_EXPECTED, CODE);
         scanf(SCANF_FORMAT, inputCode); 
         while (getchar() != '\n'); 
     } while (!isCodeValid(inputCode, ROOM_START_CHAR));
@@ -64,6 +64,12 @@ const char* getRoomTypeString(int typeNum)
 void printRoom(const Room* pRoom)
 {
     printf("%-10s\t%-10d\t%-10s\t%-10s\n", pRoom->code, pRoom->size, getRoomTypeString(pRoom->type), getStatusString(pRoom->isBooked));
+}
+
+void printRoomWrapper(void* pRoom)
+{
+    const Room* room = (const Room*)pRoom;
+    printRoom(room);
 }
 
 void printRoomHeaders()
@@ -111,9 +117,9 @@ int writeRoomToTextFile(FILE* pFile, const Room* pRoom)
 int readRoomFromTextFile(FILE* pFile, Room* pRoom)
 {
     if (!fscanf(pFile, " %s\n", pRoom->code)) return 0;
-    if (!fscanf(pFile, " %d\n", &pRoom->type)) return 0;
+    if (!fscanf(pFile, " %d\n", (int*)&pRoom->type)) return 0;
     if (!fscanf(pFile, " %d\n", &pRoom->size)) return 0;
-    if (!fscanf(pFile, " %d\n", &pRoom->isBooked)) return 0;
+    if (!fscanf(pFile, " %d\n", (int*)&pRoom->isBooked)) return 0;
 
     return 1;
 }

@@ -2,6 +2,7 @@
 #define _HELPER_H
 
 #define CODE 3
+#define CODE_EXPECTED "XXX"
 #define TOTAL_CODE 5
 #define MAX_STRING 255
 
@@ -10,7 +11,7 @@
 
 #define CHECK_NULL(ptr) if ((ptr) == NULL) return; //Macro to check if pointer is NULL
 
-#define MASSAGE_TYPE_SWITCH_CASE(type, funcMassage, inputMassage, funcHotStones, inputHotStones, funcMeniPedi, inputMeniPedi) \
+#define TREATMENT_TYPE_SWITCH_CASE(type, funcMassage, inputMassage, funcHotStones, inputHotStones, funcMeniPedi, inputMeniPedi) \
     switch (type) { \
         case eMassage: \
             funcMassage(inputMassage); \

@@ -1,6 +1,8 @@
 #ifndef _MASSAGE_H
 #define _MASSAGE_H
 
+#include <stdio.h>
+
 #define MASSAGE_ROOM_TYPE 0
 #define MASSAGE_EMPLOYEE_ROLE 1
 

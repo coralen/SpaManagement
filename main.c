@@ -40,8 +40,8 @@ int main()
 	suggestLoadFromFile(&spaManager);
 
 	do {
-		option = menu();
 		updateTreatmenArrUtilitiesStatus(&spaManager.treatmentManager);
+		option = menu();
 
 		switch (option)
 		{

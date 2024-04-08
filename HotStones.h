@@ -1,6 +1,8 @@
 #ifndef _HOT_STONES_H
 #define _HOT_STONES_H
 
+#include <stdio.h>
+
 #define HOT_STONES_ROOM_TYPE 0
 #define HOT_STONES_EMPLOYEE_ROLE 3
 

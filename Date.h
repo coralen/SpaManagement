@@ -1,12 +1,14 @@
 #ifndef _DATE_H
 #define _DATE_H
 
+#include <time.h>
+
 #include "Helper.h"
 
 #define MIN_DAY 1
 #define MIN_MONTH 1
 #define MAX_MONTH 12
-#define MIN_YEAR 2023
+#define MIN_YEAR 2024
 #define SEGMENTS 3
 #define CHARS_COUNT 12
 

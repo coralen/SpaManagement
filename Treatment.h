@@ -1,6 +1,8 @@
 #ifndef _TREATMENT_H
 #define _TREATMENT_H
 
+#include <stdio.h>
+
 #include "Helper.h"
 #include "Date.h"
 #include "RoomManager.h"
@@ -42,7 +44,6 @@ int         writeTreatmentToTextFile(FILE* pFile, const Treatment* pTreatment);
 int         readTreatmentFromTextFile(FILE* pFile, Treatment* pTreatment, RoomManager* pRoomManager, EmployeeManager* pEmployeeManager);
 void        getTreatmentCode(char* code);
 void        initHotStones(Treatment* pTreatment);
-void        describeTreatment(Treatment* pTreatment); // different implementation using union
 void        freeTreatment(Treatment* pTreatment);
 void        freeTreatmentWrapper(void* treatment);
 void        printTreatmentTypes();
