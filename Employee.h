@@ -4,34 +4,58 @@
 #pragma once
 
 #include "General.h"
-#include "helper.h"
+#include "Helper.h"
 
 typedef enum {
-    eReceptionist, eMasseuse, eNailTechnician, eHotStonesTherapist, eMnager, eNofRole
+    eReceptionist, eMasseuse, eNailTechnician, eHotStonesTherapist, eManager, eNofRole
 } eEmployeeRole;
 
-static const char* EmployeeRole[eNofRole]
-        = { "Receptionist", "Masseuse", "NailTechnician", "HotStonesTherapist" , "Manager"};
+typedef enum {
+    eNone, eEmployeesRole, eName, eId
+} eSort;
 
-typedef enum {Busy, Available} STATUS;
+static const char* sortFields[NUM_OF_SORT_TYPES] = { "Employee Role", "name", "id" };
 
 typedef struct
 {
     char* name;
-    int baseSalary;
+    int id; //b-search
+    int salary;
     int seniority;
     eEmployeeRole role;
-    STATUS status;
-}Employee;
+    BOOL isBooked;
+    eSort		sortField;
+} Employee;
 
-//all the functions work well
+int compareByRole(const void* a, const void* b);
+int compareByName(const void* a, const void* b);
+int compareById(const void* a, const void* b);
+int         initEmployee(Employee* pEmployee);
+int         getEmployeeId();
+int         setEmployeeName(char** name);
+int         getEmployeeSalaryInt(int roleNum);
+int         writeEmployeeToBFile(FILE* pFile, const Employee* pEmployee);
+int         readEmployeeFromBFile(FILE* pFile, Employee* pEmployee);
+int         writeEmployeeToTextFile(FILE* pFile, const Employee* pEmployee);
+int         readEmployeeFromTextFile(FILE* pFile, Employee* pEmployee);
+void        setEmployeeSeniority(Employee* pEmployee);
+void        setEmployeeRole(Employee* pEmployee);
+int returnEmployeeId(Employee* pEmployee);
 
-int initEmployee(Employee* pEmployee);
-int getNameRoleSeniority(Employee* pEmployee, char* name,eEmployeeRole role, int seniority);
-int setSalary(Employee* pEmployee, int salary);
-int changeStatus(Employee* pEmployee);
-void changeRole(Employee* pEmployee);
-void printEmployee(const Employee* pEmployee);
-int freeEmployee(Employee* employee);
+//why not in use?
+void        changeStatus(Employee* pEmployee);
+void        setEmployeeSalary(Employee* pEmployee, int salary);
+void        changeRole(Employee* pEmployee);
+
+void        giveARaise(Employee* pEmployee, int bonus);
+void        printEmployee(const Employee* pEmployee);
+void        printEmployeeRoles();
+void        printEmployeeHeaders();
+void        freeEmployee(Employee* employee);
+void        freeEmployeeWrapper(void* pEmployee);
+void        printEmployeeWrapper(void* pEmployee);
+BOOL        isEmployeeAvailable(const Employee* pEmployee);
+const char* getEmployeeRoleString(const int roleNum);
+
 
 #endif

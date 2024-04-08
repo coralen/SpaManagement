@@ -57,7 +57,7 @@ NODE* L_insert(NODE* pNode, DATA Value)
 //////////////////////////////////////////////////////////////
 BOOL L_delete(NODE* pNode, void (*freeFunc)(void*))
 {
-    NODE* tmp;
+    NODE* tmp = pNode;
     if (!pNode || !(tmp = pNode->next))
         return False;
 
@@ -65,6 +65,30 @@ BOOL L_delete(NODE* pNode, void (*freeFunc)(void*))
     if (freeFunc != NULL)
         freeFunc(tmp->key);
     free(tmp);
+    return True;
+}
+
+BOOL L_delete_current(NODE* pHead, NODE* target, void (*freeFunc)(void*))
+{
+    if (!pHead || !pHead || !target) return False;
+
+    NODE* current = pHead;
+    NODE* previous = NULL;
+
+    while (current != NULL && current != target) {
+        previous = current;
+        current = current->next;
+    }
+
+    if (current != target) return False;
+    if (previous == NULL) 
+        pHead = current->next;
+    else 
+        previous->next = current->next;
+
+    if (freeFunc != NULL) freeFunc(current->key);
+    free(current);
+
     return True;
 }
 
@@ -140,4 +164,36 @@ int L_print(const LIST* pList, void(*print)(const void*))
 
     printf("\n");
     return c;
+}
+
+
+int L_print_by_var(const LIST* pList, void(*print)(const void*, int), int var)
+{
+
+    NODE* tmp;
+    int	funcVar = var, c = 0;
+
+    if (!pList)
+        return False;
+
+    printf("\n");
+
+    for (tmp = pList->head.next; tmp; tmp = tmp->next, c++)
+        print(tmp->key, funcVar);
+
+    printf("\n");
+    return c;
+}
+
+void L_func(const LIST* pList, void(*func)(const void*))
+{
+
+    NODE* tmp;
+
+    if (!pList)
+        return;
+
+    for (tmp = pList->head.next; tmp; tmp = tmp->next)
+        func(tmp->key);
+
 }

@@ -1,100 +1,167 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdlib.h>
 #include <stdio.h>
+
 #include "headers/Helper.h"
-#include "SpaManagement.h"
-#include "TreatmentManager.h"
-#include "RoomManager.h"
-#include "EmployeeManagment.h"
+#include "headers/SpaManager.h"
+#include "headers/EmployeeManager.h"
 
-
+#define BIN_FILENAME "spa.bin"
+#define TEXT_FILENAME "spa.txt"
+#define BIN_C_FILENAME "spaC.bin"
 
 typedef enum
 {
-    eAddTreatment,eAddEmployee, eAddRoom, ePrintSpa, ePrintTreatments, ePrintEmployees, eNofOptions
+	eAddRoom, eAddEmployee, eAddTreatment, ePrintRooms, ePrintEmployees, ePrintTreatments, ePrintSpa,
+	eDeleteRoom, eDeleteEmployee, eDeleteTreatment,
+	eGiveEmployeeARaise, eCalcSpaRevenue, eSortEmployees, eFindEmployee, eNofOptions
 } eMenuOptions;
 
-const char* str[eNofOptions] = { "Add Treatment","Add Employee","Add Room",
-                                 "Print Spa", "Print Treatments",
-                                 "Print Employees" };
+typedef enum { eTextFile, eBinFile, eManual, eNofLoadOptions } eLoadOptions;
 
-#define EXIT	-1
+const char* str[eNofOptions] = { "Add Room","Add Employee","Add Treatment", "Print rooms", "Print Employees",
+								"Print treatments", "Print spa", "Delete room", "Delete employee", "Delete treatment",
+								"Give employee a raise", "Calc the spa's revenue" , "Sort employees", "Find employee" };
+
+const char* loadOptions[eNofLoadOptions] = { "From text file", "From binary file", "Enter manually" };
+
+#define EXIT			-1
+
 int menu();
+void suggestLoadFromFile(SpaManager* pSpaManager);
+void printLoadOptions();
 
 int main()
 {
-    EmployeeManagment	employeeManagment;
-    SpaManagment	spa;
-    TreatmentManager treatmentM;
+	int option, stop = 0;
+	SpaManager spaManager;
+	
+	printf("Hello and welcome to the Spa Management program!\n");
+	suggestLoadFromFile(&spaManager);
 
-    initEmployeeManagment(&employeeManagment);
-    initSpaManagment(&spa);
-    initTreatmentManager(&treatmentM);
+	do {
+		option = menu();
+		updateTreatmenArrUtilitiesStatus(&spaManager.treatmentManager);
 
-    int option;
-    int stop = 0;
+		switch (option)
+		{
+		case eAddRoom:
+			addRoom(&spaManager.roomManager);
+			break;
 
+		case eAddEmployee:
+			addEmployee(&spaManager.employeeManager);
+			break;
 
-    do
-    {
-        option = menu();
-        switch (option)
-        {
-            case eAddTreatment:
-                if (!startTreatment())//coral add here
-                    printf("Error adding plane\n");
-                break;
+		case eAddTreatment:
+			addTreatment(&spaManager.treatmentManager, &spaManager.roomManager, &spaManager.employeeManager);
+			break;
 
-            case eAddEmployee:
-                if (!addEmployee(&employeeManagment))
-                    printf("Error adding airport\n");
-                break;
+		case ePrintRooms:
+			printRoomArr(&spaManager.roomManager);
+			break;
 
-            case eAddRoom://coral change this
-                if (!AddRoom(&company, &manager))
-                    printf("Error adding flight\n");
-                break;
+		case ePrintEmployees:
+			printEmployeeArr(&spaManager.employeeManager);
+			break;
 
-            case ePrintSpa:// will be finished later
-                printCompany(&company);
-                break;
+		case ePrintTreatments:
+			printTreatmentListWithData(&spaManager.treatmentManager);
+			break;
 
-            case ePrintTreatments:// will be finished later
-                printAirports(&manager);
-                break;
+		case ePrintSpa:
+			printSpa(&spaManager);
+			break;
 
-            case ePrintEmployees:// will be finished later
-                doPrintFlightsWithPlaneType(&company);
-                break;
+		case eDeleteRoom:
+			deleteRoomFromSpa(&spaManager.roomManager, &spaManager.treatmentManager);
+			break;
 
-            case EXIT:
-                printf("Bye bye\n");
-                stop = 1;
-                break;
+		case eDeleteEmployee:
+			deleteEmployeeFromSpa(&spaManager.employeeManager, &spaManager.treatmentManager);
+			break;
 
-            default:
-                printf("Wrong option\n");
-                break;
-        }
-    } while (!stop);
-//
-//    freeManager(&manager);
-//    freeCompany(&company);
+		case eDeleteTreatment:
+			deleteTreatmentFromSpa(&spaManager.treatmentManager);
+			break;
 
-    return 1;
+		case eGiveEmployeeARaise:
+			giveEmployeeARaise(&spaManager.employeeManager);
+			break;
+		
+		case eCalcSpaRevenue:
+			calcSpaRevenue(&spaManager);
+			break;
+
+		case eSortEmployees:
+            sortEmployees(&spaManager.employeeManager);
+			break;
+
+		case eFindEmployee:
+            findEmployee(&spaManager.employeeManager);
+			break;
+
+		case EXIT:
+			saveSpaToBFile(&spaManager, BIN_FILENAME, BIN_C_FILENAME);
+			saveSpaToTextFile(&spaManager, TEXT_FILENAME);
+			printf("Bye bye\n");
+			getchar();
+			getchar();
+			stop = 1;
+			break;
+
+		default:
+			printf("Wrong option\n");
+			break;
+		}
+
+	} while (!stop);
+
+	freeSpaManager(&spaManager);
+
 }
 
 int menu()
 {
-    int option;
-    printf("\n\n");
-    printf("Please choose one of the following options\n");
-    for(int i = 0 ; i < eNofOptions ; i++)
-        printf("%d - %s\n",i,str[i]);
-    printf("%d - Quit\n", EXIT);
-    scanf("%d", &option);
-    //clean buffer
-    char tav;
-    scanf("%c", &tav);
-    return option;
+	int option;
+	printf("\n\n");
+	printf("Please choose one of the following options\n");
+	for (int i = 0; i < eNofOptions; i++)
+		printf("%d - %s\n", i, str[i]);
+	printf("%d - Quit\n", EXIT);
+	scanf("%d", &option);
+
+	char tav;
+	scanf("%c", &tav);
+	return option;
+}
+
+void suggestLoadFromFile(SpaManager* pSpaManager)
+{
+	int fileOption;
+	printf("Choose how to start the spa:\n");
+	printLoadOptions();
+	scanf("%d", &fileOption);
+	while (getchar() != '\n');
+
+	switch (fileOption) 
+	{
+	case 0:
+		initSpaManagerFromTextFile(pSpaManager, TEXT_FILENAME);
+		break;
+
+	case 1:
+		initSpaManagerFromBFile(pSpaManager, BIN_FILENAME, BIN_C_FILENAME);
+		break;
+
+	case 2:
+		initSpaManager(pSpaManager);
+		break;
+	}
+}
+
+void printLoadOptions()
+{
+	for (int i = 0; i < eNofLoadOptions; i++)
+		printf("%d - %s\n", i, loadOptions[i]);
 }

@@ -3,21 +3,30 @@
 
 #include "Date.h"
 #include "Def.h"
+#include "General.h"
 
-#define ROOM_TYPE_COUNT 3
+#define ROOM_START_CHAR "R-"
 
-static const char* typeString[ROOM_TYPE_COUNT] = { "Massage", "Hot Stones" ,"Meni Pedi" };
-
-typedef enum { MASSAGE, HOT_STONES, MENI_PEDI } RoomType;
+typedef enum { eBedded, eChaired, eNoOfRoomType } RoomType;
 
 typedef struct {
-    char code[CODE];
+    char code[TOTAL_CODE + 1];
     RoomType type;
-    Date date;
     int size;
-    BOOL status;
+    BOOL isBooked;
 } Room;
 
-void initRoomNoCode(Room* pRoom);
+int         writeRoomToBFile(FILE* pFile, const Room* pRoom);
+int         readRoomFromBFile(FILE* pFile, Room* pRoom);
+int         writeRoomToTextFile(FILE* pFile, const Room* pRoom);
+int         readRoomFromTextFile(FILE* pFile, Room* pRoom);
+void        initRoomNoCode(Room* pRoom);
+void        setRoomSize(Room* pRoom);
+void        setRoomType(Room* pRoom);
+void        setRoomCode(char* code);
+void        printRoomTypes();
+void        printRoom(const Room* pRoom);
+void        printRoomHeaders();
+const char* getRoomTypeString(int typeNum);
 
 #endif
