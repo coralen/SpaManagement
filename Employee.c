@@ -52,7 +52,9 @@ void setEmployeeRole(Employee* pEmployee)
     scanf("%d", &numRole);
 
     if (numRole >= 0 && numRole < eNofRole)
+    {
         pEmployee->role = numRole;
+    }
     else printf("Invalid role number\n");
 }
 
@@ -75,6 +77,23 @@ void giveARaise(Employee* pEmployee, int addition)
 BOOL isEmployeeAvailable(const Employee* pEmployee)
 {
     return pEmployee->isBooked;
+}
+
+void changeRole(Employee* pEmployee) 
+{
+    printf("Role set to: %s\n", getEmployeeRoleString(pEmployee->role));
+    printf("Enter the new role of the employee, the options are: \n");
+    printEmployeeRoles();
+
+    int numRole;
+    scanf("%d", &numRole);
+    if (numRole >= 0 && numRole < eNofRole) {
+        pEmployee->role = numRole;
+        printf("Role set to: %s\n", getEmployeeRoleString(pEmployee->role));
+    }
+    else {
+        printf("Invalid role number\n");
+    }
 }
 
 void printEmployee(const Employee* pEmployee) 

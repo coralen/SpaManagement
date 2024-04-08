@@ -45,6 +45,12 @@ void        printSpa(const SpaManager* pSpaManager);
 void        setSpaDefaults(SpaManager* pSpaManager);
 void        calcSpaRevenue(SpaManager* pSpaManager);
 void        printOverdraftOptions();
+
+void        emplyeeAwardSystem(EmployeeManager* employeeManager, TreatmentManager* treatmentManager); //talya added
+int         chooseEmployeeForAward(EmployeeManager* employeeManager); //talya added
+int         doesEmployyeDeserveAnAward(Employee* employee, TreatmentManager* treatmentManager); //talya added
+void        giveAward(int index, EmployeeManager* employeeManager); //talya added
+
 Room*       findAvailableRoom(const RoomManager* pRoomManager, const TreatmentManager* pTreatmentManager, const RoomType type, const Date* pDate);
 Employee*   findAvailableEmployee(const EmployeeManager* pEmployeeManager, const TreatmentManager* pTreatmentManager, const eEmployeeRole role, const Date* pDate);
 const char* getOverdraftOptionsString(const int optionNum);

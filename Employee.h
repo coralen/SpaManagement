@@ -35,6 +35,7 @@ int         compareById(const void* employeeA, const void* employeeB);
 void        setEmployeeSeniority(Employee* pEmployee);
 void        setEmployeeRole(Employee* pEmployee);
 void        giveARaise(Employee* pEmployee, int addition);
+void        changeRole(Employee* pEmployee);
 void        printEmployee(const Employee* pEmployee);
 void        printEmployeeRoles();
 void        printEmployeeHeaders();

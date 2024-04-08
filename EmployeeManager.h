@@ -32,8 +32,8 @@ void        giveEmployeeARaise(EmployeeManager* pEmployeeManager);
 void        findEmployee(const EmployeeManager* pEmployeeManager);
 void        printEmployeeSorts();
 void        sortEmployees(EmployeeManager* emmployeeManager);
-Employee*   findEmployeeByRole(const EmployeeManager* pEmployeeManager, const eEmployeeRole role);
-Employee*   findEmployeeBySeniorityAndRole(const EmployeeManager* pEmployeeManager, const int seniority, int role);
+int   findEmployeeByRole(const EmployeeManager* pEmployeeManager, const eEmployeeRole role);
+int   findEmployeeBySeniorityAndRole(const EmployeeManager* pEmployeeManager, const int seniority, int role);
 Employee*   findEmployeeById(const EmployeeManager* pEmployeeManager, const int id);
 const char* getSortFieldsString(const int sortNum);
 

@@ -1,7 +1,4 @@
-#pragma warning(disable : 4996)
-#pragma warning(disable : 6031)
 #define _CRT_SECURE_NO_WARNINGS
-
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -17,14 +14,14 @@ typedef enum
 {
 	eAddRoom, eAddEmployee, eAddTreatment, ePrintRooms, ePrintEmployees, ePrintTreatments, ePrintSpa,
 	eDeleteRoom, eDeleteEmployee, eDeleteTreatment,
-	eGiveEmployeeARaise, eCalcSpaRevenue, eSortEmployees, eFindEmployee, eNofOptions
+	eGiveEmployeeARaise, eCalcSpaRevenue, eSortEmployees, eFindEmployee ,eRewardEmployee, eNofOptions
 } eMenuOptions;
 
 typedef enum { eTextFile, eBinFile, eManual, eNofLoadOptions } eLoadOptions;
 
 const char* str[eNofOptions] = { "Add Room","Add Employee","Add Treatment", "Print rooms", "Print Employees",
 								"Print treatments", "Print spa", "Delete room", "Delete employee", "Delete treatment",
-								"Give employee a raise", "Calc the spa's revenue" , "Sort employees", "Find employee" };
+								"Give employee a raise", "Calc the spa's revenue" , "Sort employees", "Find employee", "RewardEmployee" };
 
 const char* loadOptions[eNofLoadOptions] = { "From text file", "From binary file", "Enter manually" };
 
@@ -103,13 +100,13 @@ int main()
 		case eFindEmployee:
 			findEmployee(&spaManager.employeeManager);
 			break;
-
+        case eRewardEmployee:
+            emplyeeAwardSystem(&spaManager.employeeManager, &spaManager.treatmentManager);
+            break;
 		case EXIT:
 			saveSpaToBFile(&spaManager, BIN_FILENAME, BIN_C_FILENAME);
 			saveSpaToTextFile(&spaManager, TEXT_FILENAME);
 			printf("Bye bye\n");
-			getchar();
-			getchar();
 			stop = 1;
 			break;
 
@@ -147,7 +144,7 @@ void suggestLoadFromFile(SpaManager* pSpaManager)
 	scanf("%d", &fileOption);
 	while (getchar() != '\n');
 
-	switch (fileOption) 
+	switch (fileOption)
 	{
 	case 0:
 		initSpaManagerFromTextFile(pSpaManager, TEXT_FILENAME);

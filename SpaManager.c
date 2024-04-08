@@ -65,9 +65,8 @@ int setSpaName(char** name)
 	printf("Please enter your Spa's name: \n");
 	scanf(SCANF_FORMAT, inputName);
 	while (getchar() != '\n');
-	inputName[MAX_STRING - 1] = '\0';
-
-	if (!(*name = strdup(inputName))) return 0;
+	if (!(*name = (char*)malloc((strlen(inputName) + 1) * sizeof(char)))) return 0;
+	strcpy(*name, inputName);
 	capitalFirst(*name);
 
 	return 1;
@@ -80,9 +79,9 @@ int setSpaLocation(char** location)
 	printf("And what is the location of your Spa? \n");
 	scanf(SCANF_FORMAT, inputLocation);
 	while (getchar() != '\n');
-	inputLocation[MAX_STRING - 1] = '\0';
 
-	if (!(*location = strdup(inputLocation))) return 0;
+	if (!(*location = (char*)malloc((strlen(inputLocation) + 1) * sizeof(char)))) return 0;
+	strcpy(*location, inputLocation);
 	capitalFirst(*location);
 
 	return 1;
@@ -101,6 +100,77 @@ void increaseSpaBudget(SpaManager* pSpaManager)
 	scanf("%d", &addBudget);
 	pSpaManager->budget = pSpaManager->budget + addBudget;
 }
+
+//talya added
+void emplyeeAwardSystem(EmployeeManager* employeeManager, TreatmentManager* treatmentManager){
+    int index =chooseEmployeeForAward(employeeManager);
+
+    if (doesEmployyeDeserveAnAward(employeeManager->EmployeeArr[index], treatmentManager)) giveAward(index, employeeManager);
+    else printf("This employee doesnt qualify for an award\n");
+}
+
+//talya added
+int doesEmployyeDeserveAnAward(Employee* employee, TreatmentManager* treatmentManager) {
+    int treatmentCount = 0;
+    NODE* current = treatmentManager->treatmentList.head.next;
+
+    while (current != NULL) {
+        Treatment* treatment = (Treatment*)current->key;
+        if (treatment->pTreatmentEmployee == employee) {
+            treatmentCount++;
+            if (treatmentCount >= MIN_TREATMENTS_FOR_AWARD) {
+                return 1;
+            }
+        }
+        current = current->next;
+    }
+    return 0;
+}
+
+//talya added
+void giveAward(int index, EmployeeManager* employeeManager){
+    printf("choose your reward for the employee: \n1-give a raise \n2- Change a role\n");
+    int choice=1;
+    scanf("%d", &choice);
+    if (choice==1){
+        printf("Enter the raise:\n");
+        int raise;
+        scanf("%d", &raise);
+        giveARaise(employeeManager->EmployeeArr[index], raise);
+    }else if (choice ==2) {
+        changeRole(employeeManager->EmployeeArr[index]);
+    } else printf("input invalid\n");
+}
+
+//talya added
+int chooseEmployeeForAward(EmployeeManager* employeeManager){
+    int index=0;
+    printf("Would you like to find the employee by his: \n1- name \n2-role \n3- role and seniority\n");
+    int choice=1;
+    scanf("%d", &choice);
+
+    if (choice==1){
+        printf("enter name:\n");
+        char name[MAX_STRING];
+        scanf("%s", name);
+        index= findEmployeeByName(employeeManager, name);
+    }else if (choice ==2){
+        printEmployeeRoles();
+        printf("enter the role of the employee: \n");
+        scanf("%d", &choice);
+        index= findEmployeeByRole(employeeManager, choice);
+    }else if (choice==3){
+        printf("enter the role of the employee: \n");
+        scanf("%d", &choice);
+        printf("enter the seniority of the employee: \n");
+        int seniority=0;
+        scanf("%d", &seniority);
+        index= findEmployeeBySeniorityAndRole(employeeManager, seniority,choice );
+    }else printf("input invalid\n");
+
+    return index;
+}
+
 
 int addTreatment(TreatmentManager* pTreatmentManager, const RoomManager* pRoomManager, const EmployeeManager* pEmployeeManager)
 {

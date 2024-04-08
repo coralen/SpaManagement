@@ -5,6 +5,7 @@
 #define CODE_EXPECTED "XXX"
 #define TOTAL_CODE 5
 #define MAX_STRING 255
+#define MIN_TREATMENTS_FOR_AWARD 2 //change to 5
 
 #define STRINGIFY(x) #x  // Macro to turn a value into a string
 #define SCANF_FORMAT "%254[^\n]"  // Create the scanf format string, assuming MAX_STRING is 256
