@@ -70,7 +70,7 @@ BOOL L_delete(NODE* pNode, void (*freeFunc)(void*))
 
 BOOL L_delete_current(NODE* pHead, NODE* target, void (*freeFunc)(void*))
 {
-    if (!pHead || !pHead || !target) return False;
+    if (!pHead || !target) return False;
 
     NODE* current = pHead;
     NODE* previous = NULL;

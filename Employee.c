@@ -34,11 +34,12 @@ int setEmployeeName(char** name)
 {
     char inputName[MAX_STRING];
 
-    printf("Enter the first and last name of the new employee: \n");
+    printf("Enter the full name of the employee: \n");
     scanf(SCANF_FORMAT, inputName);
     while (getchar() != '\n');
-    if (!(*name = (char*)malloc((strlen(inputName) + 1) * sizeof(char)))) return 0;
-    strcpy(*name, inputName);
+    inputName[MAX_STRING - 1] = '\0';
+
+    if (!(*name = strdup(inputName))) return 0;
     capitalFirst(*name);
 
     return 1;
@@ -46,16 +47,15 @@ int setEmployeeName(char** name)
 
 void setEmployeeRole(Employee* pEmployee)
 {
-    printf("Enter the role of the new employee, the options are: \n");
-    printEmployeeRoles();
     int numRole;
-    scanf("%d", &numRole);
-
-    if (numRole >= 0 && numRole < eNofRole)
+    do
     {
-        pEmployee->role = numRole;
-    }
-    else printf("Invalid role number\n");
+        printf("Enter the role of the employee, the options are: \n");
+        printEmployeeRoles();
+        scanf("%d", &numRole);
+        if (numRole < 0 || numRole >= eNofRole) printf("Invalid role number\n");
+    } while (numRole < 0 || numRole >= eNofRole);
+    pEmployee->role = numRole;
 }
 
 void setEmployeeSeniority(Employee* pEmployee)
@@ -77,23 +77,6 @@ void giveARaise(Employee* pEmployee, int addition)
 BOOL isEmployeeAvailable(const Employee* pEmployee)
 {
     return pEmployee->isBooked;
-}
-
-void changeRole(Employee* pEmployee) 
-{
-    printf("Role set to: %s\n", getEmployeeRoleString(pEmployee->role));
-    printf("Enter the new role of the employee, the options are: \n");
-    printEmployeeRoles();
-
-    int numRole;
-    scanf("%d", &numRole);
-    if (numRole >= 0 && numRole < eNofRole) {
-        pEmployee->role = numRole;
-        printf("Role set to: %s\n", getEmployeeRoleString(pEmployee->role));
-    }
-    else {
-        printf("Invalid role number\n");
-    }
 }
 
 void printEmployee(const Employee* pEmployee) 

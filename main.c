@@ -1,4 +1,7 @@
+#pragma warning(disable : 4996)
+#pragma warning(disable : 6031)
 #define _CRT_SECURE_NO_WARNINGS
+
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -14,14 +17,14 @@ typedef enum
 {
 	eAddRoom, eAddEmployee, eAddTreatment, ePrintRooms, ePrintEmployees, ePrintTreatments, ePrintSpa,
 	eDeleteRoom, eDeleteEmployee, eDeleteTreatment,
-	eGiveEmployeeARaise, eCalcSpaRevenue, eSortEmployees, eFindEmployee ,eRewardEmployee, eNofOptions
+	eAwardSystem, eCalcSpaRevenue, eSortEmployees, eFindEmployee, eNofOptions
 } eMenuOptions;
 
 typedef enum { eTextFile, eBinFile, eManual, eNofLoadOptions } eLoadOptions;
 
 const char* str[eNofOptions] = { "Add Room","Add Employee","Add Treatment", "Print rooms", "Print Employees",
 								"Print treatments", "Print spa", "Delete room", "Delete employee", "Delete treatment",
-								"Give employee a raise", "Calc the spa's revenue" , "Sort employees", "Find employee", "RewardEmployee" };
+								"Award system", "Calc the spa's revenue" , "Sort employees", "Find employee" };
 
 const char* loadOptions[eNofLoadOptions] = { "From text file", "From binary file", "Enter manually" };
 
@@ -85,8 +88,8 @@ int main()
 			deleteTreatmentFromSpa(&spaManager.treatmentManager);
 			break;
 
-		case eGiveEmployeeARaise:
-			giveEmployeeARaise(&spaManager.employeeManager);
+		case eAwardSystem:
+			emplyeeAwardSystem(&spaManager.employeeManager, &spaManager.treatmentManager);
 			break;
 		
 		case eCalcSpaRevenue:
@@ -100,9 +103,7 @@ int main()
 		case eFindEmployee:
 			findEmployee(&spaManager.employeeManager);
 			break;
-        case eRewardEmployee:
-            emplyeeAwardSystem(&spaManager.employeeManager, &spaManager.treatmentManager);
-            break;
+
 		case EXIT:
 			saveSpaToBFile(&spaManager, BIN_FILENAME, BIN_C_FILENAME);
 			saveSpaToTextFile(&spaManager, TEXT_FILENAME);
@@ -124,13 +125,16 @@ int main()
 int menu()
 {
 	int option;
-	printf("\n\n");
-	printf("Please choose one of the following options\n");
-	for (int i = 0; i < eNofOptions; i++)
-		printf("%d - %s\n", i, str[i]);
-	printf("%d - Quit\n", EXIT);
-	scanf("%d", &option);
 
+	do {
+		printf("\n\n");
+		printf("Please choose one of the following options\n");
+		for (int i = 0; i < eNofOptions; i++)
+			printf("%d - %s\n", i, str[i]);
+		printf("%d - Quit\n", EXIT);
+		scanf("%d", &option);
+	} while (option < -1 || option >= eNofOptions);
+	
 	char tav;
 	scanf("%c", &tav);
 	return option;
@@ -139,12 +143,15 @@ int menu()
 void suggestLoadFromFile(SpaManager* pSpaManager)
 {
 	int fileOption;
-	printf("Choose how to start the spa:\n");
-	printLoadOptions();
-	scanf("%d", &fileOption);
-	while (getchar() != '\n');
 
-	switch (fileOption)
+	do {
+		printf("Choose how to start the spa:\n");
+		printLoadOptions();
+		scanf("%d", &fileOption);
+		while (getchar() != '\n');
+	} while (fileOption < 0 || fileOption >= eNofLoadOptions);
+
+	switch (fileOption) 
 	{
 	case 0:
 		initSpaManagerFromTextFile(pSpaManager, TEXT_FILENAME);

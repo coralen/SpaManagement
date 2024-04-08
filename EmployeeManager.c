@@ -10,6 +10,8 @@
 #include "EmployeeManager.h"
 
 static const char* sortFieldsString[eNone] = { "Employee Role", "name", "id" };
+const char* awardOptionString[eNofAwardOptions] = { "Give a raise", "Change a role" };
+const char* searchEmployeeAwardString[eNoOfSearchEmployeeAward] = { "Name", "Role", "Role and seniority" };
 
 void initEmployeeManager(EmployeeManager* pEmployeeManager)
 {
@@ -24,7 +26,9 @@ int addEmployee(EmployeeManager* pEmployeeManager)
     if (!pEmployee) return 0;
 
     initEmployee(pEmployee);
-    pEmployeeManager->EmployeeArr = (Employee**)realloc(pEmployeeManager->EmployeeArr, (pEmployeeManager->employeeCount+ 1) * sizeof(Employee*));
+    Employee** tempPtr = (Employee**)realloc(pEmployeeManager->EmployeeArr, (pEmployeeManager->employeeCount + 1) * sizeof(Employee*));
+    if (tempPtr == NULL) return 0;
+    else pEmployeeManager->EmployeeArr = tempPtr;
 
     if (!pEmployeeManager->EmployeeArr)
     {
@@ -46,28 +50,16 @@ void chooseEmployeeId(Employee* pEmployee, const EmployeeManager* pEmployeeManag
 
 }
 
-void giveEmployeeARaise(EmployeeManager* pEmployeeManager)
+void giveEmployeeARaise(Employee* pEmployee, EmployeeManager* pEmployeeManager)
 {
     int raise;
-    Employee* pEmployee;
-    int validFlag = 0;
-
-    pEmployee = (Employee*)calloc(1, sizeof(Employee));
-
-    while (!validFlag)
-    {
-        printf("Please choose id of an available employee:\n");
-        printEmployeeArr(pEmployeeManager);
-        chooseEmployeeId(pEmployee, pEmployeeManager);
-        if (!(pEmployee = findEmployeeById(pEmployeeManager, pEmployee->id))) printf("No employee with this id! try again\n");
-        else {
-            printf("Enter the raise:\n");
-            scanf("%d", &raise);
-            giveARaise(pEmployee, raise);
-            validFlag = 1;
-        }
-    }
+ 
+     printf("Enter the raise:\n");
+     scanf("%d", &raise);
+     giveARaise(pEmployee, raise);
 }
+
+
 Employee* findEmployeeById(const EmployeeManager* pEmployeeManager, const int id)
 {
     for (int i = 0; i < pEmployeeManager->employeeCount; i++) 
@@ -78,41 +70,66 @@ Employee* findEmployeeById(const EmployeeManager* pEmployeeManager, const int id
     return NULL;
 }
 
-int findEmployeeByRole(const EmployeeManager* pEmployeeManager, const eEmployeeRole role)
+Employee* findEmployeeByRole(const EmployeeManager* pEmployeeManager, const eEmployeeRole role) 
 {
     for (int i = 0; i < pEmployeeManager->employeeCount; i++) {
         if (!isEmployeeAvailable(pEmployeeManager->EmployeeArr[i]) && pEmployeeManager->EmployeeArr[i]->role == role)
-            return i;
+            return pEmployeeManager->EmployeeArr[i];
     }
-    return -1;
+    return NULL;
 }
 
 
-int findEmployeeBySeniorityAndRole(const EmployeeManager* pEmployeeManager, const int seniority, int role)
+Employee* findEmployeeBySeniorityAndRole(const EmployeeManager* pEmployeeManager, const int seniority, int role) 
 {
     for (int i = 0; i < pEmployeeManager->employeeCount; i++) 
     {
         if (!isEmployeeAvailable(pEmployeeManager->EmployeeArr[i]) && pEmployeeManager->EmployeeArr[i]->seniority == seniority && pEmployeeManager->EmployeeArr[i]->role == role) 
         {
-            printEmployee(pEmployeeManager->EmployeeArr[i]);
-            return i;
+            return pEmployeeManager->EmployeeArr[i];
         }
     }
-    return -1;
+    return NULL;
 }
 
-int findEmployeeByName(const EmployeeManager* pEmployeeManager, const char* name) 
+Employee* findEmployeeByName(const EmployeeManager* pEmployeeManager, const char* name) 
 {
     for (int i = 0; i < pEmployeeManager->employeeCount; i++) 
-        if (pEmployeeManager->EmployeeArr[i]->name == name) return i;
+        if (!strcmp(pEmployeeManager->EmployeeArr[i]->name, name)) 
+            return pEmployeeManager->EmployeeArr[i];
 
-    return -1;
+    return NULL;
+}
+
+const char* getAwardOptions(const int optionNum)
+{
+    return awardOptionString[optionNum];
+
+}
+
+void printAwardOptions()
+{
+    for (int i = 0; i < eNofAwardOptions; i++)
+        printf("%d - %s\n", i, getAwardOptions(i));
+
+}
+
+const char* getSearchEmployeeAwardOptions(const int optionNum)
+{
+    return searchEmployeeAwardString[optionNum];
+}
+
+void printSearchEmployeeAwardOptions()
+{
+    for (int i = 0; i < eNoOfSearchEmployeeAward; i++)
+        printf("%d - %s\n", i, getSearchEmployeeAwardOptions(i));
 }
 
 int deleteEmployee(EmployeeManager* pEmployeeManager, const int id) 
 {
     int employeeIndex = findEmployeeById(pEmployeeManager, id)->id;
     if (employeeIndex == -1) return 0;
+  
     freeEmployee(pEmployeeManager->EmployeeArr[employeeIndex]);
 
     if (!(pEmployeeManager->employeeCount - 1))
@@ -155,6 +172,7 @@ void printEmployeeArr(const EmployeeManager* pEmployeeManager)
 int writeEmployeeManagerToBFile(FILE* pFile, const EmployeeManager* pEmployeeManager)
 {
     if (fwrite(&pEmployeeManager->employeeCount, sizeof(int), 1, pFile) != 1) return 0;
+    if (!pEmployeeManager->employeeCount) return 1;
     if (fwrite(&pEmployeeManager->sortField, sizeof(eSort), 1, pFile) != 1) return 0;
     for (int i = 0; i < pEmployeeManager->employeeCount; i++)
         if (!writeEmployeeToBFile(pFile, pEmployeeManager->EmployeeArr[i])) return 0;
@@ -165,7 +183,10 @@ int readEmployeeManagerFromBFile(FILE* pFile, EmployeeManager* pEmployeeManager)
 {
     if (fread(&pEmployeeManager->employeeCount, sizeof(int), 1, pFile) != 1) return 0;
     if (!pEmployeeManager->employeeCount) return 1;
-    if (!(pEmployeeManager->EmployeeArr = (Employee**)realloc(pEmployeeManager->EmployeeArr, (pEmployeeManager->employeeCount) * sizeof(Employee*)))) return 0;
+
+    Employee** tempPtr = (Employee**)realloc(pEmployeeManager->EmployeeArr, (pEmployeeManager->employeeCount) * sizeof(Employee*));
+    if (!tempPtr) return 0;
+    else pEmployeeManager->EmployeeArr = tempPtr;
     
     if (fread(&pEmployeeManager->sortField, sizeof(eSort), 1, pFile) != 1) return 0;
     for (int i = 0; i < pEmployeeManager->employeeCount; i++)
@@ -180,6 +201,7 @@ int readEmployeeManagerFromBFile(FILE* pFile, EmployeeManager* pEmployeeManager)
 int writeEmployeeManagerToTextFile(FILE* pFile, const EmployeeManager* pEmployeeManager)
 {
     if (fprintf(pFile, "%d\n", pEmployeeManager->employeeCount) < 0) return 0;
+    if (!pEmployeeManager->employeeCount) return 1;
     if (fprintf(pFile, "%d\n", pEmployeeManager->sortField) < 0) return 0;
     for (int i = 0; i < pEmployeeManager->employeeCount; i++)
         if (!writeEmployeeToTextFile(pFile, pEmployeeManager->EmployeeArr[i])) return 0;
@@ -189,9 +211,14 @@ int writeEmployeeManagerToTextFile(FILE* pFile, const EmployeeManager* pEmployee
 int readEmployeeManagerFromTextFile(FILE* pFile, EmployeeManager* pEmployeeManager)
 {
     if (!fscanf(pFile, "%d\n", &pEmployeeManager->employeeCount)) return 0;
+    if (!pEmployeeManager->employeeCount) return 1;
     if (!fscanf(pFile, "%d\n", (int*)&pEmployeeManager->sortField)) return 0;
     if (!pEmployeeManager->employeeCount) return 1;
-    if (!(pEmployeeManager->EmployeeArr = (Employee**)realloc(pEmployeeManager->EmployeeArr, (pEmployeeManager->employeeCount) * sizeof(Employee*)))) return 0;
+
+    Employee** tempPtr = (Employee**)realloc(pEmployeeManager->EmployeeArr, (pEmployeeManager->employeeCount) * sizeof(Employee*));
+    if (!tempPtr) return 0;
+    else pEmployeeManager->EmployeeArr = tempPtr;
+    
     for (int i = 0; i < pEmployeeManager->employeeCount; i++)
     {
         Employee* pEmployee = (Employee*)calloc(1, sizeof(Employee));
@@ -273,6 +300,72 @@ void findEmployee(const EmployeeManager* pEmployeeManager)
         printf("Employee was not found\n");
     }
 }
+
+
+void giveEmployeeAward(Employee* pEmployee, EmployeeManager* pEmployeeManager)
+{
+    int choice;
+
+    printf("choose your reward for the employee:\n");
+    printAwardOptions();
+    scanf("%d", &choice);
+
+    switch (choice)
+    {
+    case eGiveARaise:
+        giveEmployeeARaise(pEmployee, pEmployeeManager);
+        break;
+
+    case eChangeARole:
+        setEmployeeRole(pEmployee);
+        break;
+
+    default:
+        printf("input invalid\n");
+        break;
+    }
+}
+
+Employee* chooseEmployeeForAward(EmployeeManager* employeeManager)
+{
+    int choice;
+    Employee emp;
+    Employee* foundEmployee = NULL;
+
+    do {
+        printf("Would you like to find the employee by his: \n");
+        printSearchEmployeeAwardOptions();
+        scanf("%d", &choice);
+    } while (choice < 0 || choice >= eNoOfSearchEmployeeAward);
+
+
+    switch (choice)
+    {
+    case eAwardName:
+        while (getchar() != '\n');
+        setEmployeeName(&emp.name);
+        foundEmployee = findEmployeeByName(employeeManager, emp.name);
+        break;
+
+    case eAwardRole:
+        setEmployeeRole(&emp);
+        foundEmployee = findEmployeeByRole(employeeManager, emp.role);
+        break;
+
+    case eAwardRoleAndSeniority:
+        setEmployeeRole(&emp);
+        setEmployeeSeniority(&emp);
+        foundEmployee = findEmployeeBySeniorityAndRole(employeeManager, emp.seniority, emp.role);
+        break;
+
+    default:
+        printf("input invalid\n");
+        break;
+    }
+    if (foundEmployee) return foundEmployee;
+    return NULL;
+}
+
 
 void freeEmployeeManager(EmployeeManager* pEmployeeManager)
 {

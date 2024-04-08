@@ -24,6 +24,7 @@ int			readTreatmentManagerFromTextFile(FILE* pFile, TreatmentManager* pTreatment
 int			findTreatmentWithRoomAndDate(const TreatmentManager* pTreatmentManager, const Date* pDate, const char* roomCode);
 int			findTreatmentWithEmployeeAndDate(const TreatmentManager* pTreatmentManager, const Date* pDate, const int employeeId);
 int			deleteTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager);
+int         deleteTreatmentFromSpa(TreatmentManager* pTreatmentManager);
 void		initTreatment(Treatment* pTreatment, TreatmentManager* pTreatmentManager, int option, Room* pRoom, Employee* pEmployee, Date* pDate);
 void		printTreatmentList(const TreatmentManager* pTreatmentManager);
 void		printTreatmentListWithData(const TreatmentManager* pTreatmentManager);

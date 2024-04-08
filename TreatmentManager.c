@@ -173,6 +173,42 @@ void printTreatmentList(const TreatmentManager* pTreatmentManager)
 	L_print(&pTreatmentManager->treatmentList, (void (*)(const void*)) printTreatment);
 }
 
+int deleteTreatmentFromSpa(TreatmentManager* pTreatmentManager)
+{
+	if (!pTreatmentManager->treatmentCount)
+	{
+		printf("No treatments are available\n");
+		return 0;
+	}
+
+	char tmpCode[TOTAL_CODE + 1];
+	int validFlag = 0;
+	Treatment* pTreatment;
+
+	printf("Please choose code of an available treatment:\n");
+	printTreatmentList(pTreatmentManager);
+	while (!validFlag)
+	{
+		getTreatmentCode(tmpCode);
+		if (!(pTreatment = findTreatmentWithCode(pTreatmentManager, tmpCode)))
+			printf("No treatment with this code! try again\n");
+		else {
+			if (pTreatment->isActive)
+			{
+				printf("This treatment is in active! please wait for it to be done\n");
+				return 0;
+			}
+			else
+			{
+				deleteTreatment(pTreatment, pTreatmentManager);
+				validFlag = 1;
+			}
+
+		}
+	}
+	return 1;
+}
+
 int writeTreatmentManagerToBFile(FILE* pFile, FILE* pCFile, TreatmentManager* pTreatmentManager)
 {
 	if (!&pTreatmentManager->treatmentList.head) return 0;

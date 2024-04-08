@@ -7,6 +7,8 @@
 #include "TreatmentManager.h"
 #include "RoomManager.h"
 
+#define MIN_TREATMENTS_FOR_AWARD 2
+
 typedef enum { eIncreaseBudget, eFireEmployee, eDeleteTreatmant, eStayInOverdraft, eNoOfOverdraftOptions } overdraftOptions;
 
 
@@ -37,7 +39,7 @@ int         writeSpaToTextFile(FILE* pFile, const SpaManager* pSpaManager);
 int         readSpaFromTextFile(FILE* pFile, SpaManager* pSpaManager);
 int         deleteRoomFromSpa(RoomManager* pRoomManager, const TreatmentManager* pTreatmentManager);
 int         deleteEmployeeFromSpa(EmployeeManager* pEmployeeManager, const TreatmentManager* pTreatmentManager);
-int         deleteTreatmentFromSpa(TreatmentManager* pTreatmentManager);
+int         doesEmployyeDeserveAnAward(Employee* employee, TreatmentManager* treatmentManager);
 void        increaseSpaBudget(SpaManager* pSpaManager);
 void        freeSpaManager(SpaManager* pSpaManager);
 void        setSpaBudget(SpaManager* pSpa);
@@ -45,12 +47,9 @@ void        printSpa(const SpaManager* pSpaManager);
 void        setSpaDefaults(SpaManager* pSpaManager);
 void        calcSpaRevenue(SpaManager* pSpaManager);
 void        printOverdraftOptions();
-
-void        emplyeeAwardSystem(EmployeeManager* employeeManager, TreatmentManager* treatmentManager); //talya added
-int         chooseEmployeeForAward(EmployeeManager* employeeManager); //talya added
-int         doesEmployyeDeserveAnAward(Employee* employee, TreatmentManager* treatmentManager); //talya added
-void        giveAward(int index, EmployeeManager* employeeManager); //talya added
-
+void        printSearchEmployeeAwardOptions();
+void        printAwardOptions();
+void        emplyeeAwardSystem(EmployeeManager* employeeManager, TreatmentManager* treatmentManager);
 Room*       findAvailableRoom(const RoomManager* pRoomManager, const TreatmentManager* pTreatmentManager, const RoomType type, const Date* pDate);
 Employee*   findAvailableEmployee(const EmployeeManager* pEmployeeManager, const TreatmentManager* pTreatmentManager, const eEmployeeRole role, const Date* pDate);
 const char* getOverdraftOptionsString(const int optionNum);
