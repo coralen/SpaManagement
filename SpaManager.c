@@ -37,7 +37,7 @@ int initSpaManagerFromBFile(SpaManager* pSpaManager, const char* fileName, const
 	if (!cFile) return 0;
 	if (!readSpaFromBFile(pFile, cFile, pSpaManager))
 	{
-		printf("File is emplye! please enter manually\n");
+		printf("File is empty! please enter manually\n");
 		if (!initSpaManager(pSpaManager)) return 0;
 	}
 	fclose(pFile);
@@ -52,7 +52,7 @@ int initSpaManagerFromTextFile(SpaManager* pSpaManager, const char* fileName)
 	if (!pFile) return 0;
 	if (!readSpaFromTextFile(pFile, pSpaManager))
 	{
-		printf("File is emplye! please enter manually\n");
+		printf("File is empty! please enter manually\n");
 		if (!initSpaManager(pSpaManager)) return 0;
 	}
 	fclose(pFile);
