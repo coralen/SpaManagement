@@ -23,7 +23,7 @@ void    freeRoomManager(RoomManager* pRoomManager);
 void    initRoomManager(RoomManager* pRoomManager);
 void    initRoom(Room* pRoom, const RoomManager* pRoomManager);
 void    printRoomArr(const RoomManager* pRoomManager);
-Room*   findRoomByCode(const RoomManager* pRoomManager, char* code);
+Room*   findRoomByCode(const RoomManager* pRoomManager, const char* code);
 
 
 #endif

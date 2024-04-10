@@ -58,10 +58,13 @@ const char* getStonesPlacementString(const int typeNum)
 	return stonesPlacementString[typeNum];
 }
 
+
 void printHotStones(const HotStones* pHotStones)
 {
 	printf("%-10s\t%-10s\t", getStonesTypeString(pHotStones->type), getStonesPlacementString(pHotStones->placement));
 }
+
+
 
 void printHotStonesHeaders(void* input)
 {

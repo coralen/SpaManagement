@@ -19,12 +19,15 @@ void getCorrectDate(Date* pDate)
 
 	while (!validInputFlag)
 	{
-		printf("Enter treatment Date dd##mm##yyyy  minimum year %d\n", MIN_YEAR);
-		scanf("%s", date);
+		printf("Enter treatment date in the format dd##mm##yyyy for future time, later than the current hour:\n");
+		scanf(SCANF_FORMAT, date);
+		while (getchar() != '\n');
+		date[MAX_STRING - 1] = '\0';
+
 		count = sscanf(date, "%2d##%2d##%4d", &day, &month, &year);
 
 		if (count != SEGMENTS || strlen(date) != CHARS_COUNT || !validateDate(day, month, year)) {
-			printf("Error try again\n");
+			printf("Invalid date format or date out of range. Please try again\n");
 			validInputFlag = 0;
 		}
 		else validInputFlag = 1;

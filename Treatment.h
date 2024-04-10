@@ -24,6 +24,7 @@ typedef union {
 } TreatmentData;
 
 typedef struct {
+
     char code[TOTAL_CODE + 1];
     Date date;
     int duration;

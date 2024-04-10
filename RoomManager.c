@@ -84,7 +84,7 @@ int findRoomIndexInArray(const Room* pRoom, const RoomManager* pRoomManager)
 	return -1;
 }
 
-Room* findRoomByCode(const RoomManager* pRoomManager, char* code)
+Room* findRoomByCode(const RoomManager* pRoomManager, const char* code)
 {
 	for (int i = 0; i < pRoomManager->roomCount; i++)
 	{

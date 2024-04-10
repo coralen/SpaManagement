@@ -35,7 +35,11 @@ int initSpaManagerFromBFile(SpaManager* pSpaManager, const char* fileName, const
 	FILE* cFile = fopen(cFileName, "rb");
 	if (!pFile) return 0;
 	if (!cFile) return 0;
-	if (!readSpaFromBFile(pFile, cFile, pSpaManager)) return 0;
+	if (!readSpaFromBFile(pFile, cFile, pSpaManager))
+	{
+		printf("File is emplye! please enter manually\n");
+		if (!initSpaManager(pSpaManager)) return 0;
+	}
 	fclose(pFile);
 	fclose(cFile);
 	return 1;
@@ -46,7 +50,11 @@ int initSpaManagerFromTextFile(SpaManager* pSpaManager, const char* fileName)
 	setSpaDefaults(pSpaManager);
 	FILE* pFile = fopen(fileName, "r");
 	if (!pFile) return 0;
-	if (!readSpaFromTextFile(pFile, pSpaManager)) return 0;
+	if (!readSpaFromTextFile(pFile, pSpaManager))
+	{
+		printf("File is emplye! please enter manually\n");
+		if (!initSpaManager(pSpaManager)) return 0;
+	}
 	fclose(pFile);
 	return 1;
 }
@@ -357,6 +365,7 @@ int readSpaFromTextFile(FILE* pFile, SpaManager* pSpaManager)
 	char tmp[MAX_STRING] = { 0 };
 
 	if (!fscanf(pFile, " %[^\n]\n", tmp)) return 0;
+	if (!strlen(tmp)) return 0;
 	pSpaManager->name = strdup(tmp);
 
 	if (!fscanf(pFile, " %[^\n]\n", tmp)) return 0;

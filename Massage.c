@@ -31,9 +31,9 @@ int getNotesFromClient(char** notes)
 	printf("Enter notes from the client:\n");
 	scanf(SCANF_FORMAT, inputMessage);
 	while (getchar() != '\n');
+	inputMessage[MAX_STRING - 1] = '\0';
 
-	if (!(*notes = (char*)malloc((strlen(inputMessage) + 1) * sizeof(char)))) return 0;
-	strcpy(*notes, inputMessage);
+	if (!(*notes = strdup(inputMessage))) return 0;
 	return 1;
 }
 
